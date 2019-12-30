@@ -1,28 +1,28 @@
-sudo pacman -R --noconfirm markdown_previewer vi vim speedtest-cli memtest86+ spectre-meltdown-checker screenfetch tlp powertop ranger brandr links mousepad palemoon-bin kvantum-manjaro gcolor2 xterm manjaro-i3-settings conky-i3 conky zsh f2fs-tools manjaro-ranger-settings manjaro-browser-settings networkmanager-pptp i3-scrot clipit
-# fzf
+sudo pacman -R --noconfirm vi memtest86+ spectre-meltdown-checker tlp zsh f2fs-tools
 
 rm -rf .config/i3-scrot.conf .config/Ranger
 
 sudo pacman -S --noconfirm yay
 
-sudo yay -S --noconfirm android-tools blueman firefox gcc libmpc php-fpm nginx-mainline nodejs npm flameshot i3blocks lollypop youtube-dl arc-gtk-theme arc-icon-theme throttled noto-fonts-sc ttf-roboto ttf-roboto-mono postman-bin mons
-
+sudo yay -S --noconfirm android-tools blueman code firefox gcc libmpc php-fpm nginx-mainline nodejs npm i3blocks lollypop youtube-dl arc-gtk-theme papirus-icon-theme throttled noto-fonts-sc ttf-roboto ttf-roboto-mono ttf-font-awesome postman-bin lightdm-mini-greeter slurp grim wl-clipboard termite thunar-archive-plugin thunar wofi-hg xorg-server xorg-server-xwayland xorg-xrandr p7zip unzip
 # mongodb?
 
 sudo systemctl enable bluetooth
-sudo systemctl enable lenovo_fix.service
-
-sudo usermod -a -G bumblebee jiayang
+sudo systemctl enable lenovo_fix
 
 git config --global user.name 'sheepymeh'
 git config --global user.email 'sheepymeh@users.noreply.github.com'
 git config --global commit.gpgsign true
 git config --global credential.helper store
 
-mv i3.conf ~/.i3/config
-mv i3blocks.conf ~/.i3blocks.conf
-mv gtk2 ~/.gtkrc-2.0
-mv gtk3 ~/.config/gtk-3.0
 chmod a+x battery.sh
-sudo mv battery.sh /usr/local/bin/battery.sh
-sudo mv xresources ~/.Xresources
+sudo mv battery.sh /usr/local/bin/i3blocks/battery.sh
+mv sway.conf ~/$XDG_CONFIG_HOME/sawy/config
+mv wofi.conf ~/$XDG_CONFIG_HOME/wofi/config
+mv wofi.css ~/$XDG_CONFIG_HOME/wofi/style.css
+mv termite.conf ~/$XDG_CONFIG_HOME/termite/config
+mv i3blocks.conf ~/$XDG_CONFIG_HOME/i3blocks/config
+sudo mv /etc/lightdm/lightdm.conf /etc/lightdm/lightdm.old.conf
+sudo mv lightdm.conf /etc/lightdm/lightdm.conf
+sudo mv lightdm-mini-greeter.conf /etc/lightdm/lightdm-mini-greeter.old.conf
+sudo mv lightdm-mini-greeter.conf /etc/lightdm/lightdm-mini-greeter.conf

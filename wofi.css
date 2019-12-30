@@ -1,0 +1,38 @@
+window {
+	background-color: #383c4a;
+	font: 20px 'Roboto Mono', monospace;
+	border-radius: 3px;
+	border: 2px solid #5294e2;
+}
+
+#input {
+	font-size: 24px;
+	margin: 12px 60px;
+	border: 1px solid #ddd;
+	border-radius: 1px;
+	background-color: #7c818c;
+	padding: 10px 20px;
+	color: #fff;
+}
+
+#inner-box {
+	background-color: #4b5162;
+	border-radius: 3px;
+	padding: 12px 20px;
+}
+
+#outer-box {
+	margin: 5px;
+	border: 2px solid #383c4a;
+	background-color: #383c4a;
+	border-radius: 5px;
+}
+
+#scroll {
+	margin: 5px;
+}
+
+#text {
+	margin: 8px 5px;
+	color: #efefef;
+}
