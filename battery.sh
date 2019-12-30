@@ -2,7 +2,7 @@
 
 res=$(acpi -b | tail -n1)
 status=${res%%,*}
-status=${status#Battery 1: *}
+status=${status#Battery 0: *}
 charge=res | grep -oP "\d+%"
 
 charge=$(echo $res | grep -oP "\d+%" | tr -d "%")
@@ -39,7 +39,7 @@ if [[ $status == Discharging ]]; then
 elif [[ $status == Not* ]]; then
 	if [[ $charge -lt 90 ]]; then
 		echo "#FFFF00"
-    fi
+	fi
 elif [[ $status == Charging ]]; then
 	if [[ $charge -lt 20 ]]; then 
 		echo "#ffe665"
