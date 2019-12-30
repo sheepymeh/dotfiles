@@ -19,13 +19,19 @@ else
 	echo -n ""
 fi
 
-echo " $charge%"
+echo -n " $charge%"
+
+if [[ $status == Charging ]]; then
+	echo "+"
+else
+	echo -e "\n"
+fi
 
 echo "$charge%"
 
 if [[ $status == Discharging ]]; then
 	if [[ $charge -eq 20 ]]; then
-		i3-nagbar -m '20% Battery Remaining'
+		swaynag -m '20% Battery Remaining'
 	fi
 	if [[ $charge -lt 20 ]]; then
 		echo "#ce575d"
