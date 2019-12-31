@@ -1,5 +1,8 @@
-sudo yay -S --noconfirm android-tools blueman code firefox gcc libmpc php-fpm nginx-mainline nodejs npm i3blocks lollypop youtube-dl arc-gtk-theme papirus-icon-theme throttled noto-fonts-sc ttf-roboto ttf-roboto-mono ttf-font-awesome postman-bin lightdm-mini-greeter slurp grim wl-clipboard termite thunar-archive-plugin thunar wofi-hg xorg-server xorg-server-xwayland xorg-xrandr p7zip unzip mako sway
+sudo pacman -S --noconfirm yay
+yay -S --noconfirm acpi alsa-utils android-tools arc-gtk-theme base bash-completion brightnessctl code cups-pdf dialog dmidecode efibootmgr exfat-utils firefox grim grub gvfs i3blocks intel-ucode light lightdm-mini-greeter linux linux-firmware lollypop lsof mako nano neofetch networkmanager nginx-mainline noto-fonts-sc npm ntfs-3g p7zip pacman-contrib papirus-icon-theme php-fpm postman-bin pulseaudio-alsa pulseaudio-bluetooth qbittorrent slurp sway termite throttled thunar-archive-plugin thunar-volman ttf-font-awesome ttf-roboto ttf-roboto-mono unzip wget wl-clipboard wob wofi-hg xbindkeys xdg-user-dirs xf86-video-intel xf86-video-nouveau xorg-server xorg-server-xwayland xorg-xrandr yay youtube-dl
 # mongodb?
+yay -R dhcpcd
+yay -Rdd avahi v4l-utils
 
 sudo systemctl enable lenovo_fix
 sudo systemctl enable lightdm
