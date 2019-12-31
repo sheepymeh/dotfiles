@@ -28,7 +28,7 @@ sudo mv lightdm-mini-greeter.conf /etc/lightdm/lightdm-mini-greeter.conf
 sudo mv /etc/mkinitcpio.conf /etc/mkinitcpio.old.conf
 sudo mv mkinitcpio.conf /etc/mkinitcpio.conf
 sudo mv /etc/default/grub /etc/default/grub.old
-sudo sed -i 's$GRUB_CMDLINE_LINUX_DEFAULT="loglevel=3 quiet splash"$GRUB_CMDLINE_LINUX_DEFAULT="loglevel=3 quiet splash rd.udev.log_priority=3 vt.global_cursor_default=0"$' /etc/default/grub
+sudo sed -i 's$GRUB_CMDLINE_LINUX_DEFAULT="loglevel=3 quiet"$GRUB_CMDLINE_LINUX_DEFAULT="loglevel=3 quiet splash rd.udev.log_priority=3 vt.global_cursor_default=0"$' /etc/default/grub
 sudo mkinitcpio -p linux
 sudo grub-mkconfig -o /boot/grub/grub.cfg
 sudo plymouth-set-default-theme -R arch-agua
