@@ -35,3 +35,5 @@ sudo sed -i 's$GRUB_CMDLINE_LINUX_DEFAULT="loglevel=3 quiet"$GRUB_CMDLINE_LINUX_
 sudo mkinitcpio -p linux
 sudo grub-mkconfig -o /boot/grub/grub.cfg
 sudo plymouth-set-default-theme -R arch-agua
+printf "MOZ_ENABLE_WAYLAND=1\nQT_QPA_PLATFORM=wayland-egl\nQT_WAYLAND_FORCE_DPI=physical\nQT_WAYLAND_DISABLE_WINDOWDECORATION=1" | sudo tee -a /etc/environment
+sudo sed -i 's$#Color$Color\nILoveCandy$' /etc/pacman.conf
