@@ -15,6 +15,8 @@ git config --global user.email 'sheepymeh@users.noreply.github.com'
 git config --global commit.gpgsign true
 git config --global credential.helper store
 
+sudo usermod -a -G video jiayang
+
 chmod a+x battery.sh
 mkdir -p ~/.config/sway ~/.config/wofi ~/.config/termite ~/.config/mako ~/.config/i3blocks
 sudo mkdir -p /usr/local/bin/i3blocks
