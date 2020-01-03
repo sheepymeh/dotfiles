@@ -6,6 +6,7 @@ yay -S --noconfirm --needed lightdm-mini-greeter noto-fonts-sc plymouth plymouth
 # mongodb?
 yay -R --noconfirm dhcpcd
 yay -Rdd --noconfirm avahi v4l-utils
+sudo pacman -D --asexplicit go
 
 sudo systemctl enable lenovo_fix
 sudo systemctl enable lightdm-plymouth
