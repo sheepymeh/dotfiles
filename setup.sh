@@ -27,6 +27,8 @@ mv wofi.css ~/.config/wofi/style.css
 mv termite.conf ~/.config/termite/config
 mv i3blocks.conf ~/.config/i3blocks/config
 mv mako.conf ~/.config/mako/config
+mv gtk-2.0 ~/.gtkrc-2.0
+mv bashrc ~/.bashrc
 sudo mv /etc/lightdm/lightdm.conf /etc/lightdm/lightdm.old.conf
 sudo mv lightdm.conf /etc/lightdm/lightdm.conf
 sudo mv /etc/lightdm/lightdm-mini-greeter.conf /etc/lightdm/lightdm-mini-greeter.old.conf
