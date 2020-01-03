@@ -2,11 +2,10 @@ yay -S --noconfirm --needed acpi alsa-utils android-tools arc-gtk-theme base bas
 wget https://keys.openpgp.org/vks/v1/by-fingerprint/5C6DA024DDE27178073EA103F4B432D5D67990E3
 gpg --import 5C6DA024DDE27178073EA103F4B432D5D67990E3
 rm 5C6DA024DDE27178073EA103F4B432D5D67990E3
-yay -S --noconfirm --needed lightdm-mini-greeter noto-fonts-sc plymouth plymouth-theme-arch-agua postman-bin wob wofi-hg
-# mongodb?
+yay -S --noconfirm --needed lightdm-mini-greeter mongodb-bin mongodb-tools noto-fonts-sc plymouth plymouth-theme-arch-agua postman-bin wob wofi-hg
+sudo yay -D --asexplicit go
 yay -R --noconfirm dhcpcd
 yay -Rdd --noconfirm avahi v4l-utils
-sudo pacman -D --asexplicit go
 
 sudo systemctl enable lenovo_fix
 sudo systemctl enable lightdm-plymouth
