@@ -1,4 +1,4 @@
-yay -S --noconfirm --needed acpi alsa-utils android-tools arc-gtk-theme base bash-completion code cups-pdf ttf-dejavu dialog dmidecode efibootmgr exfat-utils firefox gnome-keyring grim grub gvfs i3blocks intel-ucode light lightdm linux linux-firmware lollypop lsof mako nano neofetch networkmanager nextcloud-client npm ntfs-3g p7zip pacman-contrib papirus-icon-theme php-fpm pulseaudio-alsa pulseaudio-bluetooth qbittorrent qt5-wayland slurp sway termite throttled thunar-archive-plugin thunar-volman ttf-font-awesome ttf-roboto ttf-roboto-mono unzip wget wl-clipboard xbindkeys xdg-user-dirs xf86-video-intel xf86-video-nouveau xorg-server xorg-server-xwayland xorg-xrandr youtube-dl
+yay -S --noconfirm --needed acpi alsa-utils android-tools arc-gtk-theme base bash-completion bbswitch code cups-pdf ttf-dejavu dialog dmidecode efibootmgr exfat-utils firefox gnome-keyring grim grub gvfs i3blocks intel-ucode light lightdm linux linux-firmware lollypop lsof mako nano neofetch networkmanager nextcloud-client npm ntfs-3g p7zip pacman-contrib papirus-icon-theme php-fpm pulseaudio-alsa pulseaudio-bluetooth qbittorrent qt5-wayland slurp sway termite throttled thunar-archive-plugin thunar-volman ttf-font-awesome ttf-roboto ttf-roboto-mono unzip wget wl-clipboard xbindkeys xdg-user-dirs xf86-video-intel xf86-video-nouveau xorg-server xorg-server-xwayland xorg-xrandr youtube-dl
 wget https://keys.openpgp.org/vks/v1/by-fingerprint/5C6DA024DDE27178073EA103F4B432D5D67990E3
 gpg --import 5C6DA024DDE27178073EA103F4B432D5D67990E3
 rm 5C6DA024DDE27178073EA103F4B432D5D67990E3
@@ -16,6 +16,14 @@ git config --global commit.gpgsign true
 git config --global credential.helper store
 
 sudo usermod -a -G video jiayang
+
+sudo modprobe bbswitch
+echo "bbswitch" | sudo tee /etc/modules-load.d/bbswitch.conf
+echo "options bbswitch load_state=0" | sudo tee /etc/modprobe.d/bbswitch.conf
+# Disable nouveau if necessary:
+# /etc/modprobe.d/blacklist-nouveau.conf
+# blacklist nouveau
+# options nouveau modeset=0
 
 chmod a+x battery.sh
 mkdir -p ~/.config/sway ~/.config/wofi ~/.config/termite ~/.config/mako ~/.config/i3blocks
