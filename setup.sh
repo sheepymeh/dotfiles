@@ -48,6 +48,8 @@ sudo sed -i 's$#Color$Color\nILoveCandy$' /etc/pacman.conf
 
 sudo mkdir -p /etc/systemd/system/getty@tty1.service.d/
 echo -e "[Service]\nExecStart=\nExecStart=-/usr/bin/agetty --autologin jiayang --noclear %I $TERM" | sudo tee /etc/systemd/system/getty@tty1.service.d/override.conf
+echo -e "\nif [ "$(tty)" = "/dev/tty1" ]; then\n        exec sway\nfi" | tee ~/.bash_profile
+
 
 
 
