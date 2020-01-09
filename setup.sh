@@ -47,7 +47,7 @@ printf "MOZ_ENABLE_WAYLAND=1\nQT_QPA_PLATFORM=wayland-egl\nQT_WAYLAND_FORCE_DPI=
 sudo sed -i 's$#Color$Color\nILoveCandy$' /etc/pacman.conf
 
 sudo mkdir -p /etc/systemd/system/getty@tty1.service.d/
-echo -e "[Service]\nExecStart=\nExecStart=-/usr/bin/agetty --autologin jiayang --noclear %I $TERM" | tee /etc/systemd/system/getty@tty1.service.d/override.conf
+echo -e "[Service]\nExecStart=\nExecStart=-/usr/bin/agetty --autologin jiayang --noclear %I $TERM" | sudo tee /etc/systemd/system/getty@tty1.service.d/override.conf
 
 
 
