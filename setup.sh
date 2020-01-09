@@ -26,7 +26,7 @@ echo "options bbswitch load_state=0" | sudo tee /etc/modprobe.d/bbswitch.conf
 # options nouveau modeset=0
 
 chmod a+x battery.sh
-mkdir -p ~/.config/sway ~/.config/wofi ~/.config/termite ~/.config/mako ~/.config/i3blocks
+mkdir -p ~/.config/sway ~/.config/swaylock ~/.config/wofi ~/.config/termite ~/.config/mako ~/.config/i3blocks
 sudo mkdir -p /usr/local/bin/i3blocks
 sudo mv battery.sh /usr/local/bin/i3blocks/battery.sh
 mv sway.conf ~/.config/sway/config
@@ -51,9 +51,3 @@ sudo sed -i 's$#Color$Color\nILoveCandy$' /etc/pacman.conf
 sudo mkdir -p /etc/systemd/system/getty@tty1.service.d/
 echo -e "[Service]\nExecStart=\nExecStart=-/usr/bin/agetty --autologin jiayang --noclear %I $TERM" | sudo tee /etc/systemd/system/getty@tty1.service.d/override.conf
 echo -e "\nif [ "$(tty)" = "/dev/tty1" ]; then\n        exec sway\nfi" | tee -a ~/.bash_profile
-
-
-
-
-
-
