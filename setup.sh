@@ -20,10 +20,7 @@ sudo usermod -a -G video jiayang
 sudo modprobe bbswitch
 echo "bbswitch" | sudo tee /etc/modules-load.d/bbswitch.conf
 echo "options bbswitch load_state=0" | sudo tee /etc/modprobe.d/bbswitch.conf
-# Disable nouveau if necessary:
-# /etc/modprobe.d/blacklist-nouveau.conf
-# blacklist nouveau
-# options nouveau modeset=0
+echo -e "blacklist nouveau\noptions nouveau modeset=0" | sudo tee /etc/modprobe.d/blacklist-nouveau.conf
 
 chmod a+x battery.sh
 mkdir -p ~/.config/sway ~/.config/swaylock ~/.config/wofi ~/.config/termite ~/.config/mako ~/.config/i3blocks
