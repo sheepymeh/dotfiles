@@ -29,6 +29,7 @@ mkdir -p ~/.config/sway ~/.config/wofi ~/.config/termite ~/.config/mako ~/.confi
 sudo mkdir -p /usr/local/bin/i3blocks
 sudo mv battery.sh /usr/local/bin/i3blocks/battery.sh
 mv sway.conf ~/.config/sway/config
+mv swaylock.conf ~/.config/swaylock/config
 mv wofi.conf ~/.config/wofi/config
 mv wofi.css ~/.config/wofi/style.css
 mv termite.conf ~/.config/termite/config
