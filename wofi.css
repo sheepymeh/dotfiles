@@ -1,6 +1,6 @@
 window {
 	background-color: #383c4a;
-	font: 20px 'Roboto Mono', monospace;
+	font: 20px Inter, sans-serif;
 	border-radius: 3px;
 	border: 2px solid #5294e2;
 }
