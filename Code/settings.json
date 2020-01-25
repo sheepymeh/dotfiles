@@ -1,0 +1,18 @@
+{
+    "files.autoSave": "afterDelay",
+    "editor.fontFamily": "'Ubuntu Mono', 'Droid Sans Mono', 'monospace', monospace, 'Droid Sans Fallback'",
+    "editor.renderWhitespace": "boundary",
+    "editor.insertSpaces": false,
+    "editor.smoothScrolling": true,
+    "editor.minimap.enabled": false,
+    "telemetry.enableTelemetry": false,
+    "telemetry.enableCrashReporter": false,
+    "git.enableSmartCommit": true,
+    "window.zoomLevel": 1,
+    "editor.fontSize": 18,
+    "git.confirmSync": false,
+    "git.autofetch": true,
+    "terminal.integrated.rendererType": "dom",
+    "markdown.preview.fontSize": 18,
+    "terminal.integrated.fontSize": 18
+}
