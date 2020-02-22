@@ -1,5 +1,5 @@
 yay -Syu
-yay -S --noconfirm --needed acpi alsa-utils android-tools arc-gtk-theme avahi base bash-completion bbswitch cups-pdf ttf-dejavu dialog dmidecode efibootmgr exfat-utils firefox gnome-keyring grim grub gst-plugins-good gvfs gvfs-mtp i3blocks imv intel-ucode inter-font light linux linux-firmware lollypop mako nano neofetch networkmanager nextcloud-client npm ntfs-3g p7zip pacman-contrib papirus-icon-theme php-fpm pulseaudio-alsa pulseaudio-bluetooth qbittorrent qt5-wayland slurp sway swayidle swaylock termite throttled thunar thunar-archive-plugin ttf-font-awesome ttf-roboto ttf-roboto-mono unzip vscodium-bin wget wl-clipboard xbindkeys xdg-user-dirs xf86-video-intel xf86-video-nouveau xorg-server xorg-server-xwayland xorg-xrandr youtube-dl
+yay -S --noconfirm --needed acpi alsa-utils android-tools arc-gtk-theme avahi base bash-completion bbswitch cups-pdf ttf-dejavu dialog dmidecode efibootmgr exfat-utils firefox gnome-keyring grim grub gst-plugins-good gvfs gvfs-mtp i3blocks imv intel-ucode inter-font light linux linux-firmware lollypop mako nano neofetch networkmanager nextcloud-client npm ntfs-3g p7zip pacman-contrib papirus-icon-theme php-fpm pulseaudio-alsa pulseaudio-bluetooth qbittorrent qt5-wayland slurp sway swayidle swaylock termite throttled thunar tlp ttf-font-awesome ttf-roboto ttf-roboto-mono unzip vscodium-bin wget wl-clipboard xbindkeys xdg-user-dirs xf86-video-intel xf86-video-nouveau xorg-server xorg-server-xwayland xorg-xrandr youtube-dl
 wget https://keys.openpgp.org/vks/v1/by-fingerprint/5C6DA024DDE27178073EA103F4B432D5D67990E3
 gpg --import 5C6DA024DDE27178073EA103F4B432D5D67990E3
 rm 5C6DA024DDE27178073EA103F4B432D5D67990E3
@@ -49,3 +49,6 @@ sudo mkdir -p /etc/systemd/system/getty@tty1.service.d/
 echo -e "[Service]\nExecStart=\nExecStart=-/usr/bin/agetty --autologin jiayang --noclear %I $TERM" | sudo tee /etc/systemd/system/getty@tty1.service.d/override.conf
 echo -e "[Service]\nExecStart=hdparm -Y /dev/sda" | sudo tee /etc/systemd/system/hdoff.conf
 echo -e "\nif [[ -z $DISPLAY ]] && [[ $(tty) = /dev/tty1 ]]; then\n        exec sway\nfi" | tee -a ~/.bash_profile
+
+# 7za x %f
+# 7za a -tzip Archive.zip %F
