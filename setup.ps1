@@ -11,9 +11,9 @@ Start-BitsTransfer -Source "https://mh-nexus.de/downloads/HxDSetup.zip" -Destina
 Write-Host "Downloading Nextcloud"
 Start-BitsTransfer -Source "https://download.nextcloud.com/desktop/releases/Windows/latest" -Destination nextcloud.exe
 Write-Host "Downloading VSCodium"
-Start-BitsTransfer -Source "https://github.com/VSCodium/vscodium/releases/latest/download/VSCodiumSetup-x64-1.43.1.exe" -Destination codium.exe
 foreach ($version in Invoke-WebRequest "https://api.github.com/repos/VSCodium/vscodium/releases/latest" -UseBasicParsing | ConvertFrom-Json | Select -ExpandProperty assets) {
   if ($version.browser_download_url -match "VSCodiumSetup-x64") {
+    bitsadmin /transfer VSCodium /dynamic /download /priority FOREGROUND $version.browser_download_url "$env:temp\codium.exe"
     break;
   }
 }
