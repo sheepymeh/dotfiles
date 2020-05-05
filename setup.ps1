@@ -11,6 +11,7 @@ Start-BitsTransfer -Source "https://mh-nexus.de/downloads/HxDSetup.zip" -Destina
 Write-Host "Downloading Nextcloud"
 Start-BitsTransfer -Source "https://download.nextcloud.com/desktop/releases/Windows/latest" -Destination nextcloud.exe
 Write-Host "Downloading VSCodium"
+https://github.com/transmission/transmission-releases/raw/master/transmission-2.94-x64.msi
 foreach ($version in Invoke-WebRequest "https://api.github.com/repos/VSCodium/vscodium/releases/latest" -UseBasicParsing | ConvertFrom-Json | Select -ExpandProperty assets) {
   if ($version.browser_download_url -match "VSCodiumSetup-x64") {
     bitsadmin /transfer VSCodium /dynamic /download /priority FOREGROUND $version.browser_download_url "$env:temp\codium.exe"
@@ -45,9 +46,9 @@ Start-Process -FilePath git.exe -ArgumentList "/VERYSILENT /SUPPRESSMSGBOXES /AL
 # Write-Host "Installing Audacity"
 # Start-Process -FilePath audacity.exe -ArgumentList "/VERYSILENT /SUPPRESSMSGBOXES /NORESTART /SP- /MERGETASKS='!desktopicon'"
 
-# ((Invoke-WebRequest https://download.gimp.org/pub/gimp -UseBasicParsing).Links | Select href)[-2].href -match "v(?<version>.*)/"
-
 Write-Host "Downloading .msi Installers" -ForegroundColor Green
+
+!!!
 
 Write-Host "Downloading 7-zip"
 Start-BitsTransfer -Source "https://www.7-zip.org/a/7z1900-x64.msi" -Destination 7z.msi
@@ -55,6 +56,9 @@ Write-Host "Downloading Firefox"
 Start-BitsTransfer -Source "https://download.mozilla.org/?product=firefox-msi-latest-ssl&os=win64&lang=en-US" -Destination firefox.msi
 Write-Host "Downloading ATK"
 Start-BitsTransfer -Source "https://dlcdnets.asus.com/pub/ASUS/nb/Apps_for_Win10/ATKPackage/ATK_Package_V100061.zip" -Destination atk.zip
+Write-Host "Downloading Transmission"
+$version = (Invoke-WebRequest "https://api.github.com/repos/transmission/transmission/releases/latest" -UseBasicParsing | ConvertFrom-Json).tag_name
+Start-BitsTransfer -Source "https://github.com/transmission/transmission-releases/raw/master/transmission-$($version)-x64.msi"
 Write-Host "Downloading ASUS Smart Gestures"
 Start-BitsTransfer -Source "https://dlcdnets.asus.com/pub/ASUS/nb/Apps_for_Win10/SmartGesture/SmartGesture_Win10_64_VER409.zip" -Destination gesture.zip
 Write-Host "Extracting ATK"
@@ -65,6 +69,8 @@ Write-Host "Installing 7-zip"
 Start-Process msiexec.exe -Wait -ArgumentList "/i 7z.msi /quiet"
 Write-Host "Installing Firefox"
 Start-Process msiexec.exe -Wait -ArgumentList "/i firefox.msi /quiet"
+Write-Host "Installing Firefox"
+Start-Process msiexec.exe -Wait -ArgumentList "/i transmission-$($version)-x64.msi /quiet"
 Write-Host "Installing ATK"
 Start-Process msiexec.exe -Wait -ArgumentList "/i atk\data\409.msi /quiet /norestart"
 Write-Host "Installing ASUS Smart Gestures"
