@@ -141,8 +141,17 @@ Set-WinUserLanguageList $Languages
 
 New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\System -Name DisableAcrylicBackgroundOnLogon -Value 1 -PropertyType DWORD
 
+#Requires -RunAsAdministrator
+
+Set-Location -Path $env:temp
+
 Write-Host "Installing Office" -ForegroundColor Green
-Set-Content -Path 'office.xml' -Value @'<Configuration ID="b52a1db2-5c63-4902-b071-ef2ea1b0d347">
+
+Start-BitsTransfer -Source "https://download.microsoft.com/download/2/7/A/27AF1BE6-DD20-4CB4-B154-EBAB8A7D4A7E/officedeploymenttool_12624-20320.exe" -Destination office.exe
+Start-Process office.exe -Wait -ArgumentList "/extract:office /quiet"
+
+Set-Content -Path 'office/office.xml' -Value @'
+<Configuration ID="b52a1db2-5c63-4902-b071-ef2ea1b0d347">
   <Add OfficeClientEdition="64" Channel="Monthly">
     <Product ID="O365ProPlusRetail">
       <Language ID="en-us" />
@@ -176,10 +185,10 @@ Set-Content -Path 'office.xml' -Value @'<Configuration ID="b52a1db2-5c63-4902-b0
     <User Key="software\microsoft\office\16.0\word\options" Name="defaultformat" Value="" Type="REG_SZ" App="word16" Id="L_SaveWordfilesas" />
   </AppSettings>
   <Display Level="None" AcceptEULA="TRUE" />
-</Configuration>'@
+</Configuration>
+'@
 
-Start-BitsTransfer -Source "https://www.microsoft.com/en-us/download/confirmation.aspx?id=49117" -Destination office.exe
-
-Start-Process office.exe -Wait -ArgumentList "/download office.xml"
+Start-Process .\office\setup.exe -Wait -ArgumentList "/download office.xml"
+Start-Process .\office\setup.exe -Wait -ArgumentList "/configure office.xml"
 
 Write-Host "Please reboot your system to finish" -ForegroundColor Green
