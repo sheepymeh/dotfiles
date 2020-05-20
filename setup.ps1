@@ -147,9 +147,8 @@ Set-WinUserLanguageList $Languages
 
 New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\System -Name DisableAcrylicBackgroundOnLogon -Value 1 -PropertyType DWORD
 
-#Requires -RunAsAdministrator
-
-Set-Location -Path $env:temp
+Write-Host "Configuring Optional Features" -ForegroundColor Green
+Disable-WindowsOptionalFeature -online -FeatureName internet-explorer-optional-amd64
 
 Write-Host "Installing Office" -ForegroundColor Green
 
