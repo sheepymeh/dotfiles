@@ -114,6 +114,17 @@ bitsadmin /transfer gobuster /dynamic /download /priority FOREGROUND "https://gi
 New-Item -ItemType directory -Path "C:\Program Files" -Name "gobuster"
 Move-Item "gobuster-windows-amd64\gobuster.exe" "C:\Program Files\gobuster"
 
+Write-Host "Installing ffuf"
+foreach ($version in Invoke-WebRequest "https://api.github.com/repos/ffuf/ffuf/releases/latest" -UseBasicParsing | ConvertFrom-Json | Select -ExpandProperty assets) {
+  if ($version.browser_download_url -match "windows_amd64.zip") {
+    bitsadmin /transfer ffuf /dynamic /download /priority FOREGROUND $version.browser_download_url "$env:temp\ffuf.zip"
+    break;
+  }
+}
+Expand-Archive ffuf.zip
+New-Item -ItemType directory -Path "C:\Program Files" -Name "ffuf"
+Move-Item "ffuf\ffuf.exe" "C:\Program Files\ffuf"
+
 Write-Host "Installing Volatility"
 foreach ($version in ((Invoke-WebRequest https://www.volatilityfoundation.org/releases -UseBasicParsing).Links | Select href)) {
   if ($version -match "win64_standalone.zip") {
@@ -128,7 +139,7 @@ New-Item -ItemType directory -Path "C:\Program Files" -Name "volatility"
 Move-Item "volatility\$volatility_name\$volatility_name.exe" "C:\Program Files\volatility\volatility.exe"
 
 Write-Host "Setting PATH"
-[Environment]::SetEnvironmentVariable("Path", "$env:Path;C:\Program Files\7-Zip;C:\Program Files\adb;C:\php;C:\Program Files\steghide;C:\Program Files\volatility;C:\Program Files\gobuster;C:\Program Files\hydra", "Machine")
+[Environment]::SetEnvironmentVariable("Path", "$env:Path;C:\Program Files\7-Zip;C:\Program Files\adb;C:\php;C:\Program Files\steghide;C:\Program Files\volatility;C:\Program Files\gobuster;C:\Program Files\hydra;C:\Program Files\ffuf", "Machine")
 
 Write-Host "Downloading Fonts" -ForegroundColor Green
 Write-Host "Downloading JetBrains Mono"
