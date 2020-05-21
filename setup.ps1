@@ -42,7 +42,7 @@ Start-Process nextcloud.exe
 Write-Host "Installing VSCodium"
 Start-Process codium.exe
 Write-Host "Installing Git"
-Start-Process -FilePath git.exe -ArgumentList "/VERYSILENT /SUPPRESSMSGBOXES /ALLUSERS /NORESTART /CLOSEAPPLICATIONS /TYPE=compact"
+Start-Process -FilePath git.exe -ArgumentList "/VERYSILENT /SUPPRESSMSGBOXES /ALLUSERS /NORESTART /CLOSEAPPLICATIONS /TYPE=compact /COMPONENTS='icons,gitlfs,assoc,autoupdate'"
 # Write-Host "Installing Audacity"
 # Start-Process -FilePath audacity.exe -ArgumentList "/VERYSILENT /SUPPRESSMSGBOXES /NORESTART /SP- /MERGETASKS='!desktopicon'"
 
