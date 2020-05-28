@@ -179,6 +179,15 @@ New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\System -Name Di
 
 Write-Host "Configuring Optional Features" -ForegroundColor Green
 Disable-WindowsOptionalFeature -online -FeatureName internet-explorer-optional-amd64
+dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart
+# https://stackoverflow.com/questions/4208694/how-to-speed-up-startup-of-powershell-in-the-4-0-environment
+$env:path = [Runtime.InteropServices.RuntimeEnvironment]::GetRuntimeDirectory()
+[AppDomain]::CurrentDomain.GetAssemblies() | % {
+  if (! $_.location) {continue}
+  $Name = Split-Path $_.location -leaf
+  Write-Host -ForegroundColor Yellow "NGENing : $Name"
+  ngen install $_.location | % {"`t$_"}
+}
 
 Write-Host "Installing Office" -ForegroundColor Green
 Start-BitsTransfer -Source "https://download.microsoft.com/download/2/7/A/27AF1BE6-DD20-4CB4-B154-EBAB8A7D4A7E/officedeploymenttool_12624-20320.exe" -Destination office.exe
