@@ -179,6 +179,7 @@ New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\System -Name Di
 
 Write-Host "Configuring Optional Features" -ForegroundColor Green
 Disable-WindowsOptionalFeature -online -FeatureName internet-explorer-optional-amd64
+dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart
 dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart
 # https://stackoverflow.com/questions/4208694/how-to-speed-up-startup-of-powershell-in-the-4-0-environment
 $env:path = [Runtime.InteropServices.RuntimeEnvironment]::GetRuntimeDirectory()
