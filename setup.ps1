@@ -186,8 +186,8 @@ Start-BitsTransfer -Source "https://download.microsoft.com/download/2/7/A/27AF1B
 Start-Process office.exe -Wait -ArgumentList "/extract:office /quiet"
 
 Set-Content -Path 'office/office.xml' -Value @'
-<Configuration ID="b52a1db2-5c63-4902-b071-ef2ea1b0d347">
-  <Add OfficeClientEdition="64" Channel="Monthly">
+<Configuration>
+  <Add OfficeClientEdition="64" Channel="MonthlyEnterprise">
     <Product ID="O365ProPlusRetail">
       <Language ID="en-us" />
       <Language ID="zh-cn" />
@@ -200,6 +200,7 @@ Set-Content -Path 'office/office.xml' -Value @'
       <ExcludeApp ID="Outlook" />
       <ExcludeApp ID="Publisher" />
       <ExcludeApp ID="Teams" />
+      <ExcludeApp ID="Bing" />
     </Product>
     <Product ID="ProofingTools">
       <Language ID="zh-cn" />
@@ -207,18 +208,12 @@ Set-Content -Path 'office/office.xml' -Value @'
     </Product>
   </Add>
   <Property Name="SharedComputerLicensing" Value="0" />
-  <Property Name="PinIconsToTaskbar" Value="FALSE" />
+  <Property Name="PinIconsToTaskbar" Value="TRUE" />
   <Property Name="SCLCacheOverride" Value="0" />
   <Property Name="AUTOACTIVATE" Value="0" />
   <Property Name="FORCEAPPSHUTDOWN" Value="TRUE" />
   <Property Name="DeviceBasedLicensing" Value="0" />
   <Updates Enabled="TRUE" />
-  <RemoveMSI />
-  <AppSettings>
-    <User Key="software\microsoft\office\16.0\excel\options" Name="defaultformat" Value="51" Type="REG_DWORD" App="excel16" Id="L_SaveExcelfilesas" />
-    <User Key="software\microsoft\office\16.0\powerpoint\options" Name="defaultformat" Value="27" Type="REG_DWORD" App="ppt16" Id="L_SavePowerPointfilesas" />
-    <User Key="software\microsoft\office\16.0\word\options" Name="defaultformat" Value="" Type="REG_SZ" App="word16" Id="L_SaveWordfilesas" />
-  </AppSettings>
   <Display Level="None" AcceptEULA="TRUE" />
 </Configuration>
 '@
