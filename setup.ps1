@@ -47,13 +47,13 @@ Start-Process hxd/HxDSetup.exe
 Write-Host "Installing Nextcloud"
 Start-Process nextcloud.exe
 Write-Host "Installing Discord"
-Start-Process -runas $CREDS discord.exe
+Start-Process -runas $CREDS .\discord.exe
 Write-Host "Installing WhatsApp"
-Start-Process -runas $CREDS whatsapp.exe
+Start-Process -runas $CREDS .\whatsapp.exe
 Write-Host "Installing Termius"
 Start-Process termius.exe
 Write-Host "Installing VSCodium"
-Start-Process -runas $CREDS codium.exe
+Start-Process -runas $CREDS .\codium.exe
 Write-Host "Installing Git"
 Start-Process -FilePath git.exe -ArgumentList "/VERYSILENT /SUPPRESSMSGBOXES /ALLUSERS /NORESTART /CLOSEAPPLICATIONS /TYPE=compact /COMPONENTS='icons,gitlfs,assoc,autoupdate'"
 # Write-Host "Installing Audacity"
