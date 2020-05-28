@@ -181,10 +181,9 @@ Write-Host "Configuring Optional Features" -ForegroundColor Green
 Disable-WindowsOptionalFeature -online -FeatureName internet-explorer-optional-amd64
 
 Write-Host "Installing Office" -ForegroundColor Green
-
 Start-BitsTransfer -Source "https://download.microsoft.com/download/2/7/A/27AF1BE6-DD20-4CB4-B154-EBAB8A7D4A7E/officedeploymenttool_12624-20320.exe" -Destination office.exe
 Start-Process office.exe -Wait -ArgumentList "/extract:office /quiet"
-
+Write-Host "Downloading Installer"
 Set-Content -Path 'office/office.xml' -Value @'
 <Configuration>
   <Add OfficeClientEdition="64" Channel="MonthlyEnterprise">
@@ -217,8 +216,9 @@ Set-Content -Path 'office/office.xml' -Value @'
   <Display Level="None" AcceptEULA="TRUE" />
 </Configuration>
 '@
-
+Write-Host "Downloading Office"
 Start-Process .\office\setup.exe -Wait -ArgumentList "/download office/office.xml"
+Write-Host "Installing Office"
 Start-Process .\office\setup.exe -Wait -ArgumentList "/configure office/office.xml"
 
 Write-Host "Please reboot your system to finish" -ForegroundColor Green
