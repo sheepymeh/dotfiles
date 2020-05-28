@@ -4,16 +4,23 @@ Set-Location -Path $env:temp
 
 Write-Host "Downloading .exe Installers" -ForegroundColor Green
 
+# Todo: Wireshark
+
 Write-Host "Downloading Typora"
 Start-BitsTransfer -Source "https://typora.io/windows/typora-setup-x64.exe" -Destination typora.exe
 Write-Host "Downloading HxD"
 Start-BitsTransfer -Source "https://mh-nexus.de/downloads/HxDSetup.zip" -Destination hxd.zip
 Write-Host "Downloading Nextcloud"
 Start-BitsTransfer -Source "https://download.nextcloud.com/desktop/releases/Windows/latest" -Destination nextcloud.exe
+Write-Host "Downloading Discord"
+Start-BitsTransfer -Source "https://discord.com/api/download?platform=win" -Destination discord.exe
+Write-Host "Downloading WhatsApp"
+Start-BitsTransfer -Source "https://web.whatsapp.com/desktop/windows/release/x64/WhatsAppSetup.exe" -Destination whatsapp.exe
+Write-Host "Downloading Termius"
+Start-BitsTransfer -Source "https://autoupdate.termius.com/win/Termius.exe" -Destination termius.exe
 Write-Host "Downloading VSCodium"
-https://github.com/transmission/transmission-releases/raw/master/transmission-2.94-x64.msi
 foreach ($version in Invoke-WebRequest "https://api.github.com/repos/VSCodium/vscodium/releases/latest" -UseBasicParsing | ConvertFrom-Json | Select -ExpandProperty assets) {
-  if ($version.browser_download_url -match "VSCodiumSetup-x64") {
+  if ($version.browser_download_url -match "VSCodiumUserSetup-x64") {
     bitsadmin /transfer VSCodium /dynamic /download /priority FOREGROUND $version.browser_download_url "$env:temp\codium.exe"
     break;
   }
@@ -39,6 +46,12 @@ Write-Host "Installing HxD"
 Start-Process hxd/HxDSetup.exe
 Write-Host "Installing Nextcloud"
 Start-Process nextcloud.exe
+Write-Host "Installing Discord"
+Start-Process discord.exe
+Write-Host "Installing WhatsApp"
+Start-Process whatsapp.exe
+Write-Host "Installing Termius"
+Start-Process termius.exe
 Write-Host "Installing VSCodium"
 Start-Process codium.exe
 Write-Host "Installing Git"
@@ -47,8 +60,6 @@ Start-Process -FilePath git.exe -ArgumentList "/VERYSILENT /SUPPRESSMSGBOXES /AL
 # Start-Process -FilePath audacity.exe -ArgumentList "/VERYSILENT /SUPPRESSMSGBOXES /NORESTART /SP- /MERGETASKS='!desktopicon'"
 
 Write-Host "Downloading .msi Installers" -ForegroundColor Green
-
-!!!
 
 Write-Host "Downloading 7-zip"
 Start-BitsTransfer -Source "https://www.7-zip.org/a/7z1900-x64.msi" -Destination 7z.msi
@@ -59,6 +70,14 @@ Start-BitsTransfer -Source "https://dlcdnets.asus.com/pub/ASUS/nb/Apps_for_Win10
 Write-Host "Downloading Transmission"
 $version = (Invoke-WebRequest "https://api.github.com/repos/transmission/transmission/releases/latest" -UseBasicParsing | ConvertFrom-Json).tag_name
 Start-BitsTransfer -Source "https://github.com/transmission/transmission-releases/raw/master/transmission-$($version)-x64.msi"
+#$transmission = Invoke-WebRequest "https://api.github.com/repos/transmission/transmission-releases/contents/" -UseBasicParsing | ConvertFrom-Json
+#[array]::Reverse($transmission)
+#foreach ($version in $transmission) {
+#	if ($version.name -match "x64.msi") {
+#		bitsadmin /transfer Transmission /dynamic /download /priority FOREGROUND $version.download_url "$env:temp\transmission.msi"
+#		break
+#	}
+#}
 Write-Host "Downloading ASUS Smart Gestures"
 Start-BitsTransfer -Source "https://dlcdnets.asus.com/pub/ASUS/nb/Apps_for_Win10/SmartGesture/SmartGesture_Win10_64_VER409.zip" -Destination gesture.zip
 Write-Host "Extracting ATK"
@@ -69,7 +88,7 @@ Write-Host "Installing 7-zip"
 Start-Process msiexec.exe -Wait -ArgumentList "/i 7z.msi /quiet"
 Write-Host "Installing Firefox"
 Start-Process msiexec.exe -Wait -ArgumentList "/i firefox.msi /quiet"
-Write-Host "Installing Firefox"
+Write-Host "Installing Transmission"
 Start-Process msiexec.exe -Wait -ArgumentList "/i transmission-$($version)-x64.msi /quiet"
 Write-Host "Installing ATK"
 Start-Process msiexec.exe -Wait -ArgumentList "/i atk\data\409.msi /quiet /norestart"
@@ -144,7 +163,7 @@ Write-Host "Setting PATH"
 Write-Host "Downloading Fonts" -ForegroundColor Green
 Write-Host "Downloading JetBrains Mono"
 Start-BitsTransfer -Source "https://download.jetbrains.com/fonts/JetBrainsMono-1.0.3.zip" -Destination jetbrains.zip
-Expand-Archive jetbrains.zip -DestinationPath "C:\Jetbrains Mono"
+Expand-Archive jetbrains.zip -DestinationPath "C:\JetBrains Mono"
 Write-Host "Downloading Inter"
 Start-BitsTransfer -Source "https://github.com/rsms/inter/releases/download/v3.12/Inter-3.12.zip" -Destination inter.zip
 Expand-Archive inter.zip -DestinationPath "C:\Inter"
@@ -204,7 +223,7 @@ Set-Content -Path 'office/office.xml' -Value @'
 </Configuration>
 '@
 
-Start-Process .\office\setup.exe -Wait -ArgumentList "/download office.xml"
-Start-Process .\office\setup.exe -Wait -ArgumentList "/configure office.xml"
+Start-Process .\office\setup.exe -Wait -ArgumentList "/download office/office.xml"
+Start-Process .\office\setup.exe -Wait -ArgumentList "/configure office/office.xml"
 
 Write-Host "Please reboot your system to finish" -ForegroundColor Green
