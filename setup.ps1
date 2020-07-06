@@ -14,8 +14,8 @@ Write-Host "Downloading Nextcloud"
 Start-BitsTransfer -Source "https://download.nextcloud.com/desktop/releases/Windows/latest" -Destination nextcloud.exe
 Write-Host "Downloading Discord"
 Start-BitsTransfer -Source "https://discord.com/api/download?platform=win" -Destination discord.exe
-Write-Host "Downloading WhatsApp"
-Start-BitsTransfer -Source "https://web.whatsapp.com/desktop/windows/release/x64/WhatsAppSetup.exe" -Destination whatsapp.exe
+# Write-Host "Downloading WhatsApp"
+# Start-BitsTransfer -Source "https://web.whatsapp.com/desktop/windows/release/x64/WhatsAppSetup.exe" -Destination whatsapp.exe
 Write-Host "Downloading Termius"
 Start-BitsTransfer -Source "https://autoupdate.termius.com/win/Termius.exe" -Destination termius.exe
 Write-Host "Downloading VSCodium"
@@ -48,8 +48,8 @@ Write-Host "Installing Nextcloud"
 Start-Process nextcloud.exe
 Write-Host "Installing Discord"
 Start-Process -runas $CREDS .\discord.exe
-Write-Host "Installing WhatsApp"
-Start-Process -runas $CREDS .\whatsapp.exe
+# Write-Host "Installing WhatsApp"
+# Start-Process -runas $CREDS .\whatsapp.exe
 Write-Host "Installing Termius"
 Start-Process termius.exe
 Write-Host "Installing VSCodium"
