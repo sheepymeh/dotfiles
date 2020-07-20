@@ -1,6 +1,6 @@
-#!/usr/bin/bash
+#!/bin/bash
 
-res=$(acpi -b | tail -n1)
+res=$(acpi -b | head -n1)
 status=${res%%,*}
 status=${status#Battery 0: *}
 charge=res | grep -oP "\d+%"
