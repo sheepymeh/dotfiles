@@ -1,18 +1,21 @@
 #!/bin/bash
 
 yay -Syu
-yay -S --noconfirm --needed acpi alacritty alsa-utils android-tools arc-gtk-theme avahi base bash-completion cups-pdf ttf-dejavu dialog dmidecode efibootmgr exfat-utils firefox gnome-keyring grim grub gvfs gvfs-mtp i3blocks imv intel-ucode inter-font light linux linux-firmware lollypop mako nano neofetch networkmanager nextcloud-client nodejs npm p7zip papirus-icon-theme php-fpm pulseaudio-alsa pulseaudio-bluetooth qt5-wayland slurp sway swayidle swaylock throttled thunar tlp ttf-font-awesome ttf-roboto ttf-roboto-mono unzip vscodium-bin wget wl-clipboard xbindkeys xdg-user-dirs xf86-video-intel xf86-video-nouveau xorg-server xorg-server-xwayland xorg-xrandr htop nvidia bumblebee mesa
+yay -S --noconfirm --needed acpi alacritty alsa-utils android-tools arc-gtk-theme avahi base bash-completion cups-pdf ttf-dejavu dialog efibootmgr exfat-utils firefox gnome-keyring grim grub gvfs gvfs-mtp i3blocks imv intel-ucode inter-font light linux linux-firmware lollypop mako nano neofetch networkmanager nextcloud-client nodejs npm p7zip papirus-icon-theme php-fpm pulseaudio-alsa pulseaudio-bluetooth qt5-wayland slurp sway swayidle swaylock throttled thunar tlp ttf-font-awesome ttf-roboto ttf-roboto-mono unzip vscodium-bin wget wl-clipboard xbindkeys xdg-user-dirs xf86-video-intel xf86-video-nouveau xorg-server xorg-server-xwayland xorg-xrandr htop nvidia bumblebee mesa
 
 wget https://keys.openpgp.org/vks/v1/by-fingerprint/5C6DA024DDE27178073EA103F4B432D5D67990E3
 gpg --import 5C6DA024DDE27178073EA103F4B432D5D67990E3
 rm 5C6DA024DDE27178073EA103F4B432D5D67990E3
 yay -S --noconfirm --needed noto-fonts-sc plymouth plymouth-theme-arch-agua postman-bin wob wofi-hg
 
+yay -S --noconfirm --needed wireshark-qt audacity steghide hydra gobuster ffuf volatility
+
 yay -D --asexplicit go
 yay -R --noconfirm dhcpcd
 yay -Rdd --noconfirm v4l-utils
 
 sudo systemctl enable lenovo_fix
+sudo usermod -a -G video sheepymeh
 
 git config --global user.name 'sheepymeh'
 git config --global user.email 'sheepymeh@users.noreply.github.com'

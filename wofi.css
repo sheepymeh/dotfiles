@@ -1,28 +1,28 @@
 window {
 	background-color: #383c4a;
-	font: 20px Inter, sans-serif;
+	font: 19px Inter, sans-serif;
 	border-radius: 3px;
 	border: 2px solid #5294e2;
 }
 
 #input {
-	font-size: 24px;
-	margin: 12px 60px;
-	border: 1px solid #ddd;
-	border-radius: 1px;
+	font-size: 23px;
+	margin: 8px 60px 3px 60px;
+	border: 1.5px solid #ddd;
+	border-radius: 2px;
 	background-color: #7c818c;
-	padding: 10px 20px;
+	padding: 8px 12px;
 	color: #fff;
 }
 
 #inner-box {
 	background-color: #4b5162;
 	border-radius: 3px;
-	padding: 12px 20px;
+	padding: 8px 6px;
 }
 
 #outer-box {
-	margin: 5px;
+	margin: 3px 2px;
 	border: 2px solid #383c4a;
 	background-color: #383c4a;
 	border-radius: 5px;
@@ -35,4 +35,7 @@ window {
 #text {
 	margin: 8px 5px;
 	color: #efefef;
+}
+#entry {
+	padding: 8px;
 }

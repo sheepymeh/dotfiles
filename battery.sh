@@ -1,11 +1,7 @@
-#!/bin/bash
+#!/usr/bin/bash
 
-res=$(acpi -b | head -n1)
-status=${res%%,*}
-status=${status#Battery 0: *}
-charge=res | grep -oP "\d+%"
-
-charge=$(echo $res | grep -oP "\d+%" | tr -d "%")
+status=$(cat /sys/class/power_supply/AC0/online)
+charge=$(cat /sys/class/power_supply/BAT0/capacity)
 
 if [[ $charge -lt 10 ]]; then
 	echo -n ""
@@ -21,7 +17,7 @@ fi
 
 echo -n " $charge%"
 
-if [[ $status == Charging ]]; then
+if [[ $status == 1 ]]; then
 	echo "+"
 else
 	echo -e "\n"
@@ -29,7 +25,7 @@ fi
 
 echo "$charge%"
 
-if [[ $status == Discharging ]]; then
+if [[ $status == 0 ]]; then
 	if [[ $charge -eq 20 ]]; then
 		swaynag -m '20% Battery Remaining'
 	fi
