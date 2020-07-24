@@ -8,14 +8,17 @@ gpg --import 5C6DA024DDE27178073EA103F4B432D5D67990E3
 rm 5C6DA024DDE27178073EA103F4B432D5D67990E3
 yay -S --noconfirm --needed noto-fonts-sc plymouth plymouth-theme-arch-agua postman-bin wob wofi-hg
 
-yay -S --noconfirm --needed wireshark-qt audacity steghide hydra gobuster ffuf volatility
-
 yay -D --asexplicit go
 yay -R --noconfirm dhcpcd
 yay -Rdd --noconfirm v4l-utils
 
+yay -S --noconfirm --needed wireshark-qt audacity steghide hydra gobuster ffuf volatility gnu-netcat python2-pip python-pip sqlmap
+sudo pip install pwntools
+sudo pip2 install pwntools
+
 sudo systemctl enable lenovo_fix
 sudo usermod -a -G video sheepymeh
+sudo usermod -a -G rfkill sheepymeh
 
 git config --global user.name 'sheepymeh'
 git config --global user.email 'sheepymeh@users.noreply.github.com'
