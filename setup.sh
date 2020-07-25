@@ -1,7 +1,7 @@
 #!/bin/bash
 
 yay -Syu
-yay -S --noconfirm --needed acpi alacritty alsa-utils android-tools arc-gtk-theme avahi base bash-completion cups-pdf ttf-dejavu dialog efibootmgr exfat-utils firefox gnome-keyring grim grub gvfs gvfs-mtp i3blocks imv intel-ucode inter-font light linux linux-firmware lollypop mako nano neofetch networkmanager nextcloud-client nodejs npm p7zip papirus-icon-theme php-fpm pulseaudio-alsa pulseaudio-bluetooth qt5-wayland slurp sway swayidle swaylock throttled thunar tlp ttf-font-awesome ttf-roboto ttf-roboto-mono ttf-jetbrains-mono unzip vscodium-bin wget wl-clipboard xbindkeys xdg-user-dirs xf86-video-intel xf86-video-nouveau xorg-server xorg-server-xwayland xorg-xrandr htop nvidia bumblebee mesa gst-plugins-good gst-plugins-bad
+yay -S --noconfirm --needed acpi alacritty alsa-utils android-tools arc-gtk-theme avahi base bash-completion cups-pdf ttf-dejavu dialog efibootmgr exfat-utils firefox gnome-keyring grim grub gvfs gvfs-mtp i3blocks imv intel-ucode inter-font light linux linux-firmware lollypop mako nano neofetch networkmanager nextcloud-client nodejs npm p7zip papirus-icon-theme php-fpm pulseaudio-alsa pulseaudio-bluetooth qt5-wayland slurp sway swayidle swaylock throttled thunar tlp ttf-font-awesome ttf-roboto ttf-roboto-mono ttf-jetbrains-mono unzip vscodium-bin wget wl-clipboard xbindkeys xdg-user-dirs xf86-video-intel xf86-video-nouveau xorg-server xorg-server-xwayland xorg-xrandr htop nvidia bumblebee mesa gst-plugins-good gst-plugins-bad l3afpad
 
 wget https://keys.openpgp.org/vks/v1/by-fingerprint/5C6DA024DDE27178073EA103F4B432D5D67990E3
 gpg --import 5C6DA024DDE27178073EA103F4B432D5D67990E3
