@@ -1,12 +1,12 @@
 window {
 	background-color: #383c4a;
-	font: 19px Inter, sans-serif;
+	font: 17px Inter, sans-serif;
 	border-radius: 3px;
 	border: 2px solid #5294e2;
 }
 
 #input {
-	font-size: 23px;
+	font-size: 21px;
 	margin: 8px 60px 3px 60px;
 	border: 1.5px solid #ddd;
 	border-radius: 2px;
@@ -18,7 +18,7 @@ window {
 #inner-box {
 	background-color: #4b5162;
 	border-radius: 3px;
-	padding: 8px 6px;
+	padding: 6px 4px;
 }
 
 #outer-box {
@@ -37,5 +37,5 @@ window {
 	color: #efefef;
 }
 #entry {
-	padding: 8px;
+	padding: 4px;
 }

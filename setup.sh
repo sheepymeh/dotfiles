@@ -1,48 +1,23 @@
 #!/bin/bash
 
-yay -Syu
-yay -S --noconfirm --needed acpi alacritty alsa-utils android-tools arc-gtk-theme avahi base bash-completion cups-pdf ttf-dejavu dialog efibootmgr exfat-utils firefox gnome-keyring grim grub gvfs gvfs-mtp i3blocks imv intel-ucode inter-font light linux linux-firmware lollypop mako nano neofetch networkmanager nextcloud-client nodejs npm p7zip papirus-icon-theme php-fpm pulseaudio-alsa pulseaudio-bluetooth qt5-wayland slurp sway swayidle swaylock throttled thunar tlp ttf-font-awesome ttf-roboto ttf-roboto-mono ttf-jetbrains-mono unzip vscodium-bin wget wl-clipboard xbindkeys xdg-user-dirs xf86-video-intel xf86-video-nouveau xorg-server xorg-server-xwayland xorg-xrandr htop nvidia bumblebee mesa gst-plugins-good gst-plugins-bad l3afpad
-
+sudo pacman -Syyu
+sudo pacman -S --noconfirm --needed acpi alacritty alsa-utils android-tools arc-gtk-theme avahi base bash-completion cups-pdf dialog exfat-utils firefox gnome-keyring grim gvfs gvfs-mtp i3blocks imv amd-ucode inter-font light linux linux-firmware lollypop mako nano neofetch networkmanager nextcloud-client nodejs npm p7zip papirus-icon-theme pulseaudio-alsa pulseaudio-bluetooth qt5-wayland slurp sway swayidle swaylock thunar ttf-font-awesome ttf-jetbrains-mono unzip wget wl-clipboard xbindkeys xdg-user-dirs xorg-server xorg-server-xwayland xorg-xrandr htop mesa gst-plugins-good gst-plugins-bad acpi_call
 wget https://keys.openpgp.org/vks/v1/by-fingerprint/5C6DA024DDE27178073EA103F4B432D5D67990E3
 gpg --import 5C6DA024DDE27178073EA103F4B432D5D67990E3
 rm 5C6DA024DDE27178073EA103F4B432D5D67990E3
-yay -S --noconfirm --needed noto-fonts-sc plymouth plymouth-theme-arch-agua postman-bin wob wofi-hg
+yay -S --noconfirm --needed noto-fonts-sc wob wofi-hg vscodium-bin
 
-yay -D --asexplicit go
-yay -R --noconfirm dhcpcd
-yay -Rdd --noconfirm v4l-utils
-
-yay -S --noconfirm --needed wireshark-qt audacity steghide hydra gobuster ffuf volatility gnu-netcat python2-pip python-pip sqlmap
+sudo pacman -D --asexplicit go
+sudo pacman -S --noconfirm --needed wireshark-qt audacity volatility gnu-netcat python-pip sqlmap
+yay -S --noconfirm --needed steghide ffuf
 sudo pip install pwntools
-sudo pip2 install pwntools
 
-sudo systemctl enable lenovo_fix
 sudo usermod -a -G video sheepymeh
 sudo usermod -a -G rfkill sheepymeh
 
 git config --global user.name 'sheepymeh'
 git config --global user.email 'sheepymeh@users.noreply.github.com'
 git config --global credential.helper store
-
-sudo usermod -a -G bumblebee sheepymeh
-sudo systemctl enable bumblebeed.service
-echo "options bbswitch load_state=0 unload_state=1" | sudo tee /etc/modprobe.d/bbswitch.conf
-cat <<EOF | sudo tee /etc/pacman.d/hooks/nvidia.hook
-[Trigger]
-Operation=Install
-Operation=Upgrade
-Operation=Remove
-Type=Package
-Target=nvidia
-Target=linux
-
-[Action]
-Description=Update Nvidia module in initcpio
-Depends=mkinitcpio
-When=PostTransaction
-NeedsTargets
-Exec=/bin/sh -c 'while read -r trg; do case $trg in linux) exit 0; esac; done; /usr/bin/mkinitcpio -P'
-EOF
 
 chmod a+x battery.sh
 mkdir -p ~/.config/sway ~/.config/swaylock ~/.config/wofi ~/.config/alacritty ~/.config/mako ~/.config/i3blocks
@@ -58,18 +33,10 @@ mv i3blocks.conf ~/.config/i3blocks/config
 mv mako.conf ~/.config/mako/config
 mv gtk-2.0 ~/.gtkrc-2.0
 mv bashrc ~/.bashrc
-sudo mv /etc/mkinitcpio.conf /etc/mkinitcpio.old.conf
-sudo mv mkinitcpio.conf /etc/mkinitcpio.conf
-
-sudo sed -i 's$GRUB_CMDLINE_LINUX_DEFAULT="loglevel=3 quiet"$GRUB_CMDLINE_LINUX_DEFAULT="loglevel=3 quiet splash rd.udev.log_priority=3 vt.global_cursor_default=0 nvidia-drm.modeset=1"$' /etc/default/grub
-sudo sed -i 's$GRUB_TIMEOUT=5$GRUB_TIMEOUT=0$' /etc/default/grub
-
-sudo plymouth-set-default-theme -R arch-agua
 
 cat <<EOF | sudo tee -a /etc/environment
 MOZ_ENABLE_WAYLAND=1
 QT_QPA_PLATFORM=wayland-egl
-QT_WAYLAND_FORCE_DPI=physical
 QT_WAYLAND_DISABLE_WINDOWDECORATION=1
 EOF
 
@@ -82,8 +49,17 @@ ExecStart=
 ExecStart=-/usr/bin/agetty --autologin sheepymeh --noclear %I linux
 EOF
 
-sudo mkinitcpio -p linux
-sudo grub-mkconfig -o /boot/grub/grub.cfg
+cat <<EOF | sudo tee /etc/pacman.d/hooks/100-systemd-boot.hook
+[Trigger]
+Type = Package
+Operation = Upgrade
+Target = systemd
+
+[Action]
+Description = Updating systemd-boot
+When = PostTransaction
+Exec = /usr/bin/bootctl update
+EOF
 
 # 7za x %f
 # 7za a -tzip Archive.zip %F

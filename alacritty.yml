@@ -1,14 +1,14 @@
 font:
   normal:
-    family: Roboto Mono
+    family: JetBrains Mono
     style: Regular
 
   bold:
-    family: Roboto Mono
+    family: JetBrains Mono
     style: Bold
 
   italic:
-    family: Roboto Mono
+    family: JetBrins Mono
     style: Italic
 
 background_opacity: 0.9

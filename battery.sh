@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 
-status=$(cat /sys/class/power_supply/AC0/online)
+status=$(cat /sys/class/power_supply/ADP0/online)
 charge=$(cat /sys/class/power_supply/BAT0/capacity)
 
 if [[ $charge -lt 10 ]]; then
