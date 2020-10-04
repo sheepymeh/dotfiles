@@ -44,11 +44,12 @@ echo "127.0.0.1	koito.localdomain	koito" > /etc/hosts
 # Install required packages
 pacman -Sq --noconfirm --needed acpi acpi_call alacritty alsa-utils amd-ucode android-tools arc-gtk-theme avahi bash-completion blueman bluez-utils code cups-pdf dialog exfat-utils firefox git gnome-keyring grim gst-plugins-bad gst-plugins-good gvfs gvfs-mtp htop i3blocks imv amd-ucode inter-font libva-mesa-driver light lollypop lvm2 mako mesa mesa-vdpau nano neofetch networkmanager nextcloud-client nodejs npm p7zip papirus-icon-theme pulseaudio-alsa pulseaudio-bluetooth python-pip qt5-wayland s-tui sed slurp sudo sway swayidle swaylock thunar ttf-font-awesome ttf-jetbrains-mono ufw wf-recorder wget wl-clipboard xdg-user-dirs xorg-server xorg-server-xwayland xorg-xrandr
 pacman -Sq --noconfirm --needed qemu virt-manager iptables ebtables dnsmasq
-systemctl enable libvirtd.service
+systemctl --quiet enable libvirtd.service
 sed -i 's$#unix_sock_group = "libvirt"$unix_sock_group = "libvirt"$' /etc/libvirt/libvirtd.conf
 pacman -Sq --noconfirm --needed wireshark-qt volatility gnu-netcat sqlmap
 pip install -q pwntools
 systemctl --quiet enable NetworkManager
+systemctl --quiet enable bluetooth
 
 # Install scripts
 chmod 755 battery.sh
