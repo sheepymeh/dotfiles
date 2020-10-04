@@ -11,7 +11,7 @@
 timedatectl set-ntp true
 wget "https://www.archlinux.org/mirrorlist/?country=SG&country=JP&protocol=https&ip_version=4" -O /etc/pacman.d/mirrorlist
 sed -i 's$#Server$Server$' /etc/pacman.d/mirrorlist
-sudo sed -i 's$#Color$Color\nILoveCandy$' /etc/pacman.conf
+sed -i 's$#Color$Color\nILoveCandy$' /etc/pacman.conf
 
 # Format partitions
 mkfs.vfat -F32 /dev/nvme0n1p1
@@ -41,16 +41,19 @@ echo "koito" > /etc/hostname
 echo "127.0.0.1	koito.localdomain	koito" > /etc/hosts
 
 # Install required packages
-sudo pacman -S --noconfirm --needed acpi acpi_call alacritty alsa-utils amd-ucode android-tools arc-gtk-theme avahi bash-completion blueman bluez-utils code cups-pdf dialog exfat-utils firefox git gnome-keyring grim gst-plugins-bad gst-plugins-good gvfs gvfs-mtp htop i3blocks imv amd-ucode inter-font libva-mesa-driver light lollypop lvm2 mako mesa mesa-vdpau nano neofetch networkmanager nextcloud-client nodejs npm p7zip papirus-icon-theme pulseaudio-alsa pulseaudio-bluetooth python-pip qt5-wayland s-tui sed slurp sudo sway swayidle swaylock thunar ttf-font-awesome ttf-jetbrains-mono ufw unzip wf-recorder wget wl-clipboard xdg-user-dirs xorg-server xorg-server-xwayland xorg-xrandr
-sudo pacman -S --noconfirm --needed wireshark-qt volatility gnu-netcat sqlmap
+pacman -S --noconfirm --needed acpi acpi_call alacritty alsa-utils amd-ucode android-tools arc-gtk-theme avahi bash-completion blueman bluez-utils code cups-pdf dialog exfat-utils firefox git gnome-keyring grim gst-plugins-bad gst-plugins-good gvfs gvfs-mtp htop i3blocks imv amd-ucode inter-font libva-mesa-driver light lollypop lvm2 mako mesa mesa-vdpau nano neofetch networkmanager nextcloud-client nodejs npm p7zip papirus-icon-theme pulseaudio-alsa pulseaudio-bluetooth python-pip qt5-wayland s-tui sed slurp sudo sway swayidle swaylock thunar ttf-font-awesome ttf-jetbrains-mono ufw wf-recorder wget wl-clipboard xdg-user-dirs xorg-server xorg-server-xwayland xorg-xrandr
+pacman -S qemu virt-manager iptables ebtables dnsmasq
+systemctl enable libvirtd.service
+sed -i 's$#unix_sock_group = "libvirt"$unix_sock_group = "libvirt"$' /etc/libvirt/libvirtd.conf
+pacman -S --noconfirm --needed wireshark-qt volatility gnu-netcat sqlmap
 pip install pwntools
 systemctl enable networkmanager
 
 # Install scripts
-chmod a+x battery.sh
-chmod a+x perf.sh
-sudo mv battery.sh /usr/local/sbin/battery.sh
-sudo mv perf.sh /usr/local/sbin/perf.sh
+chmod 755 battery.sh
+chmod 755 perf.sh
+mv battery.sh /usr/local/sbin/battery.sh
+mv perf.sh /usr/local/sbin/perf.sh
 
 # Set up systemd-boot
 bootctl --path=/boot/ install
@@ -68,7 +71,7 @@ options	cryptdevice=UUID=$(blkid /dev/nvme0n1p2 -s "UUID" -o value):vg0:allow-di
 EOF
 bootctl status
 
-cat <<EOF | sudo tee /etc/pacman.d/hooks/100-systemd-boot.hook
+cat <<EOF | tee /etc/pacman.d/hooks/100-systemd-boot.hook
 [Trigger]
 Type = Package
 Operation = Upgrade
@@ -86,15 +89,16 @@ passwd sheepymeh
 EDITOR=/usr/bin/nano visudo
 usermod -a -G video sheepymeh
 usermod -a -G rfkill sheepymeh
+usermod -a -G libvirt sheepymeh
 mkdir /home/sheepymeh/dotfiles
-mv * /home/sheepymeh/dotfiles
-cat <<EOF | sudo tee -a /etc/environment
+mv * /home/shpeepymeh/dotfiles
+cat <<EOF | tee -a /etc/environment
 MOZ_ENABLE_WAYLAND=1
 QT_QPA_PLATFORM=wayland-egl
 QT_WAYLAND_DISABLE_WINDOWDECORATION=1
 EOF
-sudo mkdir -p /etc/systemd/system/getty@tty1.service.d/
-cat <<EOF | sudo tee /etc/systemd/system/getty@tty1.service.d/override.conf
+mkdir -p /etc/systemd/system/getty@tty1.service.d/
+cat <<EOF | tee /etc/systemd/system/getty@tty1.service.d/override.conf
 [Service]
 ExecStart=
 ExecStart=-/usr/bin/agetty --autologin sheepymeh --noclear %I linux
