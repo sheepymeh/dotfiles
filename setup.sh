@@ -1,15 +1,14 @@
 #!/bin/bash
 
 # Install AUR packages
-sudo pacman -Syyu
-git clone https://aur.archlinux.org/yay-bin.git
-cd yay
+git clone -q https://aur.archlinux.org/yay-bin.git
+cd yay-bin
 makepkg -si
-wget https://keys.openpgp.org/vks/v1/by-fingerprint/5C6DA024DDE27178073EA103F4B432D5D67990E3
+wget -q https://keys.openpgp.org/vks/v1/by-fingerprint/5C6DA024DDE27178073EA103F4B432D5D67990E3
 gpg --import 5C6DA024DDE27178073EA103F4B432D5D67990E3
 rm 5C6DA024DDE27178073EA103F4B432D5D67990E3
-yay -S --noconfirm --needed noto-fonts-sc wob wofi-hg
-yay -S --noconfirm --needed steghide ffuf
+yay -Sq --noconfirm --needed noto-fonts-sc wob wofi-hg
+yay -Sq --noconfirm --needed steghide ffuf
 
 # Initialize git
 git config --global user.name 'sheepymeh'

@@ -1,7 +1,15 @@
-#!/usr/bin/bash
+#!/bin/bash
 
 status=$(cat /sys/class/power_supply/ADP0/online)
 charge=$(cat /sys/class/power_supply/BAT0/capacity)
+
+if [ "$EUID" == 0 ]; then
+	if [ $(cat /sys/bus/platform/drivers/ideapad_acpi/VPC2004:00/conservation_mode) == "0" ]; then
+		echo 1 > /sys/bus/platform/drivers/ideapad_acpi/VPC2004:00/conservation_mode
+	else
+		echo 0 > /sys/bus/platform/drivers/ideapad_acpi/VPC2004:00/conservation_mode
+	fi
+fi
 
 if [[ $charge -lt 10 ]]; then
 	echo -n ""
@@ -18,12 +26,16 @@ fi
 echo -n " $charge%"
 
 if [[ $status == 1 ]]; then
-	echo "+"
+	if [ $(cat /sys/bus/platform/drivers/ideapad_acpi/VPC2004:00/conservation_mode) == "1" ]; then
+		echo " "
+	else
+		echo " "
+	fi
 else
-	echo -e "\n"
+	echo
 fi
 
-echo "$charge%"
+echo "$charge"
 
 if [[ $status == 0 ]]; then
 	if [[ $charge -eq 20 ]]; then
@@ -37,7 +49,7 @@ elif [[ $status == Not* ]]; then
 		echo "#FFFF00"
 	fi
 elif [[ $status == Charging ]]; then
-	if [[ $charge -lt 20 ]]; then 
+	if [[ $charge -lt 20 ]]; then
 		echo "#ffe665"
 	elif [[ $charge -gt 80 ]]; then
 		echo "#77dd77"
