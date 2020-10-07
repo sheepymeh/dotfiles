@@ -5,14 +5,14 @@ set $mod Mod4
 set $term alacritty
 # Note: it's recommended that you pass the final command to sway
 # set $menu dmenu_path | dmenu | xargs swaymsg exec --
-set $menu wofi --show drun -f -i
+set $menu wofi -i --show drun | xargs swaymsg exec --
 set $laptop eDP-1
 
 output * bg ~/Documents/Archive/Pictues/laptop/blur.png fill
 output $laptop bg ~/Documents/Archive/Pictues/laptop/waifu2x.png fill
 output $laptop resolution 2560x1600 position 0,0 scale 2
 # find the new output: swaymsg -t get_outputs
-output HDMI-A-1 position 800,0
+output HDMI-A-1 position 1920,0
 
 bindswitch --reload --locked lid:on output $laptop disable
 bindswitch --reload --locked lid:off output $laptop enable

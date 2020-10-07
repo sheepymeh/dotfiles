@@ -38,9 +38,6 @@ fi
 echo "$charge"
 
 if [[ $status == 0 ]]; then
-	if [[ $charge -eq 20 ]]; then
-		swaynag -m '20% Battery Remaining'
-	fi
 	if [[ $charge -lt 20 ]]; then
 		echo "#ce575d"
 	fi
