@@ -1,8 +1,8 @@
 {
 	"window.zoomLevel": 0,
 	"files.autoSave": "onWindowChange",
-	"editor.fontSize": 15,
-	"editor.fontFamily": "'JetBrains Mono', 'Roboto Mono' monospace",
+	"editor.fontSize": 13,
+	"editor.fontFamily": "'JetBrains Mono', 'Roboto Mono', monospace",
 	"editor.renderWhitespace": "boundary",
 	"editor.insertSpaces": false,
 	"editor.smoothScrolling": true,
@@ -12,5 +12,6 @@
 	"git.enableSmartCommit": true,
 	"git.confirmSync": false,
 	"git.autofetch": true,
-	"files.eol": "\n"
+	"files.eol": "\n",
+	"editor.fontLigatures": true
 }
