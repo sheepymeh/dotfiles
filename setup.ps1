@@ -6,18 +6,14 @@ Write-Host "Downloading .exe Installers" -ForegroundColor Green
 
 # Todo: Wireshark
 
-Write-Host "Downloading Typora"
-Start-BitsTransfer -Source "https://typora.io/windows/typora-setup-x64.exe" -Destination typora.exe
 Write-Host "Downloading HxD"
 Start-BitsTransfer -Source "https://mh-nexus.de/downloads/HxDSetup.zip" -Destination hxd.zip
 Write-Host "Downloading Nextcloud"
 Start-BitsTransfer -Source "https://download.nextcloud.com/desktop/releases/Windows/latest" -Destination nextcloud.exe
-Write-Host "Downloading Discord"
-Start-BitsTransfer -Source "https://discord.com/api/download?platform=win" -Destination discord.exe
+#Write-Host "Downloading Discord"
+#Start-BitsTransfer -Source "https://discord.com/api/download?platform=win" -Destination discord.exe
 # Write-Host "Downloading WhatsApp"
 # Start-BitsTransfer -Source "https://web.whatsapp.com/desktop/windows/release/x64/WhatsAppSetup.exe" -Destination whatsapp.exe
-Write-Host "Downloading Termius"
-Start-BitsTransfer -Source "https://autoupdate.termius.com/win/Termius.exe" -Destination termius.exe
 Write-Host "Downloading VSCodium"
 foreach ($version in Invoke-WebRequest "https://api.github.com/repos/VSCodium/vscodium/releases/latest" -UseBasicParsing | ConvertFrom-Json | Select -ExpandProperty assets) {
   if ($version.browser_download_url -match "VSCodiumUserSetup-x64") {
@@ -25,13 +21,13 @@ foreach ($version in Invoke-WebRequest "https://api.github.com/repos/VSCodium/vs
     break;
   }
 }
-Write-Host "Downloading Git"
-foreach ($version in Invoke-WebRequest "https://api.github.com/repos/git-for-windows/git/releases/latest" -UseBasicParsing | ConvertFrom-Json | Select -ExpandProperty assets) {
-  if ($version.browser_download_url -match "64-bit.exe") {
-    bitsadmin /transfer Git /dynamic /download /priority FOREGROUND $version.browser_download_url "$env:temp\git.exe"
-    break;
-  }
-}
+#Write-Host "Downloading Git"
+#foreach ($version in Invoke-WebRequest "https://api.github.com/repos/git-for-windows/git/releases/latest" -UseBasicParsing | ConvertFrom-Json | Select -ExpandProperty assets) {
+#  if ($version.browser_download_url -match "64-bit.exe") {
+#    bitsadmin /transfer Git /dynamic /download /priority FOREGROUND $version.browser_download_url "$env:temp\git.exe"
+#    break;
+#  }
+#}
 # Write-Host "Downloading Audacity"
 # $audacity_version = (Invoke-WebRequest "https://api.github.com/repos/audacity/audacity/releases/latest" -UseBasicParsing | ConvertFrom-Json).name.split(' ')[1]
 # Start-BitsTransfer -Source "https://download.fosshub.com/Protected/expiretime=1585492021;badurl=aHR0cHM6Ly93d3cuZm9zc2h1Yi5jb20vQXVkYWNpdHkuaHRtbA==/2d16eeeeec4cf8b93238eb290f7e5d34bbfbb6d98de533cddf7962ed12d9da3c/5b7eee97e8058c20a7bbfcf4/5dd7e00e1d5d8e08348e2444/audacity-win-2.3.3.exe" -Destination audacity.exe
@@ -40,22 +36,18 @@ Write-Host "Extracting HxD"
 Expand-Archive hxd.zip -DestinationPath hxd
 
 Write-Host "Starting .exe Installers" -ForegroundColor Green
-Write-Host "Installing Typora"
-Start-Process typora.exe
 Write-Host "Installing HxD"
 Start-Process hxd/HxDSetup.exe
 Write-Host "Installing Nextcloud"
 Start-Process nextcloud.exe
-Write-Host "Installing Discord"
-Start-Process -runas $CREDS .\discord.exe
+#Write-Host "Installing Discord"
+#Start-Process -runas $CREDS .\discord.exe
 # Write-Host "Installing WhatsApp"
 # Start-Process -runas $CREDS .\whatsapp.exe
-Write-Host "Installing Termius"
-Start-Process termius.exe
 Write-Host "Installing VSCodium"
 Start-Process -runas $CREDS .\codium.exe
-Write-Host "Installing Git"
-Start-Process -FilePath git.exe -ArgumentList "/VERYSILENT /SUPPRESSMSGBOXES /ALLUSERS /NORESTART /CLOSEAPPLICATIONS /TYPE=compact /COMPONENTS='icons,gitlfs,assoc,autoupdate'"
+#Write-Host "Installing Git"
+#Start-Process -FilePath git.exe -ArgumentList "/VERYSILENT /SUPPRESSMSGBOXES /ALLUSERS /NORESTART /CLOSEAPPLICATIONS /TYPE=compact /COMPONENTS='icons,gitlfs,assoc,autoupdate'"
 # Write-Host "Installing Audacity"
 # Start-Process -FilePath audacity.exe -ArgumentList "/VERYSILENT /SUPPRESSMSGBOXES /NORESTART /SP- /MERGETASKS='!desktopicon'"
 
@@ -65,8 +57,6 @@ Write-Host "Downloading 7-zip"
 Start-BitsTransfer -Source "https://www.7-zip.org/a/7z1900-x64.msi" -Destination 7z.msi
 Write-Host "Downloading Firefox"
 Start-BitsTransfer -Source "https://download.mozilla.org/?product=firefox-msi-latest-ssl&os=win64&lang=en-US" -Destination firefox.msi
-Write-Host "Downloading ATK"
-Start-BitsTransfer -Source "https://dlcdnets.asus.com/pub/ASUS/nb/Apps_for_Win10/ATKPackage/ATK_Package_V100061.zip" -Destination atk.zip
 Write-Host "Downloading Transmission"
 $version = (Invoke-WebRequest "https://api.github.com/repos/transmission/transmission/releases/latest" -UseBasicParsing | ConvertFrom-Json).tag_name
 Start-BitsTransfer -Source "https://github.com/transmission/transmission-releases/raw/master/transmission-$($version)-x64.msi"
@@ -78,28 +68,18 @@ Start-BitsTransfer -Source "https://github.com/transmission/transmission-release
 #		break
 #	}
 #}
-Write-Host "Downloading ASUS Smart Gestures"
-Start-BitsTransfer -Source "https://dlcdnets.asus.com/pub/ASUS/nb/Apps_for_Win10/SmartGesture/SmartGesture_Win10_64_VER409.zip" -Destination gesture.zip
-Write-Host "Extracting ATK"
-Expand-Archive atk.zip -DestinationPath atk
-Write-Host "Extracting ASUS Smart Gestures"
-Expand-Archive gesture.zip -DestinationPath gesture
 Write-Host "Installing 7-zip"
 Start-Process msiexec.exe -Wait -ArgumentList "/i 7z.msi /quiet"
 Write-Host "Installing Firefox"
 Start-Process msiexec.exe -Wait -ArgumentList "/i firefox.msi /quiet"
 Write-Host "Installing Transmission"
 Start-Process msiexec.exe -Wait -ArgumentList "/i transmission-$($version)-x64.msi /quiet"
-Write-Host "Installing ATK"
-Start-Process msiexec.exe -Wait -ArgumentList "/i atk\data\409.msi /quiet /norestart"
-Write-Host "Installing ASUS Smart Gestures"
-Start-Process msiexec.exe -Wait -ArgumentList "/i gesture\SetupTPDriver.msi /quiet /norestart"
 
 Write-Host "Downloading ZIPs" -ForegroundColor Green
 
-Write-Host "Installing PHP"
-Start-BitsTransfer -Source "https://windows.php.net/downloads/releases/php-7.4.4-Win32-vc15-x64.zip" -Destination php.zip
-Expand-Archive php.zip -DestinationPath C:\php
+#Write-Host "Installing PHP"
+#Start-BitsTransfer -Source "https://windows.php.net/downloads/releases/php-7.4.4-Win32-vc15-x64.zip" -Destination php.zip
+#Expand-Archive php.zip -DestinationPath C:\php
 
 Write-Host "Installing ADB"
 Start-BitsTransfer -Source "https://dl.google.com/android/repository/platform-tools-latest-windows.zip" -Destination adb.zip
@@ -160,12 +140,12 @@ Move-Item "volatility\$volatility_name\$volatility_name.exe" "C:\Program Files\v
 Write-Host "Setting PATH"
 [Environment]::SetEnvironmentVariable("Path", "$env:Path;C:\Program Files\7-Zip;C:\Program Files\adb;C:\php;C:\Program Files\steghide;C:\Program Files\volatility;C:\Program Files\gobuster;C:\Program Files\hydra;C:\Program Files\ffuf", "Machine")
 
-Write-Host "Downloading Fonts" -ForegroundColor Green
+##Write-Host "Downloading Fonts" -ForegroundColor Green
 Write-Host "Downloading JetBrains Mono"
-Start-BitsTransfer -Source "https://download.jetbrains.com/fonts/JetBrainsMono-1.0.3.zip" -Destination jetbrains.zip
+Start-BitsTransfer -Source "https://download.jetbrains.com/fonts/JetBrainsMono-2.221.zip" -Destination jetbrains.zip
 Expand-Archive jetbrains.zip -DestinationPath "C:\JetBrains Mono"
 Write-Host "Downloading Inter"
-Start-BitsTransfer -Source "https://github.com/rsms/inter/releases/download/v3.12/Inter-3.12.zip" -Destination inter.zip
+Start-BitsTransfer -Source "https://github.com/rsms/inter/releases/download/v3.15/Inter-3.15.zip" -Destination inter.zip
 Expand-Archive inter.zip -DestinationPath "C:\Inter"
 
 Write-Host "Adding Languages" -ForegroundColor Green
@@ -175,7 +155,7 @@ $Languages.add("de-DE")
 $Languages.add("ja")
 Set-WinUserLanguageList $Languages
 
-New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\System -Name DisableAcrylicBackgroundOnLogon -Value 1 -PropertyType DWORD
+#New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\System -Name DisableAcrylicBackgroundOnLogon -Value 1 -PropertyType DWORD
 
 Write-Host "Installing Office" -ForegroundColor Green
 Start-BitsTransfer -Source "https://download.microsoft.com/download/2/7/A/27AF1BE6-DD20-4CB4-B154-EBAB8A7D4A7E/officedeploymenttool_12624-20320.exe" -Destination office.exe
@@ -218,16 +198,16 @@ Start-Process .\office\setup.exe -Wait -ArgumentList "/download office/office.xm
 Write-Host "Installing Office"
 Start-Process .\office\setup.exe -Wait -ArgumentList "/configure office/office.xml"
 
-Write-Host "Configuring Optional Features" -ForegroundColor Green
-dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart
-dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart
+#Write-Host "Configuring Optional Features" -ForegroundColor Green
+#dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart
+#dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart
 # https://stackoverflow.com/questions/4208694/how-to-speed-up-startup-of-powershell-in-the-4-0-environment
-$env:path = [Runtime.InteropServices.RuntimeEnvironment]::GetRuntimeDirectory()
-[AppDomain]::CurrentDomain.GetAssemblies() | % {
-  if (! $_.location) {continue}
-  $Name = Split-Path $_.location -leaf
-  Write-Host -ForegroundColor Yellow "NGENing : $Name"
-  ngen install $_.location | % {"`t$_"}
-}
+#$env:path = [Runtime.InteropServices.RuntimeEnvironment]::GetRuntimeDirectory()
+#[AppDomain]::CurrentDomain.GetAssemblies() | % {
+#  if (! $_.location) {continue}
+#  $Name = Split-Path $_.location -leaf
+#  Write-Host -ForegroundColor Yellow "NGENing : $Name"
+#  ngen install $_.location | % {"`t$_"}
+#}
 
 Write-Host "Please reboot your system to finish" -ForegroundColor Green
