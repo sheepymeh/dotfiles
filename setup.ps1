@@ -1,97 +1,134 @@
 #Requires -RunAsAdministrator
 
-Set-Location -Path $env:temp
+New-Item -ItemType directory -Path "~\Downloads" -Name "setup"
+Set-Location -Path ~\Downloads\setup
 
-Write-Host "Downloading .exe Installers" -ForegroundColor Green
+Write-Host "Downloading Installers" -ForegroundColor Green
 
-# Todo: Wireshark
-
-Write-Host "Downloading HxD"
-Start-BitsTransfer -Source "https://mh-nexus.de/downloads/HxDSetup.zip" -Destination hxd.zip
-Write-Host "Downloading Nextcloud"
-Start-BitsTransfer -Source "https://download.nextcloud.com/desktop/releases/Windows/latest" -Destination nextcloud.exe
-#Write-Host "Downloading Discord"
-#Start-BitsTransfer -Source "https://discord.com/api/download?platform=win" -Destination discord.exe
-# Write-Host "Downloading WhatsApp"
-# Start-BitsTransfer -Source "https://web.whatsapp.com/desktop/windows/release/x64/WhatsAppSetup.exe" -Destination whatsapp.exe
-Write-Host "Downloading VSCodium"
-foreach ($version in Invoke-WebRequest "https://api.github.com/repos/VSCodium/vscodium/releases/latest" -UseBasicParsing | ConvertFrom-Json | Select -ExpandProperty assets) {
-  if ($version.browser_download_url -match "VSCodiumUserSetup-x64") {
-    bitsadmin /transfer VSCodium /dynamic /download /priority FOREGROUND $version.browser_download_url "$env:temp\codium.exe"
-    break;
-  }
+$downloads = @()
+$zips = @()
+# Nextcloud
+$downloads += Start-BitsTransfer -Source "https://download.nextcloud.com/desktop/releases/Windows/latest" -Destination nextcloud.exe -DisplayName "Nextcloud" -Asynchronous
+# HxD
+$downloads += Start-BitsTransfer -Source "https://mh-nexus.de/downloads/HxDSetup.zip" -Destination hxd.zip -DisplayName "HxD" -Asynchronous
+# 7-Zip
+$downloads += Start-BitsTransfer -Source "https://www.7-zip.org/a/7z1900-x64.msi" -Destination 7z.msi -DisplayName "7-Zip" -Asynchronous
+# Firefox
+$downloads += Start-BitsTransfer -Source "https://download.mozilla.org/?product=firefox-msi-latest-ssl&os=win64&lang=en-US" -Destination firefox.msi -DisplayName "Firefox" -Asynchronous
+# Transmission
+$version = (Invoke-WebRequest "https://api.github.com/repos/transmission/transmission/releases/latest" -UseBasicParsing | ConvertFrom-Json).tag_name
+$downloads += Start-BitsTransfer -Source "https://github.com/transmission/transmission-releases/raw/master/transmission-$version-x64.msi" -Destination transmission.msi -DisplayName "Transmission" -Asynchronous
+# Wireshark
+$downloads += Start-BitsTransfer -Source "https://www.wireshark.org/download/win64/Wireshark-win64-latest.msi" -Destination wireshark.msi -DisplayName "Wireshark" -Asynchronous
+# Node.js
+foreach ($version in (Invoke-WebRequest "https://nodejs.org/dist/index.json" -UseBasicParsing | ConvertFrom-Json)) {
+	if ($version.lts) {
+		$downloads += Start-BitsTransfer -Source "https://nodejs.org/dist/latest-$($version.lts.ToLower())/node-$($version.version)-x64.msi" -Destination node.msi -DisplayName "Node.js" -Asynchronous
+		break
+	}
 }
-#Write-Host "Downloading Git"
-#foreach ($version in Invoke-WebRequest "https://api.github.com/repos/git-for-windows/git/releases/latest" -UseBasicParsing | ConvertFrom-Json | Select -ExpandProperty assets) {
-#  if ($version.browser_download_url -match "64-bit.exe") {
-#    bitsadmin /transfer Git /dynamic /download /priority FOREGROUND $version.browser_download_url "$env:temp\git.exe"
-#    break;
-#  }
-#}
-# Write-Host "Downloading Audacity"
-# $audacity_version = (Invoke-WebRequest "https://api.github.com/repos/audacity/audacity/releases/latest" -UseBasicParsing | ConvertFrom-Json).name.split(' ')[1]
-# Start-BitsTransfer -Source "https://download.fosshub.com/Protected/expiretime=1585492021;badurl=aHR0cHM6Ly93d3cuZm9zc2h1Yi5jb20vQXVkYWNpdHkuaHRtbA==/2d16eeeeec4cf8b93238eb290f7e5d34bbfbb6d98de533cddf7962ed12d9da3c/5b7eee97e8058c20a7bbfcf4/5dd7e00e1d5d8e08348e2444/audacity-win-2.3.3.exe" -Destination audacity.exe
-# ((Invoke-WebRequest 'https://api.fosshub.com/download' -Method POST -Body @{projectId="5b7eee97e8058c20a7bbfcf4";releaseId="5dd7e00e1d5d8e08348e2444";projectUri="Audacity.html";fileName="audacity-win-2.3.3.exe"} -UseBasicParsing).Content | ConvertFrom-Json).data.url
+
+# PHP
+$zips += Start-BitsTransfer -Source "https://windows.php.net/downloads/releases/latest/php-8.0-Win32-vs16-x64-latest.zip" -Destination php.zip -DisplayName "PHP" -Asynchronous
+# ADB
+$zips += Start-BitsTransfer -Source "https://dl.google.com/android/repository/platform-tools-latest-windows.zip" -Destination adb.zip -DisplayName "ADB" -Asynchronous
+# Steghide
+$zips += Start-BitsTransfer -Source "https://sourceforge.net/projects/steghide/files/latest/download" -Destination steghide.zip -DisplayName "Steghide" -Asynchronous
+# Black Cat SSTV
+$zips += Start-BitsTransfer -Source "https://www.blackcatsystems.com/download/SSTV_app_windows.zip" -Destination sstv.zip -DisplayName "Black Cat SSTV" -Asynchronous
+# Volatility
+foreach ($version in ((Invoke-WebRequest https://www.volatilityfoundation.org/releases -UseBasicParsing).Links | Select href)) {
+	if ($version -match "win64_standalone.zip") {
+		$zips += Start-BitsTransfer -Source $version.href -Destination volatility.zip -DisplayName "Volatility" -Asynchronous
+		$volatility_name = $version.href -replace ".*/"
+		$volatility_name = $volatility_name.Substring(0, $volatility_name.length - 4)
+		break
+	}
+}
+
+# MongoDB Compass
+$version = (Invoke-WebRequest "https://api.github.com/repos/mongodb-js/compass/releases/latest" -UseBasicParsing | ConvertFrom-Json).tag_name
+bitsadmin /transfer "MongoDB Compass" /dynamic /download /priority FOREGROUND "https://github.com/mongodb-js/compass/releases/download/$version/mongodb-compass-isolated-$($version.substring(1))-win32-x64.msi" "$home\Downloads\setup\compass.msi"
+# JRE
+$version = (Invoke-WebRequest "https://api.github.com/repos/AdoptOpenJDK/openjdk8-binaries/releases/latest" -UseBasicParsing | ConvertFrom-Json).tag_name
+bitsadmin /transfer "JRE" /dynamic /download /priority FOREGROUND "https://github.com/AdoptOpenJDK/openjdk8-binaries/releases/download/$version/OpenJDK8U-jre_x64_windows_hotspot_$($version.substring(3,5))$($version.substring(9)).msi" "$home\Downloads\setup\openjre.msi"
+# VSCodium
+foreach ($version in Invoke-WebRequest "https://api.github.com/repos/VSCodium/vscodium/releases/latest" -UseBasicParsing | ConvertFrom-Json | Select -ExpandProperty assets) {
+	if ($version.browser_download_url -match "VSCodiumUserSetup-x64") {
+		bitsadmin /transfer "VSCodium" /dynamic /download /priority FOREGROUND $version.browser_download_url "$home\Downloads\setup\codium.exe"
+		break
+	}
+}
+# gobuster
+bitsadmin /transfer "gobuster" /dynamic /download /priority FOREGROUND "https://github.com/OJ/gobuster/releases/latest/download/gobuster-windows-amd64.7z" "$home\Downloads\setup\gobuster.7z"
+# ffuf
+foreach ($version in Invoke-WebRequest "https://api.github.com/repos/ffuf/ffuf/releases/latest" -UseBasicParsing | ConvertFrom-Json | Select -ExpandProperty assets) {
+	if ($version.browser_download_url -match "windows_amd64.zip") {
+		bitsadmin /transfer "ffuf" /dynamic /download /priority FOREGROUND $version.browser_download_url "$home\Downloads\ffuf.zip"
+		break
+	}
+}
+
+while (($downloads.JobState -contains "Transferring") -or ($downloads.JobState -contains "Connecting")) {
+	clear
+	echo $downloads
+	echo $zips
+	sleep 3
+}
+
+clear
+echo $downloads
+echo $zips
+$downloads | Complete-BitsTransfer
+
+
+Write-Host "Installing Software" -ForegroundColor Green
+
 Write-Host "Extracting HxD"
 Expand-Archive hxd.zip -DestinationPath hxd
-
-Write-Host "Starting .exe Installers" -ForegroundColor Green
-Write-Host "Installing HxD"
+Write-Host "Starting HxD Installer"
 Start-Process hxd/HxDSetup.exe
-Write-Host "Installing Nextcloud"
+Write-Host "Starting Nextcloud Installer"
 Start-Process nextcloud.exe
-#Write-Host "Installing Discord"
-#Start-Process -runas $CREDS .\discord.exe
-# Write-Host "Installing WhatsApp"
-# Start-Process -runas $CREDS .\whatsapp.exe
-Write-Host "Installing VSCodium"
+Write-Host "Starting VSCodium Installer"
 Start-Process -runas $CREDS .\codium.exe
-#Write-Host "Installing Git"
-#Start-Process -FilePath git.exe -ArgumentList "/VERYSILENT /SUPPRESSMSGBOXES /ALLUSERS /NORESTART /CLOSEAPPLICATIONS /TYPE=compact /COMPONENTS='icons,gitlfs,assoc,autoupdate'"
-# Write-Host "Installing Audacity"
-# Start-Process -FilePath audacity.exe -ArgumentList "/VERYSILENT /SUPPRESSMSGBOXES /NORESTART /SP- /MERGETASKS='!desktopicon'"
 
-Write-Host "Downloading .msi Installers" -ForegroundColor Green
-
-Write-Host "Downloading 7-zip"
-Start-BitsTransfer -Source "https://www.7-zip.org/a/7z1900-x64.msi" -Destination 7z.msi
-Write-Host "Downloading Firefox"
-Start-BitsTransfer -Source "https://download.mozilla.org/?product=firefox-msi-latest-ssl&os=win64&lang=en-US" -Destination firefox.msi
-Write-Host "Downloading Transmission"
-$version = (Invoke-WebRequest "https://api.github.com/repos/transmission/transmission/releases/latest" -UseBasicParsing | ConvertFrom-Json).tag_name
-Start-BitsTransfer -Source "https://github.com/transmission/transmission-releases/raw/master/transmission-$($version)-x64.msi"
-#$transmission = Invoke-WebRequest "https://api.github.com/repos/transmission/transmission-releases/contents/" -UseBasicParsing | ConvertFrom-Json
-#[array]::Reverse($transmission)
-#foreach ($version in $transmission) {
-#	if ($version.name -match "x64.msi") {
-#		bitsadmin /transfer Transmission /dynamic /download /priority FOREGROUND $version.download_url "$env:temp\transmission.msi"
-#		break
-#	}
-#}
 Write-Host "Installing 7-zip"
 Start-Process msiexec.exe -Wait -ArgumentList "/i 7z.msi /quiet"
 Write-Host "Installing Firefox"
 Start-Process msiexec.exe -Wait -ArgumentList "/i firefox.msi /quiet"
 Write-Host "Installing Transmission"
-Start-Process msiexec.exe -Wait -ArgumentList "/i transmission-$($version)-x64.msi /quiet"
+Start-Process msiexec.exe -Wait -ArgumentList "/i transmission.msi /quiet"
+Write-Host "Installing Wireshark"
+Start-Process msiexec.exe -Wait -ArgumentList "/i wireshark.msi /quiet"
+Write-Host "Installing Node.js"
+Start-Process msiexec.exe -Wait -ArgumentList "/i node.msi /quiet"
+Write-Host "Installing MongoDB Compass"
+Start-Process msiexec.exe -Wait -ArgumentList "/i compass.msi /quiet"
+Write-Host "Installing JRE"
+Start-Process msiexec.exe -Wait -ArgumentList "/i openjre.msi /quiet"
 
-Write-Host "Downloading ZIPs" -ForegroundColor Green
+Write-Host "Installing archives" -ForegroundColor Green
+while (($zips.JobState -contains "Transferring") -or ($zips.JobState -contains "Connecting")) {
+	clear
+	echo $zips
+	sleep 3
+}
+clear
+echo $zips
+$zips | Complete-BitsTransfer
 
-#Write-Host "Installing PHP"
-#Start-BitsTransfer -Source "https://windows.php.net/downloads/releases/php-7.4.4-Win32-vc15-x64.zip" -Destination php.zip
-#Expand-Archive php.zip -DestinationPath C:\php
+Write-Host "Installing PHP"
+Expand-Archive php.zip -DestinationPath C:\php
 
 Write-Host "Installing ADB"
-Start-BitsTransfer -Source "https://dl.google.com/android/repository/platform-tools-latest-windows.zip" -Destination adb.zip
 Expand-Archive adb.zip -DestinationPath adb
 Move-Item adb\platform-tools "C:\Program Files\adb"
 
 Write-Host "Installing Steghide"
-Start-BitsTransfer -Source "https://sourceforge.net/projects/steghide/files/latest/download" -Destination steghide.zip
 Expand-Archive steghide.zip -DestinationPath "C:\Program Files"
 
 Write-Host "Installing Black Cat SSTV"
-Start-BitsTransfer -Source "https://www.blackcatsystems.com/download/SSTV_app_windows.zip" -Destination sstv.zip
 New-Item -ItemType directory -Path "C:\Program Files" -Name "sstv"
 Expand-Archive sstv.zip -DestinationPath sstv
 Move-Item "sstv\SSTV_app_windows\Black Cat SSTV.exe" "C:\Program Files\sstv"
@@ -102,51 +139,45 @@ $Shortcut = $WshShell.CreateShortcut("C:\ProgramData\Microsoft\Windows\Start Men
 $Shortcut.TargetPath = "C:\Program Files\sstv\Black Cat SSTV.exe"
 $Shortcut.Save()
 
-Write-Host "Installing THC Hydra"
-Start-BitsTransfer -Source "https://github.com/maaaaz/thc-hydra-windows/archive/master.zip" -Destination hydra.zip
-Expand-Archive hydra.zip -DestinationPath "C:\Program Files"
-Rename-Item "C:\Program Files\thc-hydra-windows-master" "C:\Program Files\hydra"
-
 Write-Host "Installing gobuster"
-bitsadmin /transfer gobuster /dynamic /download /priority FOREGROUND "https://github.com/OJ/gobuster/releases/latest/download/gobuster-windows-amd64.7z" "$env:temp\gobuster.7z"
-& "C:\Program Files\7-Zip\7z.exe" x gobuster.7z
+& "C:\Program Files\7-Zip\7zr.exe" x gobuster.7z
 New-Item -ItemType directory -Path "C:\Program Files" -Name "gobuster"
 Move-Item "gobuster-windows-amd64\gobuster.exe" "C:\Program Files\gobuster"
 
 Write-Host "Installing ffuf"
-foreach ($version in Invoke-WebRequest "https://api.github.com/repos/ffuf/ffuf/releases/latest" -UseBasicParsing | ConvertFrom-Json | Select -ExpandProperty assets) {
-  if ($version.browser_download_url -match "windows_amd64.zip") {
-    bitsadmin /transfer ffuf /dynamic /download /priority FOREGROUND $version.browser_download_url "$env:temp\ffuf.zip"
-    break;
-  }
-}
 Expand-Archive ffuf.zip
 New-Item -ItemType directory -Path "C:\Program Files" -Name "ffuf"
 Move-Item "ffuf\ffuf.exe" "C:\Program Files\ffuf"
 
 Write-Host "Installing Volatility"
-foreach ($version in ((Invoke-WebRequest https://www.volatilityfoundation.org/releases -UseBasicParsing).Links | Select href)) {
-  if ($version -match "win64_standalone.zip") {
-    Start-BitsTransfer -Source $version.href -Destination volatility.zip
-    $volatility_name = $version.href -replace '.*/'
-    $volatility_name = $volatility_name.Substring(0, $volatility_name.length - 4)
-    break;
-  }
-}
 Expand-Archive volatility.zip -DestinationPath volatility
 New-Item -ItemType directory -Path "C:\Program Files" -Name "volatility"
 Move-Item "volatility\$volatility_name\$volatility_name.exe" "C:\Program Files\volatility\volatility.exe"
 
 Write-Host "Setting PATH"
-[Environment]::SetEnvironmentVariable("Path", "$env:Path;C:\Program Files\7-Zip;C:\Program Files\adb;C:\php;C:\Program Files\steghide;C:\Program Files\volatility;C:\Program Files\gobuster;C:\Program Files\hydra;C:\Program Files\ffuf", "Machine")
+[Environment]::SetEnvironmentVariable("Path", "$env:Path;C:\Program Files\7-Zip;C:\Program Files\adb;C:\php;C:\Program Files\steghide;C:\Program Files\volatility;C:\Program Files\gobuster;C:\Program Files\ffuf", "Machine")
 
-##Write-Host "Downloading Fonts" -ForegroundColor Green
-Write-Host "Downloading JetBrains Mono"
-Start-BitsTransfer -Source "https://download.jetbrains.com/fonts/JetBrainsMono-2.221.zip" -Destination jetbrains.zip
-Expand-Archive jetbrains.zip -DestinationPath "C:\JetBrains Mono"
-Write-Host "Downloading Inter"
-Start-BitsTransfer -Source "https://github.com/rsms/inter/releases/download/v3.15/Inter-3.15.zip" -Destination inter.zip
-Expand-Archive inter.zip -DestinationPath "C:\Inter"
+Write-Host "Uninstalling Software"
+Set-Location 'C:\Program Files (x86)\Microsoft\Edge\Application\8*\Installer'
+Start-Process setup.exe -ArgumentList "--uninstall --force-uninstall --system-level"
+Get-AppxPackage -allusers Microsoft.549981C3F5F10 | Remove-AppxPackage
+
+Write-Host "Arranging Start Menu"
+Set-Location "C:\ProgramData\Microsoft\Windows\Start Menu\Programs"
+
+Move-Item "MongoDB\MongoDB Compass Isolated Edition.lnk" "."
+Move-Item "7-Zip\7-Zip File Manager.lnk" "."
+Move-Item "HxD Hex Editor\HxD.lnk" "."
+
+Remove-Item -Recurse "MongoDB"
+Remove-Item -Recurse "7-Zip"
+Remove-Item -Recurse "HxD Hex Editor"
+
+Set-Location "C:\Users\WDAGUtilityAccount\AppData\Roaming\Microsoft\Windows\Start Menu\Programs"
+
+Move-Item "VSCodium\VSCodium.lnk" "."
+
+Remove-Item -Recurse "VSCodium"
 
 Write-Host "Adding Languages" -ForegroundColor Green
 $Languages = Get-WinUserLanguageList
@@ -155,13 +186,13 @@ $Languages.add("de-DE")
 $Languages.add("ja")
 Set-WinUserLanguageList $Languages
 
-#New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\System -Name DisableAcrylicBackgroundOnLogon -Value 1 -PropertyType DWORD
+New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\System -Name DisableAcrylicBackgroundOnLogon -Value 1 -PropertyType DWORD
 
 Write-Host "Installing Office" -ForegroundColor Green
 Start-BitsTransfer -Source "https://download.microsoft.com/download/2/7/A/27AF1BE6-DD20-4CB4-B154-EBAB8A7D4A7E/officedeploymenttool_12624-20320.exe" -Destination office.exe
 Start-Process office.exe -Wait -ArgumentList "/extract:office /quiet"
 Write-Host "Downloading Installer"
-Set-Content -Path 'office/office.xml' -Value @'
+Set-Content -Path "office/office.xml" -Value @"
 <Configuration>
   <Add OfficeClientEdition="64" Channel="MonthlyEnterprise">
     <Product ID="O365ProPlusRetail">
@@ -192,7 +223,7 @@ Set-Content -Path 'office/office.xml' -Value @'
   <Updates Enabled="TRUE" />
   <Display Level="None" AcceptEULA="TRUE" />
 </Configuration>
-'@
+"@
 Write-Host "Downloading Office"
 Start-Process .\office\setup.exe -Wait -ArgumentList "/download office/office.xml"
 Write-Host "Installing Office"
