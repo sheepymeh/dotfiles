@@ -9,7 +9,7 @@ $downloads = @()
 $zips = @()
 
 # NVIDIA
-if ((Get-WmiObject win32_VideoController).description = "NVIDIA GeForce GTX 1070") {
+if ((Get-WmiObject win32_VideoController).description -eq "NVIDIA GeForce GTX 1070") {
 	# Drivers
 	$downloads += Start-BitsTransfer -Source "https://us.download.nvidia.com/Windows/461.40/461.40-desktop-win10-64bit-international-dch-whql.exe" -Destination nvidia.exe -DisplayName "NVIDIA Drivers" -Asynchronous
 	# CUDA
@@ -119,7 +119,7 @@ Start-Process msiexec.exe -Wait -ArgumentList "/i compass.msi /quiet"
 Write-Host "Installing JRE"
 Start-Process msiexec.exe -Wait -ArgumentList "/i openjre.msi /quiet"
 
-if ((Get-WmiObject win32_VideoController).description = "NVIDIA GeForce GTX 1070") {
+if ((Get-WmiObject win32_VideoController).description -eq "NVIDIA GeForce GTX 1070") {
 	Write-Host "Extracting NVIDIA Drivers"
 	New-Item -ItemType directory -Path "~\Downloads\setup" -Name "nvidia"
 	Set-Location -Path ~\Downloads\setup\nvidia
