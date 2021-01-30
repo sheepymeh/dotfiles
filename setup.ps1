@@ -7,6 +7,17 @@ Write-Host "Downloading Installers" -ForegroundColor Green
 
 $downloads = @()
 $zips = @()
+
+# NVIDIA
+if ((Get-WmiObject win32_VideoController).description == "NVIDIA GeForce GTX 1070") {
+	# Drivers
+	$downloads += Start-BitsTransfer -Source "https://us.download.nvidia.com/Windows/461.40/461.40-desktop-win10-64bit-international-dch-whql.exe" -Destination nvidia.exe -DisplayName "NVIDIA Drivers" -Asynchronous
+	# CUDA
+	$downloads += Start-BitsTransfer -Source "http://developer.download.nvidia.com/compute/cuda/11.0.3/network_installers/cuda_11.0.3_win10_network.exe" -Destination cuda.exe -DisplayName "CUDA" -Asynchronous
+	# RTX Voice
+	$downloads += Start-BitsTransfer -Source "https://developer.nvidia.com/rtx/broadcast_engine/secure/NVIDIA_RTX_Voice.exe" -Destination rtx-voice.exe -DisplayName "RTX Voice" -Asynchronous
+}
+
 # Nextcloud
 $downloads += Start-BitsTransfer -Source "https://download.nextcloud.com/desktop/releases/Windows/latest" -Destination nextcloud.exe -DisplayName "Nextcloud" -Asynchronous
 # HxD
@@ -108,6 +119,44 @@ Start-Process msiexec.exe -Wait -ArgumentList "/i compass.msi /quiet"
 Write-Host "Installing JRE"
 Start-Process msiexec.exe -Wait -ArgumentList "/i openjre.msi /quiet"
 
+if ((Get-WmiObject win32_VideoController).description == "NVIDIA GeForce GTX 1070") {
+	Write-Host "Extracting NVIDIA Drivers"
+	New-Item -ItemType directory -Path "~\Downloads\setup" -Name "nvidia"
+	Set-Location -Path ~\Downloads\setup\nvidia
+	& "C:\Program Files\7-Zip\7z.exe" x ..\nvidia.exe
+	New-Item -ItemType directory -Path "~\Downloads\setup" -Name "nvidia-install"
+	New-Item -ItemType directory -Path "~\Downloads\setup\nvidia-install" -Name "GFExperience"
+	Move-Item ("Display.Driver"        ) -Destination "~\Downloads\setup\nvidia-install"
+	Move-Item ("Display.Optimus"       ) -Destination "~\Downloads\setup\nvidia-install"
+	Move-Item ("NVI2"                  ) -Destination "~\Downloads\setup\nvidia-install"
+	Move-Item ("PhysX"                 ) -Destination "~\Downloads\setup\nvidia-install"
+	Move-Item ("EULA.txt"              ) -Destination "~\Downloads\setup\nvidia-install"
+	Move-Item ("ListDevices.txt"       ) -Destination "~\Downloads\setup\nvidia-install"
+	Move-Item ("setup.cfg"             ) -Destination "~\Downloads\setup\nvidia-install"
+	Move-Item ("setup.exe"             ) -Destination "~\Downloads\setup\nvidia-install"
+	Move-Item ("HDAudio"               ) -Destination "~\Downloads\setup\nvidia-install"
+	Move-Item ("PPC"                   ) -Destination "~\Downloads\setup\nvidia-install" -ErrorAction SilentlyContinue
+	Move-Item ("GFExperience\PrivacyPolicy"      ) -Destination "~\Downloads\setup\nvidia-install\GFExperience"
+	Move-Item ("GFExperience\EULA.html"          ) -Destination "~\Downloads\setup\nvidia-install\GFExperience"
+	Move-Item ("GFExperience\FunctionalConsent_*") -Destination "~\Downloads\setup\nvidia-install\GFExperience"
+	Set-Location -Path ~\Downloads\setup\nvidia-install
+	Start-Process setup.exe -Wait -ArgumentList "-s -noreboot -clean"
+
+	Write-Host "Extracting CUDA"
+	New-Item -ItemType directory -Path "~\Downloads\setup" -Name "cuda"
+	Set-Location -Path ~\Downloads\setup\cuda
+	& "C:\Program Files\7-Zip\7z.exe" x ..\cuda.exe
+	Start-Process setup.exe -Wait
+
+	Write-Host "Extracting RTX Voice"
+	New-Item -ItemType directory -Path "~\Downloads\setup" -Name "rtx-voice"
+	Set-Location -Path ~\Downloads\setup\rtx-voice
+	& "C:\Program Files\7-Zip\7z.exe" x ..\rtx-voice.exe
+	Start-Process setup.exe -Wait -ArgumentList "-s -noreboot -clean"
+	Get-Process "*RTX Voice*" | Stop-Process
+	Set-Location -Path ~\Downloads\setup
+}
+
 Write-Host "Installing archives" -ForegroundColor Green
 while (($zips.JobState -contains "Transferring") -or ($zips.JobState -contains "Connecting")) {
 	clear
@@ -140,7 +189,7 @@ $Shortcut.TargetPath = "C:\Program Files\sstv\Black Cat SSTV.exe"
 $Shortcut.Save()
 
 Write-Host "Installing gobuster"
-& "C:\Program Files\7-Zip\7zr.exe" x gobuster.7z
+& "C:\Program Files\7-Zip\7z.exe" x gobuster.7z
 New-Item -ItemType directory -Path "C:\Program Files" -Name "gobuster"
 Move-Item "gobuster-windows-amd64\gobuster.exe" "C:\Program Files\gobuster"
 
