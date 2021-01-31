@@ -9,13 +9,15 @@ $downloads = @()
 $zips = @()
 
 # NVIDIA
-if ((Get-WmiObject win32_VideoController).description -eq "NVIDIA GeForce GTX 1070") {
+if ((Get-WmiObject win32_VideoController).description == "NVIDIA GeForce GTX 1070") {
 	# Drivers
 	$downloads += Start-BitsTransfer -Source "https://us.download.nvidia.com/Windows/461.40/461.40-desktop-win10-64bit-international-dch-whql.exe" -Destination nvidia.exe -DisplayName "NVIDIA Drivers" -Asynchronous
 	# CUDA
 	$downloads += Start-BitsTransfer -Source "http://developer.download.nvidia.com/compute/cuda/11.0.3/network_installers/cuda_11.0.3_win10_network.exe" -Destination cuda.exe -DisplayName "CUDA" -Asynchronous
 	# RTX Voice
 	$downloads += Start-BitsTransfer -Source "https://developer.nvidia.com/rtx/broadcast_engine/secure/NVIDIA_RTX_Voice.exe" -Destination rtx-voice.exe -DisplayName "RTX Voice" -Asynchronous
+	# MSI Afterburner
+	$downloads += Start-BitsTransfer -Source "https://download.msi.com/uti_exe/vga/MSIAfterburnerSetup.zip?__token__=$(Invoke-RestMethod https://www.msi.com/api/v1/get_token?date=$(Get-Date -format 'yyyyMMdd'))" -Destination afterburner.zip -DisplayName "Afterburner" -Asynchronous
 }
 
 # Nextcloud
@@ -119,7 +121,7 @@ Start-Process msiexec.exe -Wait -ArgumentList "/i compass.msi /quiet"
 Write-Host "Installing JRE"
 Start-Process msiexec.exe -Wait -ArgumentList "/i openjre.msi /quiet"
 
-if ((Get-WmiObject win32_VideoController).description -eq "NVIDIA GeForce GTX 1070") {
+if ((Get-WmiObject win32_VideoController).description == "NVIDIA GeForce GTX 1070") {
 	Write-Host "Extracting NVIDIA Drivers"
 	New-Item -ItemType directory -Path "~\Downloads\setup" -Name "nvidia"
 	Set-Location -Path ~\Downloads\setup\nvidia
@@ -142,18 +144,25 @@ if ((Get-WmiObject win32_VideoController).description -eq "NVIDIA GeForce GTX 10
 	Set-Location -Path ~\Downloads\setup\nvidia-install
 	Start-Process setup.exe -Wait -ArgumentList "-s -noreboot -clean"
 
-	Write-Host "Extracting CUDA"
-	New-Item -ItemType directory -Path "~\Downloads\setup" -Name "cuda"
-	Set-Location -Path ~\Downloads\setup\cuda
-	& "C:\Program Files\7-Zip\7z.exe" x ..\cuda.exe
-	Start-Process setup.exe -Wait
-
 	Write-Host "Extracting RTX Voice"
 	New-Item -ItemType directory -Path "~\Downloads\setup" -Name "rtx-voice"
 	Set-Location -Path ~\Downloads\setup\rtx-voice
 	& "C:\Program Files\7-Zip\7z.exe" x ..\rtx-voice.exe
 	Start-Process setup.exe -Wait -ArgumentList "-s -noreboot -clean"
 	Get-Process "*RTX Voice*" | Stop-Process
+
+	Write-Host "Extracting CUDA"
+	New-Item -ItemType directory -Path "~\Downloads\setup" -Name "cuda"
+	Set-Location -Path ~\Downloads\setup\cuda
+	& "C:\Program Files\7-Zip\7z.exe" x ..\cuda.exe
+	Start-Process setup.exe -Wait
+
+	Write-Host "Extracting MSI Afterburner"
+	Set-Location -Path ~\Downloads\setup
+	Expand-Archive afterburner.zip -DestinationPath afterburner
+	Set-Location -Path ~\Downloads\setup\afterburner\*
+	Start-Process $(Get-ChildItem)[0].Name
+
 	Set-Location -Path ~\Downloads\setup
 }
 
