@@ -150,6 +150,7 @@ if ((Get-WmiObject win32_VideoController).description == "NVIDIA GeForce GTX 107
 	& "C:\Program Files\7-Zip\7z.exe" x ..\rtx-voice.exe
 	Start-Process setup.exe -Wait -ArgumentList "-s -noreboot -clean"
 	Get-Process "*RTX Voice*" | Stop-Process
+	Unregister-ScheduledTask -TaskName RTXVoice_* -Confirm:$false
 
 	Write-Host "Extracting CUDA"
 	New-Item -ItemType directory -Path "~\Downloads\setup" -Name "cuda"
@@ -327,7 +328,8 @@ Set-Service -NameTrkWks -StartupType disabled
 # Windows Error Reporting Service
 Set-Service -Name WerSvc -StartupType disabled
 # Touch Keyboard and Handwriting Panel Service
-Set-Service -Name TabletInputService -StartupType disabled
+# Enabled for Windows Terminal
+#Set-Service -Name TabletInputService -StartupType disabled
 # Enterprise App Management Service
 Set-Service -Name EntAppSvc -StartupType disabled
 # Print Spooler
