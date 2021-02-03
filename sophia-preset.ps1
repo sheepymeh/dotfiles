@@ -1,4 +1,4 @@
-#Requires -RunAsAdministrator
+﻿#Requires -RunAsAdministrator
 #Requires -Version 5.1
 
 Clear-Host
@@ -160,8 +160,8 @@ WindowsFeatures -Disable
 
 	https://github.com/microsoft/WSL/issues/5437
 #>
-WSL -Enable
-EnableWSL2
+#WSL -Enable
+#EnableWSL2
 
 <#
 	Disable swap file in WSL
@@ -169,7 +169,7 @@ EnableWSL2
 
 	https://github.com/microsoft/WSL/issues/5437
 #>
-WSLSwap -Disable
+#WSLSwap -Disable
 
 # Disable certain Feature On Demand v2 (FODv2) capabilities
 WindowsCapabilities -Disable
