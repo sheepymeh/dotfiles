@@ -27,7 +27,7 @@ $downloads += Start-BitsTransfer -Source "https://mh-nexus.de/downloads/HxDSetup
 # 7-Zip
 $downloads += Start-BitsTransfer -Source "https://www.7-zip.org/a/7z1900-x64.msi" -Destination 7z.msi -DisplayName "7-Zip" -Asynchronous
 # Firefox
-$downloads += Start-BitsTransfer -Source "https://download.mozilla.org/?product=firefox-msi-latest-ssl&os=win64&lang=en-US" -Destination firefox.msi -DisplayName "Firefox" -Asynchronous
+$downloads += Start-BitsTransfer -Source "https://download.mozilla.org/?product=firefox-msi-latest-ssl&os=win64&lang=$(Get-UICulture)" -Destination firefox.msi -DisplayName "Firefox" -Asynchronous
 # Transmission
 $version = (Invoke-WebRequest "https://api.github.com/repos/transmission/transmission/releases/latest" -UseBasicParsing | ConvertFrom-Json).tag_name
 $downloads += Start-BitsTransfer -Source "https://github.com/transmission/transmission-releases/raw/master/transmission-$version-x64.msi" -Destination transmission.msi -DisplayName "Transmission" -Asynchronous
