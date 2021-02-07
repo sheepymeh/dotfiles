@@ -77,7 +77,7 @@ bitsadmin /transfer "gobuster" /dynamic /download /priority FOREGROUND "https://
 # ffuf
 foreach ($version in Invoke-WebRequest "https://api.github.com/repos/ffuf/ffuf/releases/latest" -UseBasicParsing | ConvertFrom-Json | Select -ExpandProperty assets) {
 	if ($version.browser_download_url -match "windows_amd64.zip") {
-		bitsadmin /transfer "ffuf" /dynamic /download /priority FOREGROUND $version.browser_download_url "$home\Downloads\ffuf.zip"
+		bitsadmin /transfer "ffuf" /dynamic /download /priority FOREGROUND $version.browser_download_url "$home\Downloads\setup\ffuf.zip"
 		break
 	}
 }
@@ -332,8 +332,6 @@ Set-Service -Name WerSvc -StartupType disabled
 #Set-Service -Name TabletInputService -StartupType disabled
 # Enterprise App Management Service
 Set-Service -Name EntAppSvc -StartupType disabled
-# Print Spooler
-Set-Service -Name Spooler -StartupType disabled
 # GameDVR and Broadcast
 Set-Service -Name BcastDVRUserService -StartupType disabled
 # Windows Media Player Network Sharing Service
