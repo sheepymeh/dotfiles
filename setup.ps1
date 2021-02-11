@@ -403,3 +403,6 @@ Start-Process .\office\setup.exe -Wait -ArgumentList "/configure office/office.x
 #}
 
 Write-Host "Please reboot your system to finish" -ForegroundColor Green
+
+# WSL Debloat
+sudo apt purge alsa-topology-conf alsa-ucm-conf apport-symptoms apport cloud-guest-utils cloud-init cloud-initramfs-copymods cloud-initramfs-dyn-netconf console-setup console-setup-linux eatmydata ed eject fontconfig-config fonts-dejavu-core fonts-ubuntu-console friendly-recovery fwupd-signed fwupd landscape-common mdadm mesa-vulkan-drivers openssh-server openssh-sftp-server pastebinit plymouth-theme-ubuntu-text plymouth pollinate popularity-contest pulseaudio-utils python3-apport  show-motd snapd sosreport sound-theme-freedesktop ubuntu-advantage-tools vim-common vim-runtime vim-tiny vim
