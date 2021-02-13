@@ -349,6 +349,8 @@ Set-Service -Name AXInstSV -StartupType disabled
 
 New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\System -Name DisableAcrylicBackgroundOnLogon -Value 1 -PropertyType DWORD
 
+Set-Location -Path ~\Downloads\setup
+
 Write-Host "Installing Office" -ForegroundColor Green
 Start-BitsTransfer -Source "https://download.microsoft.com/download/2/7/A/27AF1BE6-DD20-4CB4-B154-EBAB8A7D4A7E/officedeploymenttool_12624-20320.exe" -Destination office.exe
 Start-Process office.exe -Wait -ArgumentList "/extract:office /quiet"
