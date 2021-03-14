@@ -11,13 +11,13 @@ $zips = @()
 # NVIDIA
 if ((Get-WmiObject win32_VideoController).description -eq "NVIDIA GeForce GTX 1070") {
 	# Drivers
-	$downloads += Start-BitsTransfer -Source "https://us.download.nvidia.com/Windows/461.40/461.40-desktop-win10-64bit-international-dch-whql.exe" -Destination nvidia.exe -DisplayName "NVIDIA Drivers" -Asynchronous
+	$downloads += Start-BitsTransfer -Source "https://us.download.nvidia.com/Windows/461.72/461.72-desktop-win10-64bit-international-dch-whql.exe" -Destination nvidia.exe -DisplayName "NVIDIA Drivers" -Asynchronous
 	# CUDA
 	$downloads += Start-BitsTransfer -Source "http://developer.download.nvidia.com/compute/cuda/11.0.3/network_installers/cuda_11.0.3_win10_network.exe" -Destination cuda.exe -DisplayName "CUDA" -Asynchronous
 	# RTX Voice
 	$downloads += Start-BitsTransfer -Source "https://developer.nvidia.com/rtx/broadcast_engine/secure/NVIDIA_RTX_Voice.exe" -Destination rtx-voice.exe -DisplayName "RTX Voice" -Asynchronous
 	# MSI Afterburner
-	$downloads += Start-BitsTransfer -Source "https://download.msi.com/uti_exe/vga/MSIAfterburnerSetup.zip?__token__=$(Invoke-RestMethod https://www.msi.com/api/v1/get_token?date=$(Get-Date -format 'yyyyMMdd'))" -Destination afterburner.zip -DisplayName "Afterburner" -Asynchronous
+	# $downloads += Start-BitsTransfer -Source "https://download.msi.com/uti_exe/vga/MSIAfterburnerSetup.zip?__token__=$(Invoke-RestMethod https://www.msi.com/api/v1/get_token?date=$(Get-Date -format 'yyyyMMdd'))" -Destination afterburner.zip -DisplayName "Afterburner" -Asynchronous
 }
 
 # Nextcloud
@@ -115,7 +115,7 @@ Start-Process msiexec.exe -Wait -ArgumentList "/i transmission.msi /quiet"
 Write-Host "Installing Wireshark"
 Start-Process msiexec.exe -Wait -ArgumentList "/i wireshark.msi /quiet"
 Write-Host "Installing Node.js"
-Start-Process msiexec.exe -Wait -ArgumentList "/i node.msi /quiet"
+#Start-Process msiexec.exe -Wait -ArgumentList "/i node.msi /quiet"
 Write-Host "Installing MongoDB Compass"
 Start-Process msiexec.exe -Wait -ArgumentList "/i compass.msi /quiet"
 Write-Host "Installing JRE"
