@@ -5,7 +5,7 @@ sed -i 's$#Color$Color\nILoveCandy$' /etc/pacman.conf
 sed -i 's$#ParallelDownloads$ParallelDownloads$' /etc/pacman.conf
 
 pacman -Sq --noconfirm --needed acpi acpi_call bash-completion cups-pdf dialog firefox gnome-keyring htop i3blocks imv light nano neofetch networkmanager nextcloud-client p7zip s-tui ufw linux-firmware wget
-pacman -Sq --noconfirm --needed gst-plugins-bad gst-plugins-good lollypop
+pacman -Sq --noconfirm --needed gst-plugins-bad gst-plugins-good playerctl pamixer lollypop
 pacman -Sq --noconfirm --needed arc-gtk-theme inter-font noto-fonts-cjk papirus-icon-theme ttf-font-awesome ttf-jetbrains-mono
 pacman -Sq --noconfirm --needed exfat-utils gvfs gvfs-mtp thunar xdg-user-dirs
 pacman -Sq --noconfirm --needed alacritty android-tools code docker git nodejs npm python-pip
