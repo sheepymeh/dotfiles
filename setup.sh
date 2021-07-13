@@ -13,7 +13,7 @@ pacman -Sq --noconfirm --needed grim mako qt5-wayland slurp sway swayidle swaylo
 #something wrong with this line
 #pacman -Sq --noconfirm --needed qemu virt-manager iptables ebtables dnsmasq
 pacman -Sq --noconfirm --needed wireshark-qt volatility gnu-netcat
-
+# need to check that iwd isn't installed before installing nm
 systemctl --quiet enable --now NetworkManager
 
 if [[ ! $(rfkill list bluetooth) ]]; then
@@ -34,13 +34,15 @@ gpg --import 5C6DA024DDE27178073EA103F4B432D5D67990E3
 rm 5C6DA024DDE27178073EA103F4B432D5D67990E3
 sudo -u sheepymeh yay -Sq --noconfirm --needed wob steghide ffuf
 
-if [ -d /proc/acpi/battery/BAT* ]; then
-	chmod 755 battery.sh
-	mv battery.sh /usr/local/sbin/battery.sh
+if [ -d /sys/class/power_supply/BAT* ]; then
+	go build battery.go
+	chmod u+s battery
+	mv battery /usr/local/bin
 fi
 if [ -d /sys/bus/platform/drivers/ideapad_acpi/VPC2004:00 ]; then
-	chmod 755 perf.sh
-	mv perf.sh /usr/local/sbin/perf.sh
+	go build perf.go
+	chmod u+s perf
+	mv perf /usr/local/bin
 fi
 
 if [ $(grep -m1 vendor_id /proc/cpuinfo | cut -f2 -d':' | cut -c 2-) -eq 'AuthenticAMD' ]; then
