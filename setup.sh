@@ -3,8 +3,9 @@ set -e
 
 sed -i 's$#Color$Color\nILoveCandy$' /etc/pacman.conf
 sed -i 's$#ParallelDownloads$ParallelDownloads$' /etc/pacman.conf
+sed '/deny = /c\deny = 0' /etc/security/faillock.conf
 
-pacman -Sq --noconfirm --needed acpi acpi_call bash-completion cups-pdf dialog firefox gnome-keyring htop i3blocks imv light nano neofetch networkmanager nextcloud-client p7zip s-tui ufw linux-firmware wget
+pacman -Sq --noconfirm --needed acpi acpi_call bash-completion cups-pdf dialog firefox gnome-keyring htop i3blocks imv light nano neofetch nextcloud-client p7zip s-tui ufw linux-firmware wget
 pacman -Sq --noconfirm --needed gst-plugins-bad gst-plugins-good playerctl pipewire pipewire-pulse pamixer lollypop
 pacman -Sq --noconfirm --needed arc-gtk-theme inter-font noto-fonts-cjk papirus-icon-theme ttf-font-awesome ttf-jetbrains-mono
 pacman -Sq --noconfirm --needed exfat-utils gvfs gvfs-mtp thunar xdg-user-dirs
@@ -13,8 +14,6 @@ pacman -Sq --noconfirm --needed grim mako qt5-wayland slurp sway swayidle swaylo
 #something wrong with this line
 #pacman -Sq --noconfirm --needed qemu virt-manager iptables ebtables dnsmasq
 pacman -Sq --noconfirm --needed wireshark-qt volatility gnu-netcat
-# need to check that iwd isn't installed before installing nm
-systemctl --quiet enable --now NetworkManager
 
 if [[ ! $(rfkill list bluetooth) ]]; then
 	pacman -Sq --noconfirm --needed blueman bluez-utils
@@ -32,7 +31,7 @@ fi
 wget -q https://keys.openpgp.org/vks/v1/by-fingerprint/5C6DA024DDE27178073EA103F4B432D5D67990E3
 gpg --import 5C6DA024DDE27178073EA103F4B432D5D67990E3
 rm 5C6DA024DDE27178073EA103F4B432D5D67990E3
-sudo -u sheepymeh yay -Sq --noconfirm --needed wob steghide ffuf
+sudo -u sheepymeh yay -Sq --noconfirm --needed autotiling ffuf steghide wob
 
 if [ -d /sys/class/power_supply/BAT* ]; then
 	go build battery.go
@@ -83,6 +82,12 @@ cat <<EOF | tee /etc/systemd/system/getty@tty1.service.d/override.conf
 [Service]
 ExecStart=
 ExecStart=-/usr/bin/agetty --autologin sheepymeh --noclear %I linux
+EOF
+cat <<EOF | tee /etc/systemd/network/20-wired.network
+[Match]
+Name=en*
+[Network]
+DHCP=yes
 EOF
 
 sudo -u sheepymeh git config --global user.name 'sheepymeh'
