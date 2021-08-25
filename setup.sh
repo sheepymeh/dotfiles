@@ -23,15 +23,15 @@ fi
 #sed -i 's$#unix_sock_group = "libvirt"$unix_sock_group = "libvirt"$' /etc/libvirt/libvirtd.conf
 
 if ! command -v yay &> /dev/null; then
-	sudo -u sheepymeh git clone https://aur.archlinux.org/yay-bin.git
+	su -c "git clone https://aur.archlinux.org/yay-bin.git" - sheepymeh
 	cd yay-bin
-	sudo -u sheepymeh makepkg -si
+	su -c "makepkg -si" - sheepymeh
 	cd ..
 fi
 wget -q https://keys.openpgp.org/vks/v1/by-fingerprint/5C6DA024DDE27178073EA103F4B432D5D67990E3
 gpg --import 5C6DA024DDE27178073EA103F4B432D5D67990E3
 rm 5C6DA024DDE27178073EA103F4B432D5D67990E3
-sudo -u sheepymeh yay -Sq --noconfirm --needed autotiling ffuf steghide wob
+su -c "yay -Sq --noconfirm --needed autotiling ffuf steghide wob" - sheepymeh
 
 if [ -d /sys/class/power_supply/BAT* ]; then
 	go build battery.go
@@ -53,18 +53,22 @@ fi
 if [ $(lspci -k | grep -A 2 -E "(VGA|3D)" | grep -i nvidia | wc -l) -gt 0 ]; then
 	pacman -Sq --noconfirm --needed nvidia nvidia-utils
 	if [ -d /proc/acpi/battery/BAT* ]; then
-		sudo usermod -a -G bumblebee sheepymeh
-		sudo systemctl enable --now bumblebeed.service
-		echo "options bbswitch load_state=0 unload_state=1" | sudo tee /etc/modprobe.d/bbswitch.conf
+		su -c "-G bumblebee sheepymeh" usermod a
+		su -c "--now bumblebeed.servi"esudo ystemctl enable
+		echo "options "bswitch load_state=0 unload_state=1" | su -c 'modprobe.d/bbswitch.conf" tee etc
 	fi
 fi
 if [ $(lspci -k | grep -A 2 -E "(VGA|3D)" | grep -i intel | wc -l) -gt 0 ]; then
 	pacman -Sq --noconfirm --needed intel-media-driver libva-intel-driver
-	sudo -u sheepymeh yay -Sq --noconfirm --needed intel-hybrid-codec-driver
+	su -c "yay -Sq --noconfirm --needed intel-hybrid-codec-driver" - sheepymeh
 fi
 if [ $(lspci -k | grep -A 2 -E "(VGA|3D)" | grep -i amd | wc -l) -gt 0 ]; then
 	pacman -Sq --noconfirm --needed libva-mesa-driver mesa-vdpau mesa
 fi
+
+sed -i 's/:luksdev/:luksdev:allow-discards/' /boot/loader/entries/*.conf
+sed -i 's/issue_discards = 0/issue_discards = 1/' /etc/lvm/lvm.conf
+systemctl enable fstrim.timer
 
 usermod -a -G video sheepymeh
 usermod -a -G rfkill sheepymeh
@@ -90,17 +94,17 @@ Name=en*
 DHCP=yes
 EOF
 
-sudo -u sheepymeh git config --global user.name 'sheepymeh'
-sudo -u sheepymeh git config --global user.email 'sheepymeh@users.noreply.github.com'
-sudo -u sheepymeh git config --global credential.helper store
+su -c "git config --global user.name 'sheepymeh'" - sheepymeh
+su -c "git config --global user.email 'sheepymeh@users.noreply.github.com'" - sheepymeh
+su -c "git config --global credential.helper store" - sheepymeh
 
-sudo -u sheepymeh mkdir -p /home/sheepymeh/.config/sway /home/sheepymeh/.config/swaylock /home/sheepymeh/.config/wofi /home/sheepymeh/.config/alacritty /home/sheepymeh/.config/mako /home/sheepymeh/.config/i3blocks
-sudo -u sheepymeh mv sway.conf /home/sheepymeh/.config/sway/config
-sudo -u sheepymeh mv swaylock.conf /home/sheepymeh/.config/swaylock/config
-sudo -u sheepymeh mv alacritty.yml /home/sheepymeh/.config/alacritty/alacritty.yml
-sudo -u sheepymeh mv wofi.conf /home/sheepymeh/.config/wofi/config
-sudo -u sheepymeh mv wofi.css /home/sheepymeh/.config/wofi/style.css
-sudo -u sheepymeh mv i3blocks.conf /home/sheepymeh/.config/i3blocks/config
-sudo -u sheepymeh mv mako.conf /home/sheepymeh/.config/mako/config
-sudo -u sheepymeh mv gtk-2.0 /home/sheepymeh/.gtkrc-2.0
-sudo -u sheepymeh mv bashrc /home/sheepymeh/.bashrc
+su -c "mkdir -p /home/sheepymeh/.config/sway /home/sheepymeh/.config/swaylock /home/sheepymeh/.config/wofi /home/sheepymeh/.config/alacritty /home/sheepymeh/.config/mako /home/sheepymeh/.config/i3blocks" - sheepymeh
+su -c "mv sway.conf /home/sheepymeh/.config/sway/config" - sheepymeh
+su -c "mv swaylock.conf /home/sheepymeh/.config/swaylock/config" - sheepymeh
+su -c "mv alacritty.yml /home/sheepymeh/.config/alacritty/alacritty.yml" - sheepymeh
+su -c "mv wofi.conf /home/sheepymeh/.config/wofi/config" - sheepymeh
+su -c "mv wofi.css /home/sheepymeh/.config/wofi/style.css" - sheepymeh
+su -c "mv i3blocks.conf /home/sheepymeh/.config/i3blocks/config" - sheepymeh
+su -c "mv mako.conf /home/sheepymeh/.config/mako/config" - sheepymeh
+su -c "mv gtk-2.0 /home/sheepymeh/.gtkrc-2.0" - sheepymeh
+su -c "mv bashrc /home/sheepymeh/.bashrc" - sheepymeh
