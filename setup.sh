@@ -1,37 +1,36 @@
 #!/bin/bash
 set -e
 
+if [ "$EUID" -ne 0 ]; then
+	echo "Script must be run as root"
+	exit
+fi
+
 sed -i 's$#Color$Color\nILoveCandy$' /etc/pacman.conf
 sed -i 's$#ParallelDownloads$ParallelDownloads$' /etc/pacman.conf
 sed '/deny = /c\deny = 0' /etc/security/faillock.conf
 
+pacman -Syyu
 pacman -Sq --noconfirm --needed acpi acpi_call bash-completion cups-pdf dialog firefox gnome-keyring htop i3blocks imv light nano neofetch nextcloud-client p7zip s-tui ufw linux-firmware wget
 pacman -Sq --noconfirm --needed gst-plugins-bad gst-plugins-good playerctl pipewire pipewire-pulse pamixer lollypop
 pacman -Sq --noconfirm --needed arc-gtk-theme inter-font noto-fonts-cjk papirus-icon-theme ttf-font-awesome ttf-jetbrains-mono
-pacman -Sq --noconfirm --needed exfat-utils gvfs gvfs-mtp thunar xdg-user-dirs
-pacman -Sq --noconfirm --needed alacritty android-tools code docker git nodejs npm python-pip
+pacman -Sq --noconfirm --needed exfat-utils ffmpegthumbnailer gvfs gvfs-mtp tumbler thunar xdg-user-dirs
+pacman -Sq --noconfirm --needed alacritty android-tools code docker git go nodejs npm python-pip
 pacman -Sq --noconfirm --needed grim mako qt5-wayland slurp sway swayidle swaylock wf-recorder wl-clipboard wofi xdg-desktop-portal xdg-desktop-portal-wlr xorg-server xorg-server-xwayland xorg-xrandr
-#something wrong with this line
-#pacman -Sq --noconfirm --needed qemu virt-manager iptables ebtables dnsmasq
-pacman -Sq --noconfirm --needed wireshark-qt volatility gnu-netcat
 
 if [[ ! $(rfkill list bluetooth) ]]; then
 	pacman -Sq --noconfirm --needed blueman bluez-utils
 	systemctl --quiet enable --now bluetooth
 fi
-#systemctl --quiet enable --now libvirtd.service
-#sed -i 's$#unix_sock_group = "libvirt"$unix_sock_group = "libvirt"$' /etc/libvirt/libvirtd.conf
 
 if ! command -v yay &> /dev/null; then
-	su -c "git clone https://aur.archlinux.org/yay-bin.git" - sheepymeh
+	su -c "git clone https://aur.archlinux.org/yay-bin.git" $SUDO_USER
 	cd yay-bin
-	su -c "makepkg -si" - sheepymeh
+	su -c "makepkg -si" $SUDO_USER
 	cd ..
 fi
-wget -q https://keys.openpgp.org/vks/v1/by-fingerprint/5C6DA024DDE27178073EA103F4B432D5D67990E3
-gpg --import 5C6DA024DDE27178073EA103F4B432D5D67990E3
-rm 5C6DA024DDE27178073EA103F4B432D5D67990E3
-su -c "yay -Sq --noconfirm --needed autotiling ffuf steghide wob" - sheepymeh
+wget -qO - https://keys.openpgp.org/vks/v1/by-fingerprint/5C6DA024DDE27178073EA103F4B432D5D67990E3 | gpg --import
+su -c "yay -Sq --noconfirm --needed autotiling wob" $SUDO_USER
 
 if [ -d /sys/class/power_supply/BAT* ]; then
 	go build battery.go
@@ -53,14 +52,14 @@ fi
 if [ $(lspci -k | grep -A 2 -E "(VGA|3D)" | grep -i nvidia | wc -l) -gt 0 ]; then
 	pacman -Sq --noconfirm --needed nvidia nvidia-utils
 	if [ -d /proc/acpi/battery/BAT* ]; then
-		su -c "-G bumblebee sheepymeh" usermod a
-		su -c "--now bumblebeed.servi"esudo ystemctl enable
-		echo "options "bswitch load_state=0 unload_state=1" | su -c 'modprobe.d/bbswitch.conf" tee etc
+		usermod -a -G bumblebee $SUDO_USER
+		systemctl enable --now bumblebeed.service
+		echo "options bbswitch load_state=0 unload_state=1" >/etc/modprobe.d/bbswitch.conf
 	fi
 fi
 if [ $(lspci -k | grep -A 2 -E "(VGA|3D)" | grep -i intel | wc -l) -gt 0 ]; then
 	pacman -Sq --noconfirm --needed intel-media-driver libva-intel-driver
-	su -c "yay -Sq --noconfirm --needed intel-hybrid-codec-driver" - sheepymeh
+	su -c "yay -Sq --noconfirm --needed intel-hybrid-codec-driver" $SUDO_USER
 fi
 if [ $(lspci -k | grep -A 2 -E "(VGA|3D)" | grep -i amd | wc -l) -gt 0 ]; then
 	pacman -Sq --noconfirm --needed libva-mesa-driver mesa-vdpau mesa
@@ -70,11 +69,11 @@ sed -i 's/:luksdev/:luksdev:allow-discards/' /boot/loader/entries/*.conf
 sed -i 's/issue_discards = 0/issue_discards = 1/' /etc/lvm/lvm.conf
 systemctl enable fstrim.timer
 
-usermod -a -G video sheepymeh
-usermod -a -G rfkill sheepymeh
-#usermod -a -G libvirt sheepymeh
-usermod -a -G docker sheepymeh
-cat <<EOF | tee -a /etc/environment
+usermod -a -G video $SUDO_USER
+usermod -a -G rfkill $SUDO_USER
+#usermod -a -G libvirt $SUDO_USER
+usermod -a -G docker $SUDO_USER
+cat <<EOF >>/etc/environment
 MOZ_ENABLE_WAYLAND=1
 QT_QPA_PLATFORM=wayland-egl
 QT_WAYLAND_DISABLE_WINDOWDECORATION=1
@@ -82,29 +81,39 @@ XDG_CURRENT_DESKTOP=sway
 XDG_SESSION_TYPE=wayland
 EOF
 mkdir -p /etc/systemd/system/getty@tty1.service.d/
-cat <<EOF | tee /etc/systemd/system/getty@tty1.service.d/override.conf
+cat <<EOF >/etc/systemd/system/getty@tty1.service.d/override.conf
 [Service]
 ExecStart=
-ExecStart=-/usr/bin/agetty --autologin sheepymeh --noclear %I linux
+ExecStart=-/usr/bin/agetty --autologin $SUDO_USER --noclear %I linux
 EOF
-cat <<EOF | tee /etc/systemd/network/20-wired.network
-[Match]
-Name=en*
-[Network]
-DHCP=yes
-EOF
+# cat <<EOF >/etc/systemd/network/20-wired.network
+# [Match]
+# Name=en*
+# [Network]
+# DHCP=yes
+# EOF
 
-su -c "git config --global user.name 'sheepymeh'" - sheepymeh
-su -c "git config --global user.email 'sheepymeh@users.noreply.github.com'" - sheepymeh
-su -c "git config --global credential.helper store" - sheepymeh
+rm -rf /home/$SUDO_USER/Desktop /home/$SUDO_USER/Templates /home/$SUDO_USER/Public /home/$SUDO_USER/Documents /home/$SUDO_USER/Music
+su -c "xdg-user-dirs-update" $SUDO_USER
 
-su -c "mkdir -p /home/sheepymeh/.config/sway /home/sheepymeh/.config/swaylock /home/sheepymeh/.config/wofi /home/sheepymeh/.config/alacritty /home/sheepymeh/.config/mako /home/sheepymeh/.config/i3blocks" - sheepymeh
-su -c "mv sway.conf /home/sheepymeh/.config/sway/config" - sheepymeh
-su -c "mv swaylock.conf /home/sheepymeh/.config/swaylock/config" - sheepymeh
-su -c "mv alacritty.yml /home/sheepymeh/.config/alacritty/alacritty.yml" - sheepymeh
-su -c "mv wofi.conf /home/sheepymeh/.config/wofi/config" - sheepymeh
-su -c "mv wofi.css /home/sheepymeh/.config/wofi/style.css" - sheepymeh
-su -c "mv i3blocks.conf /home/sheepymeh/.config/i3blocks/config" - sheepymeh
-su -c "mv mako.conf /home/sheepymeh/.config/mako/config" - sheepymeh
-su -c "mv gtk-2.0 /home/sheepymeh/.gtkrc-2.0" - sheepymeh
-su -c "mv bashrc /home/sheepymeh/.bashrc" - sheepymeh
+su -c "git config --global user.name 'sheepymeh'" $SUDO_USER
+su -c "git config --global user.email 'sheepymeh@users.noreply.github.com'" $SUDO_USER
+su -c "git config --global credential.helper store" $SUDO_USER
+
+su -c "mkdir -p ~/.config/sway ~/.config/swaylock ~/.config/wofi ~/.config/alacritty ~/.config/mako ~/.config/i3blocks ~/.config/gtk-3.0 '~/.config/Code - OSS/User/'" $SUDO_USER
+su -c "mv sway/config ~/.config/sway/config" $SUDO_USER
+su -c "mv swaylock.conf ~/.config/swaylock/config" $SUDO_USER
+su -c "mv alacritty.yml ~/.config/alacritty/alacritty.yml" $SUDO_USER
+su -c "mv wofi.conf ~/.config/wofi/config" $SUDO_USER
+su -c "mv wofi.css ~/.config/wofi/style.css" $SUDO_USER
+su -c "mv i3blocks.conf ~/.config/i3blocks/config" $SUDO_USER
+su -c "mv mako.conf ~/.config/mako/config" $SUDO_USER
+su -c "mv gtk-2.0 ~/.gtkrc-2.0" $SUDO_USER
+su -c "mv gtk-3.0 ~/.config/gtk-3.0/settings.ini" $SUDO_USER
+su -c "mv bashrc ~/.bashrc" $SUDO_USER
+su -c "mv uca.xml ~/.config/Thunar/uca.xml" $SUDO_USER
+su -c "mv code/keybindings.json '~/.config/Code - OSS/User/'" $SUDO_USER
+su -c "mv code/settings.json '~/.config/Code - OSS/User/'" $SUDO_USER
+if [ -d /sys/class/power_supply/BAT* ]; then
+	su -c "mv sway/laptop.conf ~/.config/sway/laptop.conf" $SUDO_USER
+fi

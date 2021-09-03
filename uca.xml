@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actions>
+<action>
+	<icon></icon>
+	<name>Create Archive</name>
+	<unique-id>1</unique-id>
+	<command>7za a -tzip Archive.zip %F</command>
+	<description>Create archive from the selected files</description>
+	<patterns>*</patterns>
+	<directories/>
+	<audio-files/>
+	<image-files/>
+	<other-files/>
+	<text-files/>
+	<video-files/>
+</action>
+<action>
+	<icon></icon>
+	<name>Extract Here</name>
+	<unique-id>2</unique-id>
+	<command>7za x %f</command>
+	<description>Extract this archive to the current folder</description>
+	<patterns>*.zip;*.rar;*.7z;*.tar.gz;*.tar;*.gz;*.bzip2</patterns>
+	<other-files/>
+</action>
+</actions>

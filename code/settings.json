@@ -13,5 +13,7 @@
 	"git.confirmSync": false,
 	"git.autofetch": true,
 	"files.eol": "\n",
-	"editor.fontLigatures": true
+	"editor.fontLigatures": true,
+	"explorer.confirmDelete": false,
+	"explorer.confirmDragAndDrop": false
 }
