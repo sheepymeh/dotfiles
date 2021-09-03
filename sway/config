@@ -4,6 +4,7 @@ set $mod Mod4
 set $term alacritty
 set $menu wofi -i --show drun | xargs swaymsg exec --
 
+output * bg ~/Nextcloud/Archive/Pictues/laptop/waifu2x.png fill
 exec swayidle -w \
     timeout 140 'light -O ; light -S 5' \
       resume 'light -I' \
@@ -128,7 +129,7 @@ font pango:Inter, Font Awesome 5 Brands, Font Awesome 5 Free 9
 
     # Move window between screeens
     bindsym $mod+p move workspace to output left
-    bindsym $Shift+mod+p move workspace to output right
+    bindsym $mod+Shift+p move workspace to output right
 
     # Resizing containers
     mode "resize" {
