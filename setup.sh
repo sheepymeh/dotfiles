@@ -26,7 +26,7 @@ fi
 if ! command -v yay &> /dev/null; then
 	su -c "git clone https://aur.archlinux.org/yay-bin.git" $SUDO_USER
 	cd yay-bin
-	su -c "makepkg -si" $SUDO_USER
+	sudo -u $SUDO_USER makepkg -si
 	cd ..
 fi
 wget -qO - https://keys.openpgp.org/vks/v1/by-fingerprint/5C6DA024DDE27178073EA103F4B432D5D67990E3 | gpg --import
@@ -88,12 +88,6 @@ cat <<EOF >/etc/systemd/system/getty@tty1.service.d/override.conf
 ExecStart=
 ExecStart=-/usr/bin/agetty --autologin $SUDO_USER --noclear %I linux
 EOF
-# cat <<EOF >/etc/systemd/network/20-wired.network
-# [Match]
-# Name=en*
-# [Network]
-# DHCP=yes
-# EOF
 
 su -c "xdg-user-dirs-update" $SUDO_USER
 rm -rf /home/$SUDO_USER/Desktop /home/$SUDO_USER/Templates /home/$SUDO_USER/Public /home/$SUDO_USER/Documents /home/$SUDO_USER/Music
