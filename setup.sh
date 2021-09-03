@@ -18,7 +18,7 @@ pacman -Sq --noconfirm --needed exfat-utils ffmpegthumbnailer gvfs gvfs-mtp tumb
 pacman -Sq --noconfirm --needed alacritty android-tools code docker git go nodejs npm python-pip
 pacman -Sq --noconfirm --needed grim mako qt5-wayland slurp sway swayidle swaylock wf-recorder wl-clipboard wofi xdg-desktop-portal xdg-desktop-portal-wlr xorg-server xorg-server-xwayland xorg-xrandr
 
-if [[ ! $(rfkill list bluetooth) ]]; then
+if rfkill list bluetooth >/dev/null 2&>1; then
 	pacman -Sq --noconfirm --needed blueman bluez-utils
 	systemctl --quiet enable --now bluetooth
 fi
@@ -30,7 +30,8 @@ if ! command -v yay &> /dev/null; then
 	cd ..
 fi
 wget -qO - https://keys.openpgp.org/vks/v1/by-fingerprint/5C6DA024DDE27178073EA103F4B432D5D67990E3 | gpg --import
-su -c "yay -Sq --noconfirm --needed autotiling wob" $SUDO_USER
+
+sudo -u $SUDO_USER yay -Sq --noconfirm --needed autotiling wob
 
 if [ -d /sys/class/power_supply/BAT* ]; then
 	go build battery.go
@@ -50,6 +51,7 @@ elif [ $(grep -m1 vendor_id /proc/cpuinfo | cut -f2 -d':' | cut -c 2-) -eq 'Genu
 fi
 
 if [ $(lspci -k | grep -A 2 -E "(VGA|3D)" | grep -i nvidia | wc -l) -gt 0 ]; then
+	echo NVIDIA Drivers in use, will not boot
 	pacman -Sq --noconfirm --needed nvidia nvidia-utils
 	if [ -d /proc/acpi/battery/BAT* ]; then
 		usermod -a -G bumblebee $SUDO_USER
@@ -93,6 +95,7 @@ EOF
 # DHCP=yes
 # EOF
 
+su -c "xdg-user-dirs-update" $SUDO_USER
 rm -rf /home/$SUDO_USER/Desktop /home/$SUDO_USER/Templates /home/$SUDO_USER/Public /home/$SUDO_USER/Documents /home/$SUDO_USER/Music
 su -c "xdg-user-dirs-update" $SUDO_USER
 
@@ -100,7 +103,7 @@ su -c "git config --global user.name 'sheepymeh'" $SUDO_USER
 su -c "git config --global user.email 'sheepymeh@users.noreply.github.com'" $SUDO_USER
 su -c "git config --global credential.helper store" $SUDO_USER
 
-su -c "mkdir -p ~/.config/sway ~/.config/swaylock ~/.config/wofi ~/.config/alacritty ~/.config/mako ~/.config/i3blocks ~/.config/gtk-3.0 '~/.config/Code - OSS/User/'" $SUDO_USER
+su -c "mkdir -p ~/.config/sway ~/.config/swaylock ~/.config/wofi ~/.config/alacritty ~/.config/mako ~/.config/i3blocks ~/.config/gtk-3.0 '~/.config/Code - OSS/User/' ~/.config/Thunar" $SUDO_USER
 su -c "mv sway/config ~/.config/sway/config" $SUDO_USER
 su -c "mv swaylock.conf ~/.config/swaylock/config" $SUDO_USER
 su -c "mv alacritty.yml ~/.config/alacritty/alacritty.yml" $SUDO_USER
