@@ -67,7 +67,7 @@ if [ $(lspci -k | grep -A 2 -E "(VGA|3D)" | grep -i amd | wc -l) -gt 0 ]; then
 	pacman -Sq --noconfirm --needed libva-mesa-driver mesa-vdpau mesa
 fi
 
-sed -i 's/:luksdev/:luksdev:allow-discards/' /boot/loader/entries/*.conf
+sed -i 's/:luksdev/:luksdev:allow-discards quiet/' /boot/loader/entries/*.conf
 sed -i 's/issue_discards = 0/issue_discards = 1/' /etc/lvm/lvm.conf
 systemctl enable fstrim.timer
 
