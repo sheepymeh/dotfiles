@@ -8,7 +8,7 @@ fi
 
 sed -i 's$#Color$Color\nILoveCandy$' /etc/pacman.conf
 sed -i 's$#ParallelDownloads$ParallelDownloads$' /etc/pacman.conf
-sed '/deny = /c\deny = 0' /etc/security/faillock.conf
+sed -i '/deny = /c\deny = 0' /etc/security/faillock.conf
 
 pacman -Syyu
 pacman -Sq --noconfirm --needed acpi acpi_call bash-completion cups-pdf dialog firefox gnome-keyring htop i3blocks imv light nano neofetch nextcloud-client p7zip s-tui ufw linux-firmware wget
