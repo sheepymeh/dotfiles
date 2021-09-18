@@ -10,9 +10,9 @@ exec swayidle -w \
       resume 'light -I' \
     timeout 150 'swaymsg "output * dpms off"' \
       resume 'swaymsg "output * dpms on"' \
-    timeout 160 'swaylock -feF' \
-    timeout 300 'systemctl suspend' \
-    before-sleep 'pgrep -x swaylock >/dev/null || swaylock -feF'
+    timeout 160 'swaylock -f' \
+    timeout 300 'systemctl suspend'
+#    before-sleep 'pgrep -x swaylock >/dev/null || swaylock -f'
 exec autotiling
 
 for_window [app_id="firefox"] inhibit_idle fullscreen
@@ -51,7 +51,7 @@ font pango:Inter, Font Awesome 5 Brands, Font Awesome 5 Free 9
     bindsym $mod+Shift+s exec systemctl suspend
     bindsym $mod+e exec thunar ~
     bindsym $mod+b exec firefox
-    bindsym $mod+m exec "MIC=$(pactl list short sources | awk '$2 !~ /monitor/ && /RUNNING$/ { r = 1; print $2; exit } END { exit !r }') && (pamixer --source \"$MIC\" --toggle-mute; pkill -SIGRTMIN+1 i3blocks)"
+    bindsym $mod+m exec MIC=$(pactl list short sources | awk '$2 !~ /monitor/ && /RUNNING$/ { r = 1; print $2; exit } END { exit !r }') && pamixer --source "$MIC" --toggle-mute
     bindsym $mod+w output * bg /usr/share/backgrounds/sway/Sway_Wallpaper_Blue_1920x1080.png fill
 
     # Move
@@ -79,8 +79,8 @@ font pango:Inter, Font Awesome 5 Brands, Font Awesome 5 Free 9
     bindsym Ctrl+Print exec grim "$HOME/Pictures/Screenshot $(date +'%m.%d.%y %T').png"
     bindsym Alt+Print exec grim -g "$(slurp)" - | wl-copy
     bindsym Ctrl+Alt+Print exec grim -g "$(slurp)" "$HOME/Pictures/Screenshot $(date +'%m.%d.%y %T').png"
-    bindsym $mod+Print exec killall -s SIGINT wf-recorder 2>/dev/null || (wf-recorder -f "$HOME/Videos/Screen Recording $(date +'%m.%d.%y %T').mp4" -c h264_vaapi -d /dev/dri/renderD128 -a"$(pactl info | grep 'Default Sink' | cut -d':' -f2 | xargs).monitor" -t || wf-recorder -f "$HOME/Videos/Screen Recording $(date +'%m.%d.%y %T').mp4" -a"$(pactl info | grep 'Default Sink' | cut -d':' -f2 | xargs).monitor"); exec pkill -SIGRTMIN+2 i3blocks
-    bindsym $mod+Shift+Print exec killall -s SIGINT wf-recorder 2>/dev/null || (LOC=$(slurp) && wf-recorder -f "$HOME/Videos/Screen Recording $(date +'%m.%d.%y %T').mp4" -c h264_vaapi -d /dev/dri/renderD128 -a"$(pactl info | grep 'Default Sink' | cut -d':' -f2 | xargs).monitor" -g "$LOC" || wf-recorder -f "$HOME/Videos/Screen Recording $(date +'%m.%d.%y %T').mp4" -a"$(pactl info | grep 'Default Sink' | cut -d':' -f2 | xargs).monitor" -g "$LOC"); exec sleep 0.1 && pkill -SIGRTMIN+2 i3blocks
+    bindsym $mod+Print exec record.sh
+    bindsym $mod+Shift+Print exec record.sh slurp
 
     # Workspaces
     set $ws1 1

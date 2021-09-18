@@ -1,10 +1,10 @@
 font=Inter 10
 padding=6
 border-radius=5
-border-color=#5294e2
-background-color=#383c4a
+border-color=#5294e2b0
+background-color=#383c4ada
 text-color=#eeeeee
 default-timeout=10000
 width=500
 max-icon-size=56
-anchor=top-center
+anchor=bottom-right

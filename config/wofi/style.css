@@ -3,6 +3,7 @@ window {
 	font: 17px Inter, sans-serif;
 	border-radius: 3px;
 	border: 2px solid #5294e2;
+	opacity: .85;
 }
 
 #input {

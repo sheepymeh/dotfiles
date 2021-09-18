@@ -1,0 +1,26 @@
+[performance]
+align=right
+full_text= Balanced
+command=/usr/local/bin/perf
+
+[battery]
+full_text=Battery
+command=[[ -z $button ]] && /usr/local/bin/battery || /usr/local/bin/battery update
+interval=60
+
+[mute]
+command=mic.sh
+interval=persist
+min_width=20
+align=center
+format=json
+
+[wf-recorder]
+command=record.sh status
+signal=2
+interval=persist
+min_width=50
+
+[time]
+command=echo " $(date "+%A %d.%m %H:%M")"
+interval=5
