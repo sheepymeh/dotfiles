@@ -13,9 +13,10 @@ sed -i '/deny = /c\deny = 0' /etc/security/faillock.conf
 
 pacman -Syyu
 pacman -Sq --noconfirm --needed acpi acpi_call bash-completion cups-pdf dialog firefox gnome-keyring htop i3blocks imv light nano neofetch nextcloud-client p7zip s-tui ufw linux-firmware wget
-pacman -Sq --noconfirm --needed gst-plugins-bad gst-plugins-good playerctl pipewire pipewire-pulse pamixer lollypop
+pacman -Sq --noconfirm --needed gst-plugins-bad gst-plugins-good mpv playerctl pipewire pipewire-pulse pamixer lollypop
 pacman -Sq --noconfirm --needed arc-gtk-theme inter-font noto-fonts-cjk papirus-icon-theme ttf-font-awesome ttf-jetbrains-mono
 pacman -Sq --noconfirm --needed exfat-utils ffmpegthumbnailer gvfs gvfs-mtp tumbler thunar xdg-user-dirs
+pacman -Sq --noconfirm --needed libreoffice-fresh hunspell hunspell-en_us hunspell-de
 pacman -Sq --noconfirm --needed alacritty android-tools code podman git go nodejs npm python-pip
 pacman -Sq --noconfirm --needed grim mako qt5-wayland slurp swayidle swaylock wf-recorder wl-clipboard wofi xdg-desktop-portal xdg-desktop-portal-wlr xorg-server xorg-server-xwayland xorg-xrandr
 
@@ -46,8 +47,8 @@ if [ -d /sys/bus/platform/drivers/ideapad_acpi/VPC2004:00 ]; then
 fi
 cp scripts/record.sh /usr/local/bin
 cp scripts/mic.sh /usr/local/bin
-chmod a+x /usr/local/bin record.sh
-chmod a+x /usr/local/bin mic.sh
+chmod a+x /usr/local/bin/record.sh
+chmod a+x /usr/local/bin/mic.sh
 
 if [ $(grep -m1 vendor_id /proc/cpuinfo | cut -f2 -d':' | cut -c 2-) -eq 'AuthenticAMD' ]; then
 	pacman -Sq --noconfirm --needed amd-ucode
@@ -58,7 +59,7 @@ fi
 if lspci -k | grep -A 2 -E "(VGA|3D)" | grep -qi nvidia; then
 	echo Using EGLStreams sway fork for NVIDIA driver
 	pacman -Sq --noconfirm --needed nvidia nvidia-utils
-	su -c "yay -Sq --noconfirm --needed sway-git wlroots-eglstreams-git" $SUDO_USER
+	sudo -u $SUDO_USER yay -Sq --noconfirm --needed sway-git wlroots-eglstreams-git
 	systemctl enable nvidia-{suspend,hibernate,resume}
 	echo options nvidia NVreg_PreserveVideoMemoryAllocations=1 NVreg_TemporaryFilePath=/var/tmp >/etc/modprobe.d/nvidia-power-management.conf
 	sed -i '/^options/ s/$/ nvidia_drm.modeset=1/' /boot/loader/entries/*.conf
@@ -73,7 +74,7 @@ else
 fi
 if lspci -k | grep -A 2 -E "(VGA|3D)" | grep -qi intel; then
 	pacman -Sq --noconfirm --needed intel-media-driver libva-intel-driver
-	su -c "yay -Sq --noconfirm --needed intel-hybrid-codec-driver" $SUDO_USER
+	sudo -u $SUDO_USER yay -Sq --noconfirm --needed intel-hybrid-codec-driver
 fi
 if lspci -k | grep -A 2 -E "(VGA|3D)" | grep -qi amd; then
 	pacman -Sq --noconfirm --needed libva-mesa-driver mesa-vdpau mesa
@@ -87,7 +88,9 @@ usermod -a -G video $SUDO_USER
 usermod -a -G rfkill $SUDO_USER
 #usermod -a -G libvirt $SUDO_USER
 
-# to add podman rootless configuration
+touch /etc/subuid /etc/subgid
+usermod --add-subuids 100000-165535 --add-subgids 100000-165535 $SUDO_USER
+echo 'unqualified-search-registries = ["docker.io"]' >>/etc/containers/registries.conf
 
 cat <<EOF >>/etc/environment
 MOZ_ENABLE_WAYLAND=1
@@ -107,11 +110,12 @@ su -c "xdg-user-dirs-update" $SUDO_USER
 rm -rf /home/$SUDO_USER/Desktop /home/$SUDO_USER/Templates /home/$SUDO_USER/Public /home/$SUDO_USER/Documents /home/$SUDO_USER/Music
 su -c "xdg-user-dirs-update" $SUDO_USER
 
-cp config/* /home/$SUDO_USER/.config
-cp code/* /home/$SUDO_USER/.config/Code - OSS/User
+cp -r config/* /home/$SUDO_USER/.config
+mkdir -p /home/$SUDO_USER/.config/Code\ -\ OSS/User
+cp code/* /home/$SUDO_USER/.config/Code\ -\ OSS/User
 cp bashrc /home/$SUDO_USER/.bashrc
 if [ ! -d /sys/class/power_supply/BAT* ]; then
-	cp sway/laptop.conf ~/.config/sway/laptop.conf
+	rm /home/$SUDO_USER/.config/sway/laptop.conf
 fi
 
 su -c "git config --global user.name 'sheepymeh'" $SUDO_USER
