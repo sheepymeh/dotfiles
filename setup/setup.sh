@@ -20,7 +20,7 @@ pacman -Sq --noconfirm --needed libreoffice-fresh hunspell hunspell-en_us hunspe
 pacman -Sq --noconfirm --needed alacritty android-tools code podman git go nodejs npm python-pip
 pacman -Sq --noconfirm --needed grim mako qt5-wayland slurp swayidle swaylock wf-recorder wl-clipboard wofi xdg-desktop-portal xdg-desktop-portal-wlr xorg-server xorg-server-xwayland xorg-xrandr
 
-if rfkill list bluetooth >/dev/null 2&>1; then
+if systemctl status bluetooth >/dev/null 2&>1; then
 	pacman -Sq --noconfirm --needed blueman bluez-utils
 	systemctl --quiet enable --now bluetooth
 fi
