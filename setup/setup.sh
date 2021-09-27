@@ -1,11 +1,15 @@
 #!/bin/bash
 set -e
-cd .. # Script should be run from /setup
 
 if [ "$EUID" -ne 0 ]; then
 	echo "Script must be run as root"
 	exit
 fi
+if [[ $(basename "$PWD") != "setup" ]]; then
+	echo "Script must be run from /setup"
+	exit
+fi
+cd .. # Script should be run from /setup
 
 sed -i 's$#Color$Color\nILoveCandy$' /etc/pacman.conf
 sed -i 's$#ParallelDownloads$ParallelDownloads$' /etc/pacman.conf
