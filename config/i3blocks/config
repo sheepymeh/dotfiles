@@ -22,5 +22,5 @@ interval=persist
 min_width=50
 
 [time]
-command=echo " $(date "+%A %d.%m %H:%M")"
+command=echo " $(date '+%A %d.%m %H:%M')"
 interval=5
