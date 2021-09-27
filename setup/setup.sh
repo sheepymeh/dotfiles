@@ -54,9 +54,9 @@ cp scripts/mic.sh /usr/local/bin
 chmod a+x /usr/local/bin/record.sh
 chmod a+x /usr/local/bin/mic.sh
 
-if [ $(grep -m1 vendor_id /proc/cpuinfo | cut -f2 -d':' | cut -c 2-) -eq 'AuthenticAMD' ]; then
+if [ $(grep -m1 vendor_id /proc/cpuinfo | cut -f2 -d':' | cut -c 2-) == 'AuthenticAMD' ]; then
 	pacman -Sq --noconfirm --needed amd-ucode
-elif [ $(grep -m1 vendor_id /proc/cpuinfo | cut -f2 -d':' | cut -c 2-) -eq 'GenuineIntel' ]; then
+elif [ $(grep -m1 vendor_id /proc/cpuinfo | cut -f2 -d':' | cut -c 2-) == 'GenuineIntel' ]; then
 	pacman -Sq --noconfirm --needed intel-ucode
 fi
 
