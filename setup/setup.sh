@@ -73,6 +73,7 @@ if lspci -k | grep -A 2 -E "(VGA|3D)" | grep -qi nvidia; then
 		systemctl enable --now bumblebeed.service
 		echo "options bbswitch load_state=0 unload_state=1" >/etc/modprobe.d/bbswitch.conf
 	fi
+	sed -i '/options / s/$/ nvidia-drm.modeset=1/' /boot/loader/entries/*.conf
 else
 	pacman -Sq --noconfirm --needed sway
 fi
@@ -84,7 +85,8 @@ if lspci -k | grep -A 2 -E "(VGA|3D)" | grep -qi amd; then
 	pacman -Sq --noconfirm --needed libva-mesa-driver mesa-vdpau mesa
 fi
 
-sed -i 's/:luksdev/:luksdev:allow-discards quiet/' /boot/loader/entries/*.conf
+sed -i 's/:luksdev /:luksdev:allow-discards /' /boot/loader/entries/*.conf
+sed -i '/options / s/$/ quiet loglevel=3 rd.systemd.show_status=auto rd.udev.log_level=3/' /boot/loader/entries/*.conf
 sed -i 's/issue_discards = 0/issue_discards = 1/' /etc/lvm/lvm.conf
 systemctl enable fstrim.timer
 
