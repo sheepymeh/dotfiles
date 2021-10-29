@@ -73,7 +73,6 @@ if lspci -k | grep -A 2 -E "(VGA|3D)" | grep -qi nvidia; then
 		systemctl enable --now bumblebeed.service
 		echo "options bbswitch load_state=0 unload_state=1" >/etc/modprobe.d/bbswitch.conf
 	fi
-	sed -i '/options / s/$/ nvidia-drm.modeset=1/' /boot/loader/entries/*.conf
 else
 	pacman -Sq --noconfirm --needed sway
 fi
@@ -86,7 +85,7 @@ if lspci -k | grep -A 2 -E "(VGA|3D)" | grep -qi amd; then
 fi
 
 sed -i 's/:luksdev /:luksdev:allow-discards /' /boot/loader/entries/*.conf
-sed -i '/options / s/$/ quiet loglevel=3 rd.systemd.show_status=auto rd.udev.log_level=3/' /boot/loader/entries/*.conf
+sed -i '/^options / s/$/ quiet loglevel=3 rd.systemd.show_status=auto rd.udev.log_level=3/' /boot/loader/entries/*.conf
 sed -i 's/issue_discards = 0/issue_discards = 1/' /etc/lvm/lvm.conf
 systemctl enable fstrim.timer
 
@@ -111,21 +110,21 @@ cat <<EOF >/etc/systemd/system/getty@tty1.service.d/override.conf
 ExecStart=
 ExecStart=-/usr/bin/agetty --skip-login --nonewline --noissue --autologin $SUDO_USER --noclear %I linux
 EOF
-touch /home/$SUDO_USER/.hushlogin
+su -c 'touch /home/$SUDO_USER/.hushlogin' $SUDO_USER
 
 su -c "xdg-user-dirs-update" $SUDO_USER
 rm -rf /home/$SUDO_USER/Desktop /home/$SUDO_USER/Templates /home/$SUDO_USER/Public /home/$SUDO_USER/Documents /home/$SUDO_USER/Music
 su -c "xdg-user-dirs-update" $SUDO_USER
 
-cp -r config/* /home/$SUDO_USER/.config
-mkdir -p /home/$SUDO_USER/.config/Code\ -\ OSS/User
-cp code/* /home/$SUDO_USER/.config/Code\ -\ OSS/User
-cp bashrc /home/$SUDO_USER/.bashrc
+su -c 'cp -r config/* /home/$SUDO_USER/.config' $SUDO_USER
+su -c 'mkdir -p /home/$SUDO_USER/.config/Code\ -\ OSS/User' $SUDO_USER
+su -c 'cp code/* /home/$SUDO_USER/.config/Code\ -\ OSS/User' $SUDO_USER
+su -c 'cp bashrc /home/$SUDO_USER/.bashrc' $SUDO_USER
 if [ ! -d /sys/class/power_supply/BAT* ]; then
 	rm /home/$SUDO_USER/.config/sway/laptop.conf
 fi
 
-echo MAKEFLAGS="-j$(nproc)" >/home/$SUDO_USER/.makepkg.conf
+su -c "echo MAKEFLAGS="-j$(nproc)" >/home/$SUDO_USER/.makepkg.conf" $SUDO_USER
 
 su -c "git config --global user.name 'sheepymeh'" $SUDO_USER
 su -c "git config --global user.email 'sheepymeh@users.noreply.github.com'" $SUDO_USER
