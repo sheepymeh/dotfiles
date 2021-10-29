@@ -36,8 +36,8 @@ if ! command -v yay &> /dev/null; then
 	cd ..
 fi
 wget -qO - https://keys.openpgp.org/vks/v1/by-fingerprint/5C6DA024DDE27178073EA103F4B432D5D67990E3 | gpg --import
-
-sudo -u $SUDO_USER yay -Sq --noconfirm --needed autotiling wob
+sudo -u $SUDO_USER yay -Sq --noconfirm --needed autotiling plymouth plymouth-theme-arch-agua wob
+sudo plymouth-set-default-theme -R arch-agua
 
 if [ -d /sys/class/power_supply/BAT* ]; then
 	go build scripts/battery.go
@@ -122,6 +122,8 @@ cp bashrc /home/$SUDO_USER/.bashrc
 if [ ! -d /sys/class/power_supply/BAT* ]; then
 	rm /home/$SUDO_USER/.config/sway/laptop.conf
 fi
+
+echo MAKEFLAGS="-j$(nproc)" >/home/$SUDO_USER/.makepkg.conf
 
 su -c "git config --global user.name 'sheepymeh'" $SUDO_USER
 su -c "git config --global user.email 'sheepymeh@users.noreply.github.com'" $SUDO_USER
