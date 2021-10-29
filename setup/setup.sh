@@ -107,8 +107,9 @@ mkdir -p /etc/systemd/system/getty@tty1.service.d/
 cat <<EOF >/etc/systemd/system/getty@tty1.service.d/override.conf
 [Service]
 ExecStart=
-ExecStart=-/usr/bin/agetty --autologin $SUDO_USER --noclear %I linux
+ExecStart=-/usr/bin/agetty --skip-login --nonewline --noissue --autologin $SUDO_USER --noclear %I linux
 EOF
+touch /home/$SUDO_USER/.hushlogin
 
 su -c "xdg-user-dirs-update" $SUDO_USER
 rm -rf /home/$SUDO_USER/Desktop /home/$SUDO_USER/Templates /home/$SUDO_USER/Public /home/$SUDO_USER/Documents /home/$SUDO_USER/Music
