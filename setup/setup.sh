@@ -37,7 +37,8 @@ if ! command -v yay &> /dev/null; then
 fi
 wget -qO - https://keys.openpgp.org/vks/v1/by-fingerprint/5C6DA024DDE27178073EA103F4B432D5D67990E3 | gpg --import
 sudo -u $SUDO_USER yay -Sq --noconfirm --needed autotiling plymouth plymouth-theme-arch-agua wob
-sudo plymouth-set-default-theme -R arch-agua
+plymouth-set-default-theme -R arch-agua
+sed -i '/^HOOKS=(/ s/encrypt/ plymouth plymouth-encrypt/' /etc/mkinitcpio.conf
 
 if [ -d /sys/class/power_supply/BAT* ]; then
 	go build scripts/battery.go
@@ -67,25 +68,29 @@ if lspci -k | grep -A 2 -E "(VGA|3D)" | grep -qi nvidia; then
 	systemctl enable nvidia-{suspend,hibernate,resume}
 	echo options nvidia NVreg_PreserveVideoMemoryAllocations=1 NVreg_TemporaryFilePath=/var/tmp >/etc/modprobe.d/nvidia-power-management.conf
 	sed -i '/^options/ s/$/ nvidia_drm.modeset=1/' /boot/loader/entries/*.conf
+	sed -i '/^MODULES=(.*nvidia nvidia_modeset nvidia_uvm nvidia_drm/b; s/MODULES=(/MODULES=(nvidia nvidia_modeset nvidia_uvm nvidia_drm /' /boot/loader/entries/*.conf
 	bootctl update
 	if [ -d /proc/acpi/battery/BAT* ]; then
 		usermod -a -G bumblebee $SUDO_USER
 		systemctl enable --now bumblebeed.service
-		echo "options bbswitch load_state=0 unload_state=1" >/etc/modprobe.d/bbswitch.conf
+		echo 'options bbswitch load_state=0 unload_state=1' >/etc/modprobe.d/bbswitch.conf
 	fi
 else
 	pacman -Sq --noconfirm --needed sway
 fi
-if lspci -k | grep -A 2 -E "(VGA|3D)" | grep -qi intel; then
+if lspci -k | grep -A 2 -E '(VGA|3D)' | grep -qi intel; then
 	pacman -Sq --noconfirm --needed intel-media-driver libva-intel-driver
 	sudo -u $SUDO_USER yay -Sq --noconfirm --needed intel-hybrid-codec-driver
+	sed -i '/^MODULES=(.*i915/b; s/MODULES=(/MODULES=(i915 /' /boot/loader/entries/*.conf
 fi
-if lspci -k | grep -A 2 -E "(VGA|3D)" | grep -qi amd; then
+if lspci -k | grep -A 2 -E '(VGA|3D)' | grep -qi amd; then
 	pacman -Sq --noconfirm --needed libva-mesa-driver mesa-vdpau mesa
+	sed -i '/^MODULES=(.*amdgpu/b; s/MODULES=(/MODULES=(amdgpu /' /boot/loader/entries/*.conf
 fi
+mkinitcpio -p linux
 
 sed -i 's/:luksdev /:luksdev:allow-discards /' /boot/loader/entries/*.conf
-sed -i '/^options / s/$/ quiet loglevel=3 rd.systemd.show_status=auto rd.udev.log_level=3/' /boot/loader/entries/*.conf
+sed -i '/^options .* quiet/b; /^options / s/$/ quiet splash loglevel=3 rd.systemd.show_status=auto rd.udev.log_level=3/' /boot/loader/entries/*.conf
 sed -i 's/issue_discards = 0/issue_discards = 1/' /etc/lvm/lvm.conf
 systemctl enable fstrim.timer
 
@@ -112,9 +117,9 @@ ExecStart=-/usr/bin/agetty --skip-login --nonewline --noissue --autologin $SUDO_
 EOF
 su -c 'touch /home/$SUDO_USER/.hushlogin' $SUDO_USER
 
-su -c "xdg-user-dirs-update" $SUDO_USER
+su -c 'xdg-user-dirs-update' $SUDO_USER
 rm -rf /home/$SUDO_USER/Desktop /home/$SUDO_USER/Templates /home/$SUDO_USER/Public /home/$SUDO_USER/Documents /home/$SUDO_USER/Music
-su -c "xdg-user-dirs-update" $SUDO_USER
+su -c 'xdg-user-dirs-update' $SUDO_USER
 
 su -c 'cp -r config/* /home/$SUDO_USER/.config' $SUDO_USER
 su -c 'mkdir -p /home/$SUDO_USER/.config/Code\ -\ OSS/User' $SUDO_USER
