@@ -36,9 +36,7 @@ if ! command -v yay &> /dev/null; then
 	cd ..
 fi
 wget -qO - https://keys.openpgp.org/vks/v1/by-fingerprint/5C6DA024DDE27178073EA103F4B432D5D67990E3 | gpg --import
-sudo -u $SUDO_USER yay -Sq --noconfirm --needed autotiling plymouth plymouth-theme-arch-agua wob
-plymouth-set-default-theme -R arch-agua
-sed -i '/^HOOKS=(/ s/encrypt/ plymouth plymouth-encrypt/' /etc/mkinitcpio.conf
+sudo -u $SUDO_USER yay -Sq --noconfirm --needed autotiling plymouth wob
 
 if [ -d /sys/class/power_supply/BAT* ]; then
 	go build scripts/battery.go
@@ -87,7 +85,11 @@ if lspci -k | grep -A 2 -E '(VGA|3D)' | grep -qi amd; then
 	pacman -Sq --noconfirm --needed libva-mesa-driver mesa-vdpau mesa
 	sed -i '/^MODULES=(.*amdgpu/b; s/MODULES=(/MODULES=(amdgpu /' /boot/loader/entries/*.conf
 fi
-mkinitcpio -p linux
+
+git clone https://github.com/sheepymeh/plymouth-theme-arch-agua
+cp -r plymouth-theme-arch-agua /usr/share/plymouth/themes/arch-agua
+sed -i '/^HOOKS=(/ s/encrypt/ plymouth plymouth-encrypt/' /etc/mkinitcpio.conf
+plymouth-set-default-theme -R arch-agua
 
 sed -i 's/:luksdev /:luksdev:allow-discards /' /boot/loader/entries/*.conf
 sed -i '/^options .* quiet/b; /^options / s/$/ quiet splash loglevel=3 rd.systemd.show_status=auto rd.udev.log_level=3/' /boot/loader/entries/*.conf
