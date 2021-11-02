@@ -24,16 +24,19 @@ pacman -Sq --noconfirm --needed libreoffice-fresh hunspell hunspell-en_us hunspe
 pacman -Sq --noconfirm --needed alacritty android-tools code podman git go nodejs npm python-pip
 pacman -Sq --noconfirm --needed grim mako qt5-wayland slurp swayidle swaylock wf-recorder wl-clipboard wofi xdg-desktop-portal xdg-desktop-portal-wlr xorg-server xorg-server-xwayland xorg-xrandr
 
-if systemctl status bluetooth >/dev/null 2&>1; then
+# Bluetooth detection does not work
+if systemctl status bluetooth >/dev/null 2>&1; then
 	pacman -Sq --noconfirm --needed blueman bluez-utils
 	systemctl --quiet enable --now bluetooth
 fi
 
 if ! command -v yay &> /dev/null; then
+	su -c "echo MAKEFLAGS="-j$(nproc)" >/home/$SUDO_USER/.makepkg.conf" $SUDO_USER
 	su -c "git clone https://aur.archlinux.org/yay-bin.git" $SUDO_USER
 	cd yay-bin
-	sudo -u $SUDO_USER makepkg -si
+	sudo -u $SUDO_USER makepkg -si --noconfirm
 	cd ..
+	rm -rf yay-bin
 fi
 wget -qO - https://keys.openpgp.org/vks/v1/by-fingerprint/5C6DA024DDE27178073EA103F4B432D5D67990E3 | gpg --import
 sudo -u $SUDO_USER yay -Sq --noconfirm --needed autotiling plymouth wob
@@ -130,8 +133,6 @@ su -c 'cp bashrc /home/$SUDO_USER/.bashrc' $SUDO_USER
 if [ ! -d /sys/class/power_supply/BAT* ]; then
 	rm /home/$SUDO_USER/.config/sway/laptop.conf
 fi
-
-su -c "echo MAKEFLAGS="-j$(nproc)" >/home/$SUDO_USER/.makepkg.conf" $SUDO_USER
 
 su -c "git config --global user.name 'sheepymeh'" $SUDO_USER
 su -c "git config --global user.email 'sheepymeh@users.noreply.github.com'" $SUDO_USER
