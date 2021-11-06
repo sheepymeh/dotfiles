@@ -55,6 +55,7 @@ cp scripts/record.sh /usr/local/bin
 cp scripts/mic.sh /usr/local/bin
 chmod a+x /usr/local/bin/record.sh
 chmod a+x /usr/local/bin/mic.sh
+mkdir /etc/pacman.d/hooks
 
 if [ $(grep -m1 vendor_id /proc/cpuinfo | cut -f2 -d':' | cut -c 2-) == 'AuthenticAMD' ]; then
 	pacman -Sq --noconfirm --needed amd-ucode
@@ -68,6 +69,22 @@ if lspci -k | grep -A 2 -E "(VGA|3D)" | grep -qi nvidia; then
 	sudo -u $SUDO_USER yay -Sq --noconfirm --needed sway-git wlroots-eglstreams-git
 	systemctl enable nvidia-{suspend,hibernate,resume}
 	echo options nvidia NVreg_PreserveVideoMemoryAllocations=1 NVreg_TemporaryFilePath=/var/tmp >/etc/modprobe.d/nvidia-power-management.conf
+	cat <<EOF >/etc/pacman.d/hooks/nvidia.hook
+[Trigger]
+Operation=Install
+Operation=Upgrade
+Operation=Remove
+Type=Package
+Target=nvidia
+Target=linux
+
+[Action]
+Description=Update Nvidia module in initcpio
+Depends=mkinitcpio
+When=PostTransaction
+NeedsTargets
+Exec=/bin/sh -c 'while read -r trg; do case $trg in linux) exit 0; esac; done; /usr/bin/mkinitcpio -P'
+EOF
 	sed -i '/^options/ s/$/ nvidia_drm.modeset=1/' /boot/loader/entries/*.conf
 	sed -i '/^MODULES=(.*nvidia nvidia_modeset nvidia_uvm nvidia_drm/b; s/MODULES=(/MODULES=(nvidia nvidia_modeset nvidia_uvm nvidia_drm /' /boot/loader/entries/*.conf
 	bootctl update
