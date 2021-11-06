@@ -107,6 +107,9 @@ touch /etc/subuid /etc/subgid
 usermod --add-subuids 100000-165535 --add-subgids 100000-165535 $SUDO_USER
 echo 'unqualified-search-registries = ["docker.io"]' >>/etc/containers/registries.conf
 
+ufw enable
+systemctl enable --now ufw
+
 cat <<EOF >>/etc/environment
 MOZ_ENABLE_WAYLAND=1
 QT_QPA_PLATFORM=wayland-egl
