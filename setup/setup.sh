@@ -134,6 +134,9 @@ QT_WAYLAND_DISABLE_WINDOWDECORATION=1
 XDG_CURRENT_DESKTOP=sway
 XDG_SESSION_TYPE=wayland
 EOF
+
+echo 240 >>/etc/sysctl.d/99-sysctl.conf
+
 mkdir -p /etc/systemd/system/getty@tty1.service.d/
 cat <<EOF >/etc/systemd/system/getty@tty1.service.d/override.conf
 [Service]
@@ -157,3 +160,4 @@ fi
 su -c "git config --global user.name 'sheepymeh'" $SUDO_USER
 su -c "git config --global user.email 'sheepymeh@users.noreply.github.com'" $SUDO_USER
 su -c "git config --global credential.helper store" $SUDO_USER
+su -c "git config --global pull.rebase false" $SUDO_USER
