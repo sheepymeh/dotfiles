@@ -8,6 +8,10 @@ full_text=Battery
 command=[[ -z $button ]] && /usr/local/bin/battery || /usr/local/bin/battery update
 interval=60
 
+[music]
+command=playerctl metadata --follow --format " {{ trunc(title, 50) }}"
+interval=persist
+
 [mute]
 command=mic.sh
 interval=persist
