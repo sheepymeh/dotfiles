@@ -8,6 +8,11 @@ full_text=Battery
 command=[[ -z $button ]] && /usr/local/bin/battery || /usr/local/bin/battery update
 interval=60
 
+[screenshare]
+command=pw-dump | jq -e -r 'map(.info?.props?) | map(select(.["media.name"]? == "webrtc-pipewire-stream")) | map(.["stream.is-live"]? == true | "") | .[]?'
+signal=1
+color=#CE575D
+
 [music]
 command=playerctl metadata --follow --format " {{ trunc(title, 50) }}"
 interval=persist

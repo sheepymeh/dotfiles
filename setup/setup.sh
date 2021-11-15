@@ -16,7 +16,7 @@ sed -i 's$#ParallelDownloads$ParallelDownloads$' /etc/pacman.conf
 sed -i '/deny = /c\deny = 0' /etc/security/faillock.conf
 
 pacman -Syyu
-pacman -Sq --noconfirm --needed acpi acpi_call bash-completion cups-pdf dialog firefox gnome-keyring htop i3blocks imv light nano neofetch nextcloud-client p7zip s-tui ufw linux-firmware wget
+pacman -Sq --noconfirm --needed acpi acpi_call bash-completion cups-pdf dialog firefox gnome-keyring htop i3blocks imv jq light nano neofetch nextcloud-client p7zip s-tui ufw linux-firmware wget
 pacman -Sq --noconfirm --needed gst-plugins-bad gst-plugins-good mpv playerctl pipewire pipewire-pulse pamixer lollypop
 pacman -Sq --noconfirm --needed arc-gtk-theme inter-font noto-fonts-cjk papirus-icon-theme ttf-font-awesome ttf-jetbrains-mono
 pacman -Sq --noconfirm --needed exfat-utils ffmpegthumbnailer gvfs gvfs-mtp tumbler thunar xdg-user-dirs
