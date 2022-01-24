@@ -20,6 +20,7 @@ Set-ExecutionPolicy Bypass -Scope Process -Force
 - PHP
 - ADB
 - VSCodium
+- PowerToys
 - NVIDIA driver (if necessary)
 - WSL & Windows Sandbox
 - Microsoft Office

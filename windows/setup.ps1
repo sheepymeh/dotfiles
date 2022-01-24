@@ -6,11 +6,11 @@ Set-Location -Path ~\Downloads\setup
 Write-Host "Installing Group Policy" -ForegroundColor Green
 Start-BitsTransfer -Source "https://download.microsoft.com/download/8/5/C/85C25433-A1B0-4FFA-9429-7E023E7DA8D8/LGPO.zip" -Destination LGPO.zip
 Expand-Archive lgpo.zip -DestinationPath lgpo
-.\lgpo\LGPO_30\LGPO.exe /t grouppolicy.txt
+.\lgpo\LGPO_30\LGPO.exe /t "$PSScriptRoot\grouppolicy.txt"
 
 Write-Host "Enabling Dark Mode" -ForegroundColor Green
-New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize -Name SystemUsesLightTheme -Value 0 -Type DWORD
-New-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize -Name AppsUseLightTheme -Value 0 -Type DWORD
+Set-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize -Name SystemUsesLightTheme -Value 0 -Type DWORD -Force
+Set-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize -Name AppsUseLightTheme -Value 0 -Type DWORD -Force
 
 Write-Host "Configuring Power Plan" -ForegroundColor Green
 powercfg /change monitor-timeout-ac 3
@@ -19,13 +19,30 @@ powercfg /change standby-timeout-ac 10
 powercfg /change standby-timeout-dc 10
 
 Set-ItemProperty -Path "HKCU:\Control Panel\Keyboard" -Name "PrintScreenKeyForSnippingEnabled" -Type DWORD -Value 1
+if (!(Test-Path "HKCU:\Software\Classes\CLSID\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}")) {
+	New-Item -Path "HKCU:\Software\Classes\CLSID\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}"
+}
+if (!(Test-Path "HKCU:\Software\Classes\CLSID\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}\InprocServer32")) {
+	New-Item -Path "HKCU:\Software\Classes\CLSID\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}\InprocServer32"
+}
+Set-ItemProperty -Path "HKCU:\Software\Classes\CLSID\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}\InprocServer32" -Name "(Default)" -Value "" -Force
 
 Write-Host "Enabling Storage Sense" -ForegroundColor Green
-Set-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -Name "01" -Type DWord -Value 1
-Set-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -Name "2048" -Type DWord -Value 7
-Set-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -Name "04" -Type DWord -Value 1
-Set-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -Name "08" -Type DWord -Value 1
-Set-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -Name "256" -Type DWord -Value 14
+$storage_sense_key = "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\StorageSense"
+if (!(Test-Path "$storage_sense_key")) {
+    New-Item -Path "$storage_sense_key"
+}
+if (!(Test-Path "$storage_sense_key\Parameters")) {
+    New-Item -Path "$storage_sense_key\Parameters"
+}
+if (!(Test-Path "$storage_sense_key\Parameters\StoragePolicy")) {
+    New-Item -Path "$storage_sense_key\Parameters\StoragePolicy"
+}
+Set-ItemProperty -Path "$storage_sense_key\Parameters\StoragePolicy" -Name "01" -Type DWord -Value 1
+Set-ItemProperty -Path "$storage_sense_key\Parameters\StoragePolicy" -Name "2048" -Type DWord -Value 7
+Set-ItemProperty -Path "$storage_sense_key\Parameters\StoragePolicy" -Name "04" -Type DWord -Value 1
+Set-ItemProperty -Path "$storage_sense_key\Parameters\StoragePolicy" -Name "08" -Type DWord -Value 1
+Set-ItemProperty -Path "$storage_sense_key\Parameters\StoragePolicy" -Name "256" -Type DWord -Value 14
 
 Write-Host "Setting Time" -ForegroundColor Green
 Set-TimeZone -Name "Malay Peninsula Standard Time"
@@ -37,12 +54,9 @@ Write-Host "Installing Chocolatey" -ForegroundColor Green
 
 Set-ExecutionPolicy Bypass -Scope Process -Force
 [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString("https://community.chocolatey.org/install.ps1"))
+choco feature enable -n=useRememberedArgumentsForUpgrades
 
 Write-Host "Installing Software" -ForegroundColor Green
-
-if ((Get-WmiObject win32_VideoController).description.Contains("NVIDIA")) {
-	choco install nvidia-display-driver -y
-}
 
 choco install nextcloud-client -y
 choco install 7zip -y
@@ -55,6 +69,11 @@ choco install php -y
 choco install adb -y
 choco install vscodium --params "/NoDesktopIcon /AssociateWithFiles" -y
 choco install git --params "/GitOnlyOnPath /NoAutoCrlf /NoShellIntegration /NoGuiHereIntegration /NoShellHereIntegration /WindowsTerminal /Editor:VSCodium" -y
+choco install powertoys -y
+
+if ((Get-WmiObject win32_VideoController).description.Contains("NVIDIA")) {
+	choco install nvidia-display-driver --package-parameters="'/dch'" -y
+}
 
 Write-Host "Installing WSL & Sandbox"
 Enable-WindowsOptionalFeature -FeatureName "Containers-DisposableClientVM" -All -NoRestart -Online
@@ -78,12 +97,16 @@ foreach ($capability in $capabilities) {
 	Remove-WindowsCapability -Online -Name $capability
 }
 
+git config --global user.name 'sheepymeh'
+git config --global user.email 'sheepymeh@users.noreply.github.com'
+git config --global pull.rebase false
+
 Write-Host "Adding Languages" -ForegroundColor Green
 $Languages = Get-WinUserLanguageList
 $Languages.add("zh-Hans-CN")
 $Languages.add("de-DE")
 $Languages.add("ja")
-Set-WinUserLanguageList $Languages
+Set-WinUserLanguageList -LanguageList $Languages -Force
 
 Write-Host "Installing Office" -ForegroundColor Green
 Start-BitsTransfer -Source "https://download.microsoft.com/download/2/7/A/27AF1BE6-DD20-4CB4-B154-EBAB8A7D4A7E/officedeploymenttool_12624-20320.exe" -Destination office.exe
