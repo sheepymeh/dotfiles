@@ -101,6 +101,18 @@ git config --global user.name 'sheepymeh'
 git config --global user.email 'sheepymeh@users.noreply.github.com'
 git config --global pull.rebase false
 
+mv "$PSScriptRoot\..\code\settings.json" "$env:APPDATA\VSCodium\User"
+mv "$PSScriptRoot\..\code\keybindings.json" "$env:APPDATA\VSCodium\User"
+Set-Content -Path "$env:APPDATA\VSCodium\product.json" -Value @"
+{
+  "extensionsGallery": {
+    "serviceUrl": "https://marketplace.visualstudio.com/_apis/public/gallery",
+    "cacheUrl": "https://vscode.blob.core.windows.net/gallery/index",
+    "itemUrl": "https://marketplace.visualstudio.com/items"
+  }
+}
+"@
+
 Write-Host "Adding Languages" -ForegroundColor Green
 $Languages = Get-WinUserLanguageList
 $Languages.add("zh-Hans-CN")
