@@ -8,6 +8,9 @@ Start-BitsTransfer -Source "https://download.microsoft.com/download/8/5/C/85C254
 Expand-Archive lgpo.zip -DestinationPath lgpo
 .\lgpo\LGPO_30\LGPO.exe /t "$PSScriptRoot\grouppolicy.txt"
 
+Write-Host "Ensure that a DoH DNS server has been set up, then continue" -ForegroundColor Yellow
+Pause
+
 Write-Host "Enabling Dark Mode" -ForegroundColor Green
 Set-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize -Name SystemUsesLightTheme -Value 0 -Type DWORD -Force
 Set-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize -Name AppsUseLightTheme -Value 0 -Type DWORD -Force
@@ -97,12 +100,15 @@ foreach ($capability in $capabilities) {
 	Remove-WindowsCapability -Online -Name $capability
 }
 
+$env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
 git config --global user.name 'sheepymeh'
 git config --global user.email 'sheepymeh@users.noreply.github.com'
 git config --global pull.rebase false
 
-mv "$PSScriptRoot\..\code\settings.json" "$env:APPDATA\VSCodium\User"
-mv "$PSScriptRoot\..\code\keybindings.json" "$env:APPDATA\VSCodium\User"
+codium
+Stop-Process -Name VSCodium
+Copy-Item "$PSScriptRoot\..\code\settings.json" "$env:APPDATA\VSCodium\User"
+Copy-Item "$PSScriptRoot\..\code\keybindings.json" "$env:APPDATA\VSCodium\User"
 Set-Content -Path "$env:APPDATA\VSCodium\product.json" -Value @"
 {
   "extensionsGallery": {
