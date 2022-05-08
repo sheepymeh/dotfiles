@@ -68,10 +68,10 @@ font pango:Inter, Font Awesome 5 Brands, Font Awesome 5 Free 9
     bindsym $mod+Shift+Right move right
 
     # Hardware keys
-    exec mkfifo $SWAYSOCK.wob && tail -f $SWAYSOCK.wob | wob
-    bindsym --locked XF86AudioRaiseVolume exec pamixer -u -i 2 && echo "$(pamixer --get-volume) #383c4ad0 #4b5162df #5294e2df" >$SWAYSOCK.wob
-    bindsym --locked XF86AudioLowerVolume exec pamixer -u -d 2 && echo "$(pamixer --get-volume) #383c4ad0 #4b5162df #5294e2df" >$SWAYSOCK.wob
-    bindsym --locked XF86AudioMute exec pamixer -t && pamixer --get-mute >/dev/null && echo "0 #383c4ad0 #4b5162df #5294e2df" >$SWAYSOCK.wob || echo "$(pamixer --get-volume) #383c4ad0 #4b5162df #5294e2df" >$SWAYSOCK.wob
+    exec mkfifo $SWAYSOCK.wob && tail -f $SWAYSOCK.wob | wob --background-color '#383c4ad0' --border-color '#4b5162df' --bar-color '#5294e2df'
+    bindsym --locked XF86AudioRaiseVolume exec pamixer -u -i 2 && echo "$(pamixer --get-volume)" >$SWAYSOCK.wob
+    bindsym --locked XF86AudioLowerVolume exec pamixer -u -d 2 && echo "$(pamixer --get-volume)" >$SWAYSOCK.wob
+    bindsym --locked XF86AudioMute exec pamixer -t && pamixer --get-mute >/dev/null && echo "0" >$SWAYSOCK.wob || echo "$(pamixer --get-volume)" >$SWAYSOCK.wob
     bindsym --locked XF86AudioPlay exec playerctl play-pause
     bindsym --locked XF86AudioNext exec playerctl next
     bindsym --locked XF86AudioPrev exec playerctl previous
@@ -147,7 +147,6 @@ font pango:Inter, Font Awesome 5 Brands, Font Awesome 5 Free 9
 ### Autostart
 exec firefox
 exec nextcloud
-exec light -S 50
 
 ### Swaybar
 bar {

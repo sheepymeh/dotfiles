@@ -15,5 +15,6 @@
 	"files.eol": "\n",
 	"editor.fontLigatures": true,
 	"explorer.confirmDelete": false,
-	"explorer.confirmDragAndDrop": false
+	"explorer.confirmDragAndDrop": false,
+        "window.menuBarVisibility": "toggle"
 }

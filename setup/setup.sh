@@ -39,7 +39,7 @@ if ! command -v yay &> /dev/null; then
 	rm -rf yay-bin
 fi
 wget -qO - https://keys.openpgp.org/vks/v1/by-fingerprint/5C6DA024DDE27178073EA103F4B432D5D67990E3 | gpg --import
-sudo -u $SUDO_USER yay -Sq --noconfirm --needed autotiling plymouth wob
+sudo -u $SUDO_USER yay -Sq --noconfirm --needed autotiling plymouth wob code-marketplace
 
 if [ -d /sys/class/power_supply/BAT* ]; then
 	go build scripts/battery.go
@@ -55,7 +55,7 @@ cp scripts/record.sh /usr/local/bin
 cp scripts/mic.sh /usr/local/bin
 chmod a+x /usr/local/bin/record.sh
 chmod a+x /usr/local/bin/mic.sh
-mkdir /etc/pacman.d/hooks
+mkdir -p /etc/pacman.d/hooks
 
 if [ $(grep -m1 vendor_id /proc/cpuinfo | cut -f2 -d':' | cut -c 2-) == 'AuthenticAMD' ]; then
 	pacman -Sq --noconfirm --needed amd-ucode
@@ -63,10 +63,9 @@ elif [ $(grep -m1 vendor_id /proc/cpuinfo | cut -f2 -d':' | cut -c 2-) == 'Genui
 	pacman -Sq --noconfirm --needed intel-ucode
 fi
 
+pacman -Sq --noconfirm --needed sway
 if lspci -k | grep -A 2 -E "(VGA|3D)" | grep -qi nvidia; then
-	echo Using EGLStreams sway fork for NVIDIA driver
-	pacman -Sq --noconfirm --needed nvidia nvidia-utils
-	sudo -u $SUDO_USER yay -Sq --noconfirm --needed sway-git wlroots-eglstreams-git
+	pacman -Sq --noconfirm --needed nvidia nvidia-utils nvtop
 	systemctl enable nvidia-{suspend,hibernate,resume}
 	echo options nvidia NVreg_PreserveVideoMemoryAllocations=1 NVreg_TemporaryFilePath=/var/tmp >/etc/modprobe.d/nvidia-power-management.conf
 	cat <<EOF >/etc/pacman.d/hooks/nvidia.hook
@@ -86,24 +85,20 @@ NeedsTargets
 Exec=/bin/sh -c 'while read -r trg; do case \$trg in linux) exit 0; esac; done; /usr/bin/mkinitcpio -P'
 EOF
 	sed -i '/^options/ s/$/ nvidia_drm.modeset=1/' /boot/loader/entries/*.conf
-	sed -i '/^MODULES=(.*nvidia nvidia_modeset nvidia_uvm nvidia_drm/b; s/MODULES=(/MODULES=(nvidia nvidia_modeset nvidia_uvm nvidia_drm /' /boot/loader/entries/*.conf
-	bootctl update
+	sed -i '/^MODULES=(.*nvidia nvidia_modeset nvidia_uvm nvidia_drm/b; s/MODULES=(/MODULES=(nvidia nvidia_modeset nvidia_uvm nvidia_drm /' /etc/mkinitcpio.conf
 	if [ -d /proc/acpi/battery/BAT* ]; then
 		usermod -a -G bumblebee $SUDO_USER
 		systemctl enable --now bumblebeed.service
 		echo 'options bbswitch load_state=0 unload_state=1' >/etc/modprobe.d/bbswitch.conf
 	fi
-else
-	pacman -Sq --noconfirm --needed sway
-fi
-if lspci -k | grep -A 2 -E '(VGA|3D)' | grep -qi intel; then
+elif lspci -k | grep -A 2 -E '(VGA|3D)' | grep -qi intel; then
 	pacman -Sq --noconfirm --needed intel-media-driver libva-intel-driver
 	sudo -u $SUDO_USER yay -Sq --noconfirm --needed intel-hybrid-codec-driver
-	sed -i '/^MODULES=(.*i915/b; s/MODULES=(/MODULES=(i915 /' /boot/loader/entries/*.conf
+	sed -i '/^MODULES=(.*i915/b; s/MODULES=(/MODULES=(i915 /' /etc/mkinitcpio.conf
 fi
 if lspci -k | grep -A 2 -E '(VGA|3D)' | grep -qi amd; then
 	pacman -Sq --noconfirm --needed libva-mesa-driver mesa-vdpau mesa
-	sed -i '/^MODULES=(.*amdgpu/b; s/MODULES=(/MODULES=(amdgpu /' /boot/loader/entries/*.conf
+	sed -i '/^MODULES=(.*amdgpu/b; s/MODULES=(/MODULES=(amdgpu /' /etc/mkinitcpio.conf
 fi
 
 git clone https://github.com/sheepymeh/plymouth-theme-arch-agua
@@ -111,10 +106,14 @@ cp -r plymouth-theme-arch-agua /usr/share/plymouth/themes/arch-agua
 sed -i '/^HOOKS=(/ s/encrypt/ plymouth plymouth-encrypt/' /etc/mkinitcpio.conf
 plymouth-set-default-theme -R arch-agua
 
+sed -i 's$timeout 3$timeout 0$' /boot/loader/loader.conf
+
 sed -i 's/:luksdev /:luksdev:allow-discards /' /boot/loader/entries/*.conf
 sed -i '/^options .* quiet/b; /^options / s/$/ quiet splash loglevel=3 rd.systemd.show_status=auto rd.udev.log_level=3/' /boot/loader/entries/*.conf
 sed -i 's/issue_discards = 0/issue_discards = 1/' /etc/lvm/lvm.conf
 systemctl enable fstrim.timer
+
+bootctl update
 
 usermod -a -G video $SUDO_USER
 usermod -a -G rfkill $SUDO_USER
@@ -135,6 +134,14 @@ XDG_CURRENT_DESKTOP=sway
 XDG_SESSION_TYPE=wayland
 EOF
 
+mkdir -p /etc/systemd/resolved.conf.d/
+cat <<EOF >/etc/systemd/resolved.conf.d/dns_over_tls.conf
+[Resolve]
+DNS=1.1.1.1#cloudflare-dns.com
+DNSOverTLS=yes
+EOF
+systemctl restart systemd-resolved.service
+
 echo kernel.sysrq = 176 >>/etc/sysctl.d/99-sysctl.conf
 
 mkdir -p /etc/systemd/system/getty@tty1.service.d/
@@ -150,6 +157,7 @@ rm -rf /home/$SUDO_USER/Desktop /home/$SUDO_USER/Templates /home/$SUDO_USER/Publ
 su -c 'xdg-user-dirs-update' $SUDO_USER
 
 su -c 'cp -r config/* /home/$SUDO_USER/.config' $SUDO_USER
+su -c 'mkdir -p /home/$SUDO_USER/.swaylog' $SUDO_USER
 su -c 'mkdir -p /home/$SUDO_USER/.config/Code\ -\ OSS/User' $SUDO_USER
 su -c 'cp code/* /home/$SUDO_USER/.config/Code\ -\ OSS/User' $SUDO_USER
 su -c 'cp bashrc /home/$SUDO_USER/.bashrc' $SUDO_USER
