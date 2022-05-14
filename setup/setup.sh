@@ -66,7 +66,7 @@ fi
 pacman -Sq --noconfirm --needed sway
 if lspci -k | grep -A 2 -E "(VGA|3D)" | grep -qi nvidia; then
 	pacman -Sq --noconfirm --needed nvidia nvidia-utils nvtop
-	systemctl enable nvidia-{suspend,hibernate,resume}
+	systemctl enable nvidia-{suspend,hibernate}
 	echo options nvidia NVreg_PreserveVideoMemoryAllocations=1 NVreg_TemporaryFilePath=/var/tmp >/etc/modprobe.d/nvidia-power-management.conf
 	cat <<EOF >/etc/pacman.d/hooks/nvidia.hook
 [Trigger]
@@ -91,7 +91,7 @@ EOF
 		systemctl enable --now bumblebeed.service
 		echo 'options bbswitch load_state=0 unload_state=1' >/etc/modprobe.d/bbswitch.conf
 	fi
-elif lspci -k | grep -A 2 -E '(VGA|3D)' | grep -qi intel; then
+if lspci -k | grep -A 2 -E '(VGA|3D)' | grep -qi intel; then
 	pacman -Sq --noconfirm --needed intel-media-driver libva-intel-driver
 	sudo -u $SUDO_USER yay -Sq --noconfirm --needed intel-hybrid-codec-driver
 	sed -i '/^MODULES=(.*i915/b; s/MODULES=(/MODULES=(i915 /' /etc/mkinitcpio.conf
