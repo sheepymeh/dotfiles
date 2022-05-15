@@ -130,9 +130,10 @@ font pango:Inter, Font Awesome 5 Brands, Font Awesome 5 Free 9
     # Move focus to urgent workspaces
     for_window [urgent=latest] focus
 
-    # Move window between screeens
-    bindsym $mod+p move workspace to output left
+    # Move window between screens
+    bindsym $mod+p focus output right
     bindsym $mod+Shift+p move workspace to output right
+
 
     # Resizing containers
     mode "resize" {
