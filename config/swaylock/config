@@ -11,3 +11,5 @@ line-wrong-color=00000000
 ring-color=EF775F88
 ring-ver-color=EF5F8F88
 text-color=FFFFFF
+hide-keyboard-layout
+daemonize

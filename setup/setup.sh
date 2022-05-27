@@ -17,8 +17,8 @@ sed -i '/deny = /c\deny = 0' /etc/security/faillock.conf
 
 pacman -Syyu
 pacman -Sq --noconfirm --needed acpi acpi_call bash-completion cups-pdf dialog firefox gnome-keyring htop i3blocks imv jq light nano neofetch nextcloud-client p7zip s-tui ufw linux-firmware wget
-pacman -Sq --noconfirm --needed gst-plugins-bad gst-plugins-good mpv playerctl pipewire pipewire-pulse pamixer lollypop
-pacman -Sq --noconfirm --needed arc-gtk-theme inter-font noto-fonts-cjk papirus-icon-theme ttf-font-awesome ttf-jetbrains-mono
+pacman -Sq --noconfirm --needed gst-plugins-bad gst-plugins-good mpv playerctl pipewire pipewire-pulse pamixer
+pacman -Sq --noconfirm --needed inter-font noto-fonts-cjk papirus-icon-theme ttf-font-awesome ttf-jetbrains-mono
 pacman -Sq --noconfirm --needed exfat-utils ffmpegthumbnailer gvfs gvfs-mtp tumbler thunar xdg-user-dirs
 pacman -Sq --noconfirm --needed libreoffice-fresh hunspell hunspell-en_us hunspell-de
 pacman -Sq --noconfirm --needed alacritty android-tools code podman git go nodejs npm python-pip
@@ -28,6 +28,7 @@ pacman -Sq --noconfirm --needed grim mako qt5-wayland slurp swayidle swaylock wf
 if systemctl status bluetooth >/dev/null 2>&1; then
 	pacman -Sq --noconfirm --needed blueman bluez-utils
 	systemctl --quiet enable --now bluetooth
+	usermod -a -G rfkill $SUDO_USER
 fi
 
 if ! command -v yay &> /dev/null; then
@@ -86,6 +87,12 @@ Exec=/bin/sh -c 'while read -r trg; do case \$trg in linux) exit 0; esac; done; 
 EOF
 	sed -i '/^options/ s/$/ nvidia_drm.modeset=1/' /boot/loader/entries/*.conf
 	sed -i '/^MODULES=(.*nvidia nvidia_modeset nvidia_uvm nvidia_drm/b; s/MODULES=(/MODULES=(nvidia nvidia_modeset nvidia_uvm nvidia_drm /' /etc/mkinitcpio.conf
+	cat <<EOF >>/etc/environment
+GBM_BACKEND=nvidia-drm
+WLR_NO_HARDWARE_CURSORS=1
+__GLX_VENDOR_LIBRARY_NAME=nvidia
+__GL_ExperimentalPerfStrategy=1
+EOF
 	if [ -d /proc/acpi/battery/BAT* ]; then
 		usermod -a -G bumblebee $SUDO_USER
 		systemctl enable --now bumblebeed.service
@@ -100,6 +107,7 @@ if lspci -k | grep -A 2 -E '(VGA|3D)' | grep -qi amd; then
 	pacman -Sq --noconfirm --needed libva-mesa-driver mesa-vdpau mesa
 	sed -i '/^MODULES=(.*amdgpu/b; s/MODULES=(/MODULES=(amdgpu /' /etc/mkinitcpio.conf
 fi
+usermod -a -G video $SUDO_USER
 
 git clone https://github.com/sheepymeh/plymouth-theme-arch-agua
 cp -r plymouth-theme-arch-agua /usr/share/plymouth/themes/arch-agua
@@ -115,10 +123,6 @@ systemctl enable fstrim.timer
 
 bootctl update
 
-usermod -a -G video $SUDO_USER
-usermod -a -G rfkill $SUDO_USER
-#usermod -a -G libvirt $SUDO_USER
-
 touch /etc/subuid /etc/subgid
 usermod --add-subuids 100000-165535 --add-subgids 100000-165535 $SUDO_USER
 echo 'unqualified-search-registries = ["docker.io"]' >>/etc/containers/registries.conf
@@ -127,6 +131,8 @@ ufw enable
 systemctl enable --now ufw
 
 cat <<EOF >>/etc/environment
+SDL_VIDEODRIVER=wayland
+GDK_BACKEND=wayland
 MOZ_ENABLE_WAYLAND=1
 QT_QPA_PLATFORM=wayland-egl
 QT_WAYLAND_DISABLE_WINDOWDECORATION=1
@@ -161,6 +167,7 @@ su -c 'mkdir -p /home/$SUDO_USER/.swaylog' $SUDO_USER
 su -c 'mkdir -p /home/$SUDO_USER/.config/Code\ -\ OSS/User' $SUDO_USER
 su -c 'cp code/* /home/$SUDO_USER/.config/Code\ -\ OSS/User' $SUDO_USER
 su -c 'cp bashrc /home/$SUDO_USER/.bashrc' $SUDO_USER
+sed -i 's$sway >$sway --unsupported-gpu >$' /home/$SUDO_USER/.bashrc
 if [ ! -d /sys/class/power_supply/BAT* ]; then
 	rm /home/$SUDO_USER/.config/sway/laptop.conf
 fi

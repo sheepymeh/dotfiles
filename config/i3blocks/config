@@ -14,7 +14,7 @@ signal=1
 color=#CE575D
 
 [music]
-command=playerctl metadata --follow --format " {{ trunc(title, 50) }}"
+command=playerctl metadata --follow --format "{{ emoji(status) }} {{ trunc(title, 50) }}"
 interval=persist
 
 [mute]

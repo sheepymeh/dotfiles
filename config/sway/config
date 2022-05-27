@@ -1,28 +1,26 @@
-# xwayland disable
+xwayland disable
 
 set $mod Mod4
 set $term alacritty
 set $menu wofi --show drun
 
-output * bg ~/Nextcloud/Archive/Pictues/laptop/waifu2x.png fill
+output * bg ~/Pictures/wallpaper.png fill
 exec swayidle -w \
     timeout 140 'light -O ; light -S 5' \
       resume 'light -I' \
     timeout 150 'swaymsg "output * dpms off"' \
       resume 'swaymsg "output * dpms on"' \
-    timeout 160 'swaylock -f' \
+    timeout 160 'swaylock' \
     timeout 300 'systemctl suspend' \
-   before-sleep 'pgrep -x swaylock >/dev/null || swaylock -f'
+   before-sleep 'pgrep -x swaylock >/dev/null || swaylock'
 exec autotiling
 
 for_window [app_id="firefox"] inhibit_idle fullscreen
-for_window [app_id="lollypop"] inhibit_idle open
 for_window [app_id="firefox" title="About Mozilla Firefox"] floating enable
 for_window [app_id="firefox" title="^Developer Tools — "] floating enable
 for_window [app_id="firefox" title="— Sharing Indicator$"] floating enable, sticky enable, move position 0 0, opacity .6
 for_window [app_id="firefox" title="Launch Application"] floating enable
 for_window [app_id="firefox" title="Picture-in-Picture"] floating enable, sticky enable, opacity .9
-for_window [app_id="org.gnome.Solanum"] floating enable, sticky enable, move position 0 0, resize set 300 50
 for_window [app_id="thunar" title="File Operation Progress"] floating enable
 
 ### Inputs
@@ -35,7 +33,6 @@ input "type:keyboard" {
 
 ### Appearance
 default_border pixel
-# default_floating_border normal
 hide_edge_borders none
 
 font pango:Inter, Font Awesome 5 Brands, Font Awesome 5 Free 9
@@ -51,9 +48,10 @@ font pango:Inter, Font Awesome 5 Brands, Font Awesome 5 Free 9
     bindsym $mod+Shift+s exec systemctl suspend
     bindsym $mod+e exec thunar ~
     bindsym $mod+b exec firefox
+    bindsym $mod+l exec swaylock
+    bindsym $mod+w output * bg /usr/share/backgrounds/sway/Sway_Wallpaper_Blue_1920x1080.png fill
     bindsym $mod+m exec MIC=$(pactl list short sources | awk '$2 !~ /monitor/ && /RUNNING$/ { r = 1; print $2; exit } END { exit !r }') && pamixer --source "$MIC" --toggle-mute
     bindsym XF86AudioMicMute exec MIC=$(pactl list short sources | awk '$2 !~ /monitor/ && /RUNNING$/ { r = 1; print $2; exit } END { exit !r }') && pamixer --source "$MIC" --toggle-mute
-    bindsym $mod+w output * bg /usr/share/backgrounds/sway/Sway_Wallpaper_Blue_1920x1080.png fill
     bindsym XF86TouchpadOff exec notify-send "Touchpad disabled" "Press touchpad button to enable"
     bindsym XF86TouchpadOn exec notify-send "Touchpad enabled" "Press touchpad button to disable"
 
@@ -130,10 +128,9 @@ font pango:Inter, Font Awesome 5 Brands, Font Awesome 5 Free 9
     # Move focus to urgent workspaces
     for_window [urgent=latest] focus
 
-    # Move window between screens
+    # Move window between screeens
     bindsym $mod+p focus output right
     bindsym $mod+Shift+p move workspace to output right
-
 
     # Resizing containers
     mode "resize" {
@@ -165,21 +162,8 @@ bar {
         focused_workspace  #5294e2 #5294e2 #fdfdfd
         active_workspace   #5294e2 #5294e2 #fdfdfd
         inactive_workspace #4b5162 #4b5162 #dfdfdf
-#       binding_mode       #383c4a #2C2C2C #F9FAF9
         urgent_workspace   #16a085 #FDF6E3 #E5201D
     }
-#    colors {
-#        statusline #ffffff
-#        background #323232
-#        inactive_workspace #32323200 #32323200 #5c5c5c
-#    }
-}
-
-exec_always {
-    gsettings set org.gnome.desktop.interface gtk-theme Arc-Dark
-    gsettings set org.gnome.desktop.interface icon-theme Papirus-Dark
-    gsettings set org.gnome.desktop.interface font-name 'Inter 9'
-    gsettings set org.gnome.desktop.interface monospace-font-name 'JetBrains Mono 9'
 }
 
 include /etc/sway/config.d/*
