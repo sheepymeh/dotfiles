@@ -15,6 +15,7 @@ exec swayidle -w \
    before-sleep 'pgrep -x swaylock >/dev/null || swaylock'
 exec autotiling
 
+### Window rules
 for_window [app_id="firefox"] inhibit_idle fullscreen
 for_window [app_id="firefox" title="About Mozilla Firefox"] floating enable
 for_window [app_id="firefox" title="^Developer Tools — "] floating enable
@@ -48,6 +49,7 @@ font pango:Inter, Font Awesome 5 Brands, Font Awesome 5 Free 9
     bindsym $mod+Shift+s exec systemctl suspend
     bindsym $mod+e exec thunar ~
     bindsym $mod+b exec firefox
+    # bindsym $mod+b exec code
     bindsym $mod+l exec swaylock
     bindsym $mod+w output * bg /usr/share/backgrounds/sway/Sway_Wallpaper_Blue_1920x1080.png fill
     bindsym $mod+m exec MIC=$(pactl list short sources | awk '$2 !~ /monitor/ && /RUNNING$/ { r = 1; print $2; exit } END { exit !r }') && pamixer --source "$MIC" --toggle-mute
@@ -143,8 +145,10 @@ font pango:Inter, Font Awesome 5 Brands, Font Awesome 5 Free 9
     bindsym $mod+r mode "resize"
 
 ### Autostart
-exec firefox
-exec nextcloud
+exec {
+    firefox
+    nextcloud
+}
 
 ### Swaybar
 bar {
@@ -164,6 +168,13 @@ bar {
         inactive_workspace #4b5162 #4b5162 #dfdfdf
         urgent_workspace   #16a085 #FDF6E3 #E5201D
     }
+}
+
+exec_always {
+    gsettings set org.gnome.desktop.interface gtk-theme Arc-Dark
+    gsettings set org.gnome.desktop.interface icon-theme Papirus-Dark
+    gsettings set org.gnome.desktop.interface font-name 'Inter 9'
+    gsettings set org.gnome.desktop.interface monospace-font-name 'JetBrains Mono 9'
 }
 
 include /etc/sway/config.d/*

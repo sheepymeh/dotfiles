@@ -1,7 +1,0 @@
-[Settings]
-gtk-application-prefer-dark-theme=1
-gtk-button-images=1
-gtk-menu-images=1
-gtk-icon-theme-name=Papirus-Dark
-gtk-font-name=Inter 9
-gtk-monospace-font-name=JetBrains Mono 9
