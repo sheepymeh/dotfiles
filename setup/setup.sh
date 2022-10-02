@@ -176,3 +176,7 @@ ExecStart=-/usr/bin/agetty --skip-login --nonewline --noissue --autologin "$SUDO
 EOF
 
 su -c './setup/setup-home.sh' "$SUDO_USER"
+
+# Notes:
+# https://bbs.archlinux.org/viewtopic.php?id=257315
+# https://www.kernel.org/doc/Documentation/cpu-freq/boost.txt
