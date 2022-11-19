@@ -19,7 +19,7 @@ sed -i '/deny = /c\deny = 0' /etc/security/faillock.conf # turn off disabling ac
 pacman -Syyu
 pacman -Sq --noconfirm --needed acpi acpi_call bash-completion cups-pdf dialog firefox gnome-keyring htop i3blocks imv jq light nano neofetch nextcloud-client p7zip s-tui ufw linux-firmware wget
 pacman -Sq --noconfirm --needed mpv playerctl pipewire pipewire-pulse pamixer # consider switching pamixer to wpctl
-pacman -Sq --noconfirm --needed arc-gtk-theme inter-font noto-fonts-cjk papirus-icon-theme ttf-font-awesome ttf-jetbrains-mono
+pacman -Sq --noconfirm --needed arc-gtk-theme inter-font noto-fonts-cjk papirus-icon-theme ttf-font-awesome ttf-jetbrains-mono otf-crimson-pro
 pacman -Sq --noconfirm --needed exfat-utils ffmpegthumbnailer gvfs gvfs-mtp tumbler thunar xdg-user-dirs
 pacman -Sq --noconfirm --needed libreoffice-fresh hunspell hunspell-en_us hunspell-de
 pacman -Sq --noconfirm --needed alacritty android-tools podman git go nodejs npm python-pip
