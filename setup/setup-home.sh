@@ -5,7 +5,6 @@ xdg-user-dirs-update
 rm -rf ~/Desktop ~/Templates ~/Public ~/Documents ~/Music
 xdg-user-dirs-update
 touch ~/.hushlogin
-systemctl enable --now --user wob.socket
 
 # Copy configs
 cp -r config/* ~/.config
