@@ -1,6 +1,6 @@
 [performance]
 align=right
-full_text= Balanced
+full_text= 
 command=/usr/local/bin/perf
 
 [battery]
