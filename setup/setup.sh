@@ -42,7 +42,7 @@ if ! command -v yay &> /dev/null; then
 	rm -rf yay-bin
 fi
 wget -qO - https://keys.openpgp.org/vks/v1/by-fingerprint/5C6DA024DDE27178073EA103F4B432D5D67990E3 | gpg --import # Key for wob
-sudo -u "$SUDO_USER" yay -Sq --noconfirm --needed autotiling plymouth vscodium-bin vscodium-bin-marketplace wob # Install AUR packages
+sudo -u "$SUDO_USER" yay -Sq --noconfirm --needed autotiling libinput-gestures plymouth vscodium-bin vscodium-bin-marketplace wob # Install AUR packages
 
 # Build and install i3blocks scripts
 if [ -d /sys/class/power_supply/BAT* ]; then
