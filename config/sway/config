@@ -49,11 +49,13 @@ font pango:Inter, Font Awesome 5 Brands, Font Awesome 5 Free 9
     bindsym $mod+Shift+s exec systemctl suspend
     bindsym $mod+e exec thunar ~
     bindsym $mod+b exec firefox
-    # bindsym $mod+b exec code
+    bindsym $mod+c exec gtk-launch codium
     bindsym $mod+l exec swaylock
     bindsym $mod+w output * bg /usr/share/backgrounds/sway/Sway_Wallpaper_Blue_1920x1080.png fill
-    bindsym $mod+m exec MIC=$(pactl list short sources | awk '$2 !~ /monitor/ && /RUNNING$/ { r = 1; print $2; exit } END { exit !r }') && pamixer --source "$MIC" --toggle-mute
-    bindsym XF86AudioMicMute exec MIC=$(pactl list short sources | awk '$2 !~ /monitor/ && /RUNNING$/ { r = 1; print $2; exit } END { exit !r }') && pamixer --source "$MIC" --toggle-mute
+    set $mute_command MIC=$(pactl list short sources | awk '$2 !~ /monitor/ && /RUNNING$/ { r = 1; print $2; exit } END { exit !r }') && pamixer --source "$MIC" --toggle-mute
+    bindsym $mod+m exec $mute_command
+    bindsym XF86AudioMicMute exec $mute_command
+
     bindsym XF86TouchpadOff exec notify-send "Touchpad disabled" "Press touchpad button to enable"
     bindsym XF86TouchpadOn exec notify-send "Touchpad enabled" "Press touchpad button to disable"
 
@@ -104,6 +106,8 @@ font pango:Inter, Font Awesome 5 Brands, Font Awesome 5 Free 9
     bindsym $mod+7 workspace $ws7
     bindsym $mod+8 workspace $ws8
     bindsym $mod+9 workspace $ws9
+    bindsym $mod+Tab workspace next_on_output
+    bindsym $mod+Shift+Tab workspace prev_on_output
     bindsym $mod+Ctrl+1 move container to workspace $ws1
     bindsym $mod+Ctrl+2 move container to workspace $ws2
     bindsym $mod+Ctrl+3 move container to workspace $ws3
