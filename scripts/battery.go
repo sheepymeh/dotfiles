@@ -27,29 +27,28 @@ func main() {
 		ioutil.WriteFile("/sys/bus/platform/drivers/ideapad_acpi/VPC2004:00/conservation_mode", []byte(conservation_mode), 0644)
 	}
 
+	output := ""
 	switch {
 		case charge < 10:
-			fmt.Print("")
+			output = ""
 		case charge < 35:
-			fmt.Print("")
+			output = ""
 		case charge < 65:
-			fmt.Print("")
+			output = ""
 		case charge < 90:
-			fmt.Print("")
+			output = ""
 		default:
-			fmt.Print("")
+			output = ""
 	}
-	fmt.Printf(" %d%%", charge)
-
+	conservation_mode_output := ""
 	if status == "1" {
 		if conservation_mode == "0" {
-			fmt.Println(" ")
+			conservation_mode_output = " "
 		} else {
-			fmt.Println(" ")
+			conservation_mode_output = " "
 		}
-	} else {
-		fmt.Println()
 	}
+	fmt.Printf("%s %d%%%s\n", output, charge, conservation_mode_output)
 
 	if status == "0" {
 		if charge < 20 {

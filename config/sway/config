@@ -158,7 +158,7 @@ exec {
 
 ### Swaybar
 bar {
-    font pango:Inter Semibold, Font Awesome 5 Brands, Font Awesome 5 Free 9
+    font pango:Inter Semibold, Font Awesome 5 Brands, Font Awesome 5 Free 10
     position bottom
     status_command i3blocks
     separator_symbol " | "

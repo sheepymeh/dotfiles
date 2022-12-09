@@ -15,10 +15,10 @@ func update(mode string) {
 			fmt.Println("")
 		case "0x1":
 			ioutil.WriteFile("/proc/acpi/call", []byte("\\_SB.PCI0.LPC0.EC0.VPC0.DYTC 0x0013B001"), 0660)
-			fmt.Println("")
+			fmt.Println("")
 		case "0x2":
 			ioutil.WriteFile("/proc/acpi/call", []byte("\\_SB.PCI0.LPC0.EC0.VPC0.DYTC 0x000FB001"), 0660)
-			fmt.Println("")
+			fmt.Println("")
 		default:
 			help("Invalid mode")
 	}
