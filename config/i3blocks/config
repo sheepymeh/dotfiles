@@ -1,12 +1,13 @@
 [performance]
 align=right
-full_text= 
+full_text=
 command=/usr/local/bin/perf
 
 [battery]
 full_text=Battery
 command=[[ -z $button ]] && /usr/local/bin/battery || /usr/local/bin/battery update
 interval=60
+signal=3
 
 [screenshare]
 command=pw-dump | jq -e -r 'map(.info?.props?) | map(select(.["media.name"]? == "webrtc-pipewire-stream")) | map(.["stream.is-live"]? == true | "") | .[]?'

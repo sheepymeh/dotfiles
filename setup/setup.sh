@@ -17,13 +17,20 @@ sed -i 's$#ParallelDownloads$ParallelDownloads$' /etc/pacman.conf # pacman paral
 sed -i '/deny = /c\deny = 0' /etc/security/faillock.conf # turn off disabling accounts after 3 failed login attempts
 
 pacman -Syyu
-pacman -Sq --noconfirm --needed acpi acpi_call bash-completion cups-pdf dialog firefox gnome-keyring htop i3blocks imv jq light nano neofetch nextcloud-client p7zip s-tui ufw linux-firmware wget
+pacman -Sq --noconfirm --needed acpi acpid acpi_call bash-completion cups-pdf dialog firefox gnome-keyring htop i3blocks imv jq light nano neofetch nextcloud-client p7zip s-tui ufw linux-firmware wget
 pacman -Sq --noconfirm --needed mpv playerctl pipewire pipewire-pulse pamixer # consider switching pamixer to wpctl
 pacman -Sq --noconfirm --needed arc-gtk-theme inter-font noto-fonts-cjk papirus-icon-theme ttf-font-awesome ttf-jetbrains-mono otf-crimson-pro
 pacman -Sq --noconfirm --needed exfat-utils ffmpegthumbnailer gvfs gvfs-mtp tumbler thunar xdg-user-dirs
 pacman -Sq --noconfirm --needed libreoffice-fresh hunspell hunspell-en_us hunspell-de
 pacman -Sq --noconfirm --needed alacritty android-tools podman git go nodejs npm python-pip
 pacman -Sq --noconfirm --needed grim mako qt5-wayland slurp sway swaybg swayidle swaylock wf-recorder wl-clipboard wofi xdg-desktop-portal xdg-desktop-portal-wlr # xwayland: xorg-server xorg-server-xwayland xorg-xrandr
+
+cat <<EOF >/etc/acpi/events/ac
+event=ac_adapter
+action=pkill -SIGRTMIN+3 i3blocks
+EOF
+sed -i 's/^/#/' /etc/acpi/events/anything
+systemctl enable --now acpid
 
 # Bluetooth detection does not work
 if [[ $(rfkill list bluetooth | head -c1 | wc -c) -ne 0 ]] 2>&1; then

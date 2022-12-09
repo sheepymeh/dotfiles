@@ -61,9 +61,11 @@ font pango:Inter, Font Awesome 5 Brands, Font Awesome 5 Free 9
 
     # Move
     bindsym $mod+Left focus left
+    bindsym $mod+z focus left
     bindsym $mod+Down focus down
     bindsym $mod+Up focus up
     bindsym $mod+Right focus right
+    bindsym $mod+x focus right
     bindsym $mod+Shift+Left move left
     bindsym $mod+Shift+Down move down
     bindsym $mod+Shift+Up move up
