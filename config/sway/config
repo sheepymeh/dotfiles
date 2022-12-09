@@ -52,10 +52,8 @@ font pango:Inter, Font Awesome 5 Brands, Font Awesome 5 Free 9
     bindsym $mod+c exec gtk-launch codium
     bindsym $mod+l exec swaylock
     bindsym $mod+w output * bg /usr/share/backgrounds/sway/Sway_Wallpaper_Blue_1920x1080.png fill
-    set $mute_command MIC=$(pactl list short sources | awk '$2 !~ /monitor/ && /RUNNING$/ { r = 1; print $2; exit } END { exit !r }') && pamixer --source "$MIC" --toggle-mute
-    bindsym $mod+m exec $mute_command
-    bindsym XF86AudioMicMute exec $mute_command
-
+    bindsym $mod+m exec MIC=$(pactl list short sources | awk '$2 !~ /monitor/ && /RUNNING$/ { r = 1; print $2; exit } END { exit !r }') && pamixer --source "$MIC" --toggle-mute
+    bindsym XF86AudioMicMute exec MIC=$(pactl list short sources | awk '$2 !~ /monitor/ && /RUNNING$/ { r = 1; print $2; exit } END { exit !r }') && pamixer --source "$MIC" --toggle-mute
     bindsym XF86TouchpadOff exec notify-send "Touchpad disabled" "Press touchpad button to enable"
     bindsym XF86TouchpadOn exec notify-send "Touchpad enabled" "Press touchpad button to disable"
 
@@ -109,7 +107,7 @@ font pango:Inter, Font Awesome 5 Brands, Font Awesome 5 Free 9
     bindsym $mod+8 workspace $ws8
     bindsym $mod+9 workspace $ws9
     bindsym $mod+Tab workspace next_on_output
-    bindsym $mod+Shift+Tab workspace prev_on_output
+    bindsym $mod+Grave workspace prev_on_output
     bindsym $mod+Ctrl+1 move container to workspace $ws1
     bindsym $mod+Ctrl+2 move container to workspace $ws2
     bindsym $mod+Ctrl+3 move container to workspace $ws3
@@ -158,20 +156,20 @@ exec {
 
 ### Swaybar
 bar {
-    font pango:Inter Semibold, Font Awesome 5 Brands, Font Awesome 5 Free 10
+    font pango:Inter Medium, Font Awesome 5 Brands, Font Awesome 5 Free 10
     position bottom
     status_command i3blocks
-    separator_symbol " | "
+    separator_symbol " ॥ "
     strip_workspace_numbers yes
 
     colors {
-        background #383c4a
-        statusline #efefef
-        separator  #7c818c
+        background #000000
+        statusline #aaaaaa
+        separator  #888888
 #                          border  backgr. text
         focused_workspace  #5294e2 #5294e2 #fdfdfd
         active_workspace   #5294e2 #5294e2 #fdfdfd
-        inactive_workspace #4b5162 #4b5162 #dfdfdf
+        inactive_workspace #111111 #111111 #aaaaaa
         urgent_workspace   #16a085 #FDF6E3 #E5201D
     }
 }
