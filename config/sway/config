@@ -12,7 +12,7 @@ exec swayidle -w \
       resume 'swaymsg "output * dpms on"' \
     timeout 160 'swaylock' \
     timeout 300 'systemctl suspend' \
-   before-sleep 'pgrep -x swaylock >/dev/null || swaylock'
+    before-sleep 'pgrep -x swaylock >/dev/null || swaylock'
 exec autotiling
 
 ### Window rules
@@ -34,7 +34,10 @@ input "type:keyboard" {
 
 ### Appearance
 default_border pixel
-hide_edge_borders none
+hide_edge_borders smart
+client.focused          #cba6f7 #cba6f7 #313244 #b4befe #cba6f7
+client.focused_inactive #313244 #313244 #cdd6f4 #45475a #313244
+client.unfocused        #313244 #313244 #cdd6f4 #45475a #313244
 
 font pango:Inter, Font Awesome 5 Brands, Font Awesome 5 Free 9
 
@@ -157,7 +160,7 @@ exec {
 ### Swaybar
 bar {
     tray_output none
-    font pango:Inter Medium, Font Awesome 5 Brands, Font Awesome 5 Free 10
+    font pango:Inter Semibold, Font Awesome 5 Brands, Font Awesome 5 Free 10
     position bottom
     status_command i3blocks
     separator_symbol " ॥ "
@@ -165,13 +168,13 @@ bar {
 
     colors {
         background #000000
-        statusline #aaaaaa
-        separator  #888888
+        statusline #9399b2
+        separator  #585b70
 #                          border  backgr. text
-        focused_workspace  #5294e2 #5294e2 #fdfdfd
-        active_workspace   #5294e2 #5294e2 #fdfdfd
-        inactive_workspace #111111 #111111 #aaaaaa
-        urgent_workspace   #16a085 #FDF6E3 #E5201D
+        focused_workspace  #cba6f7 #cba6f7 #313244
+        active_workspace   #cba6f7 #cba6f7 #313244
+        inactive_workspace #11111b #11111b #9399b2
+        urgent_workspace   #fab387 #fab387 #313244
     }
 }
 

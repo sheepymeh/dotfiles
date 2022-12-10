@@ -52,17 +52,17 @@ func main() {
 
 	if status == "0" {
 		if charge < 20 {
-			fmt.Println("#ce575d")
+			fmt.Println("#f38ba8")
 		}
 	} else if status == "Not*" {
 		if charge < 90 {
-			fmt.Println("#FFFF00")
+			fmt.Println("#fab387")
 		}
 	} else if status == "Charging" {
 		if charge < 20 {
-			fmt.Println("#ffe665")
+			fmt.Println("#f9e2af")
 		} else if charge > 80 {
-			fmt.Println("#77dd77")
+			fmt.Println("#a6e3a1")
 		}
 	}
 }

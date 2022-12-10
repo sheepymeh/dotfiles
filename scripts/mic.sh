@@ -5,7 +5,7 @@ show() {
 		if pactl get-source-mute "$MIC" | grep -q yes; then
 			echo -e '{"full_text": ""}'
 		else
-			echo -e '{"full_text": "", "background": "#CE575D"}'
+			echo -e '{"full_text": "", "background": "#f38ba8"}'
 		fi
 	else
 		echo

@@ -12,7 +12,7 @@ signal=3
 [screenshare]
 command=pw-dump | jq -e -r 'map(.info?.props?) | map(select(.["media.name"]? == "webrtc-consume-stream")) | map(.["stream.is-live"]? == true | "") | .[]?'
 signal=1
-color=#CE575D
+color=#f38ba8
 
 [music]
 command=playerctl metadata --follow --format "{{ emoji(status) }} {{ trunc(title, 30) }}"

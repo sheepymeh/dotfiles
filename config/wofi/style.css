@@ -2,7 +2,7 @@ window {
 	background-color: #1e1e2e;
 	font: 17px Inter, sans-serif;
 	border-radius: 8px;
-	border: 2px solid #b4befe;
+	border: 2px solid #cba6f7;
 	opacity: .9;
 }
 
@@ -10,7 +10,7 @@ window {
 	font-size: 21px;
 	margin: 20px 60px 3px 60px;
 	border: 1.5px solid #cba6f7;
-	border-radius: 2px;
+	border-radius: 6px;
 	background-color: #181825;
 	padding: 8px 12px;
 	color: #fff;
