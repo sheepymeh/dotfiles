@@ -156,6 +156,7 @@ exec {
 
 ### Swaybar
 bar {
+    tray_output none
     font pango:Inter Medium, Font Awesome 5 Brands, Font Awesome 5 Free 10
     position bottom
     status_command i3blocks

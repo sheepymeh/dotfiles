@@ -10,12 +10,12 @@ interval=60
 signal=3
 
 [screenshare]
-command=pw-dump | jq -e -r 'map(.info?.props?) | map(select(.["media.name"]? == "webrtc-pipewire-stream")) | map(.["stream.is-live"]? == true | "") | .[]?'
+command=pw-dump | jq -e -r 'map(.info?.props?) | map(select(.["media.name"]? == "webrtc-consume-stream")) | map(.["stream.is-live"]? == true | "") | .[]?'
 signal=1
 color=#CE575D
 
 [music]
-command=playerctl metadata --follow --format "{{ emoji(status) }} {{ trunc(title, 50) }}"
+command=playerctl metadata --follow --format "{{ emoji(status) }} {{ trunc(title, 30) }}"
 interval=persist
 
 [mute]
@@ -30,6 +30,10 @@ command=record.sh status
 signal=2
 interval=persist
 min_width=50
+
+[language]
+command=swaymsg -rt get_inputs | jq --unbuffered -r 'first(.[] | select(.type == "keyboard")) | .xkb_active_layout_name | sub("English \\(US\\)"; "EN") | sub("German \\(no dead keys\\)"; "DE")' && swaymsg -mt SUBSCRIBE '["input"]' | jq --unbuffered -r 'select(.change == "xkb_layout") | .input.xkb_active_layout_name | sub("English \\(US\\)"; "EN") | sub("German \\(no dead keys\\)"; "DE")'
+interval=persist
 
 [time]
 command=echo " $(date '+%A %d.%m %H:%M')"
