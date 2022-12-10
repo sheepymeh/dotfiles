@@ -6,6 +6,10 @@ rm -rf ~/Desktop ~/Templates ~/Public ~/Documents ~/Music
 xdg-user-dirs-update
 touch ~/.hushlogin
 
+# Configure colors
+git clone --depth=1 -q https://github.com/catppuccin/alacritty.git ~/.config/alacritty/catppuccin
+papirus-folders -C cat-mocha-mauve --theme Papirus-Dark
+
 # Copy configs
 cp -r config/* ~/.config
 mkdir -p ~/.swaylog
@@ -22,3 +26,8 @@ git config --global user.name 'sheepymeh'
 git config --global user.email 'sheepymeh@users.noreply.github.com'
 git config --global credential.helper store
 git config --global pull.rebase false
+
+# Configure Codium
+codium --install-extension Catppuccin.catppuccin-vsc
+codium --install-extension ms-python.python
+codium --install-extension Vue.volar

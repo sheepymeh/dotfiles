@@ -17,9 +17,9 @@ sed -i 's$#ParallelDownloads$ParallelDownloads$' /etc/pacman.conf # pacman paral
 sed -i '/deny = /c\deny = 0' /etc/security/faillock.conf # turn off disabling accounts after 3 failed login attempts
 
 pacman -Syyu
-pacman -Sq --noconfirm --needed acpi acpid acpi_call bash-completion cups-pdf dialog firefox gnome-keyring htop i3blocks imv jq light nano neofetch nextcloud-client p7zip s-tui ufw linux-firmware wget
+pacman -Sq --noconfirm --needed acpi acpid acpi_call bash-completion cups-pdf dialog firefox gnome-keyring htop i3blocks imv jq light nano neofetch nextcloud-client nvtop p7zip s-tui ufw linux-firmware wget
 pacman -Sq --noconfirm --needed mpv playerctl pipewire pipewire-pulse pamixer # consider switching pamixer to wpctl
-pacman -Sq --noconfirm --needed arc-gtk-theme inter-font noto-fonts-cjk papirus-icon-theme ttf-font-awesome ttf-jetbrains-mono otf-crimson-pro
+pacman -Sq --noconfirm --needed inter-font noto-fonts-cjk papirus-icon-theme ttf-font-awesome ttf-jetbrains-mono otf-crimson-pro
 pacman -Sq --noconfirm --needed exfat-utils ffmpegthumbnailer gvfs gvfs-mtp tumbler thunar xdg-user-dirs
 pacman -Sq --noconfirm --needed libreoffice-fresh hunspell hunspell-en_us hunspell-de
 pacman -Sq --noconfirm --needed alacritty android-tools podman git go nodejs npm python-pip
@@ -49,7 +49,7 @@ if ! command -v yay &> /dev/null; then
 	rm -rf yay-bin
 fi
 wget -qO - https://keys.openpgp.org/vks/v1/by-fingerprint/5C6DA024DDE27178073EA103F4B432D5D67990E3 | gpg --import # Key for wob
-sudo -u "$SUDO_USER" yay -Sq --noconfirm --needed autotiling libinput-gestures plymouth vscodium-bin vscodium-bin-marketplace wob # Install AUR packages
+sudo -u "$SUDO_USER" yay -Sq --noconfirm --needed autotiling catppuccin-gtk-theme-mocha libinput-gestures papirus-folders-catppuccin-git plymouth vscodium-bin vscodium-bin-features vscodium-bin-marketplace wob # Install AUR packages
 
 # Build and install i3blocks scripts
 if [ -d /sys/class/power_supply/BAT* ]; then
@@ -77,7 +77,7 @@ fi
 
 # Video drivers
 if lspci -k | grep -A 2 -E "(VGA|3D)" | grep -qi nvidia; then
-	pacman -Sq --noconfirm --needed nvidia nvidia-utils nvtop
+	pacman -Sq --noconfirm --needed nvidia nvidia-utils
 	systemctl enable nvidia-{suspend,hibernate}
 	echo options nvidia NVreg_PreserveVideoMemoryAllocations=1 NVreg_TemporaryFilePath=/var/tmp >/etc/modprobe.d/nvidia-power-management.conf
 
