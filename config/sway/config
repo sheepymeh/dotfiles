@@ -178,7 +178,7 @@ bar {
 }
 
 exec_always {
-    gsettings set org.gnome.desktop.interface gtk-theme Catppuccin-Mocha
+    gsettings set org.gnome.desktop.interface gtk-theme Catppuccin-Mocha-Standard-Mauve
     gsettings set org.gnome.desktop.interface icon-theme Papirus-Dark
     gsettings set org.gnome.desktop.interface font-name 'Inter 9'
     gsettings set org.gnome.desktop.interface monospace-font-name 'JetBrains Mono 9'
