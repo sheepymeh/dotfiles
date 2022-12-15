@@ -63,10 +63,19 @@ if [ -d /sys/bus/platform/drivers/ideapad_acpi/VPC2004:00 ]; then
 	mv perf /usr/local/bin
 fi
 cp scripts/record.sh /usr/local/bin
-cp scripts/mic.sh /usr/local/bin
 chmod a+x /usr/local/bin/record.sh
+cp scripts/mic.sh /usr/local/bin
 chmod a+x /usr/local/bin/mic.sh
+cp scripts/network.sh /usr/local/bin
+chmod a+x /usr/local/bin/network.sh
 mkdir -p /etc/pacman.d/hooks
+
+# Install iwd-wofi
+git clone --depth=1 https://github.com/sheepymeh/iwd_wofi.git
+cd iwd_wofi
+pip install -qU build
+python -m build -w
+pip install -q dist/iwd_wofi-*-py3-none-any.whl
 
 # Install microcode updates as needed
 if [ "$(grep -m1 vendor_id /proc/cpuinfo | cut -f2 -d':' | cut -c 2-)" == 'AuthenticAMD' ]; then

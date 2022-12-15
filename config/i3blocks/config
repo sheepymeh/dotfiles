@@ -1,10 +1,14 @@
 [cpu]
-command=awk '{u=$2+$4; t=$2+$4+$5; if (NR==1){u1=u; t1=t;} else printf " %.1f%\n",($2+$4-u1) * 100 / (t-t1); }' <(grep 'cpu ' /proc/stat) <(sleep 1;grep 'cpu ' /proc/stat)
-interval=2
+command=awk '{u=$2+$4; t=$2+$4+$5; if (NR==1){u1=u; t1=t;} else printf " %.1f%\n",($2+$4-u1) * 100 / (t-t1); }' <(grep 'cpu ' /proc/stat) <(sleep 2;grep 'cpu ' /proc/stat)
+interval=5
 
 [memory]
 command=free -m --si | awk 'FNR == 2 {printf " %.1fGB / %d%\n", $3 / 1000, $3 / $2 * 100}'
-interval=2
+interval=10
+
+[network]
+command=[[ -z $button ]] || /usr/bin/iwd-wofi; /usr/local/bin/network.sh
+interval=10
 
 [performance]
 align=right
@@ -45,4 +49,4 @@ interval=persist
 
 [time]
 command=echo " $(date '+%A %d.%m %H:%M')"
-interval=5
+interval=10
