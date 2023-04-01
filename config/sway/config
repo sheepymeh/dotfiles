@@ -153,7 +153,7 @@ font pango:Inter, Font Awesome 5 Brands, Font Awesome 5 Free 9
 ### Autostart
 exec {
     firefox
-    nextcloud
+    nextcloud --background
 }
 
 ### Swaybar
@@ -178,7 +178,7 @@ bar {
 }
 
 exec_always {
-    gsettings set org.gnome.desktop.interface gtk-theme Catppuccin-Mocha-Standard-Mauve
+    gsettings set org.gnome.desktop.interface gtk-theme Catppuccin-Mocha-Standard-Mauve-Dark
     gsettings set org.gnome.desktop.interface icon-theme Papirus-Dark
     gsettings set org.gnome.desktop.interface font-name 'Inter 9'
     gsettings set org.gnome.desktop.interface monospace-font-name 'JetBrains Mono 9'
