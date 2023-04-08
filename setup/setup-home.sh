@@ -35,19 +35,6 @@ codium --install-extension Catppuccin.catppuccin-vsc
 codium --install-extension ms-python.python
 codium --install-extension Vue.volar
 
-# Configure Firefox
-firefox --createprofile default-release
-FF_PROFILE="$(grep Path ~/.mozilla/firefox/profiles.ini | cut -f2 -d=)"
-cat <<EOF >>~/.mozilla/firefox/profiles.ini
-[Install4F96D1932A9F858E]
-Default=$FF_PROFILE
-Locked=1
-EOF
-cp ff_prefs.js ~/.mozilla/firefox/$FF_PROFILE/prefs.js
-wget https://github.com/catppuccin/firefox/releases/download/old/catppuccin_mocha_mauve.xpi
-firefox catppuccin_mocha_mauve.xpi
-rm catppuccin_mocha_mauve.xpi
-
 # systemd services
 mkdir -p ~/.config/systemd/user/
 cat <<EOF >~/.config/systemd/user/inhibit-while-playing-media.service
@@ -64,3 +51,17 @@ Description=Inhibit idle
 [Service]
 ExecStart=systemd-inhibit --what=idle --who=i3blocks --why='User inhibited idle' sleep infinity
 EOF
+
+# Configure Firefox
+sway &
+firefox --createprofile default-release
+FF_PROFILE="$(grep Path ~/.mozilla/firefox/profiles.ini | cut -f2 -d=)"
+cat <<EOF >>~/.mozilla/firefox/profiles.ini
+[Install4F96D1932A9F858E]
+Default=$FF_PROFILE
+Locked=1
+EOF
+cp ff_prefs.js ~/.mozilla/firefox/$FF_PROFILE/prefs.js
+wget https://github.com/catppuccin/firefox/releases/download/old/catppuccin_mocha_mauve.xpi
+firefox catppuccin_mocha_mauve.xpi
+rm catppuccin_mocha_mauve.xpi
