@@ -193,6 +193,56 @@ EOF
 
 su -c './setup/setup-home.sh' "$SUDO_USER"
 
+# Update Pacman hooks
+cat <<EOF >/etc/pacman.d/hooks/chromium-no-defaults.hook
+[Trigger]
+Operation = Install
+Operation = Upgrade
+Type = Package
+Target = chromium
+Target = ungoogled-chromium-bin
+
+[Action]
+Description = Removing defaults for Chromium
+When = PostTransaction
+Exec = /usr/bin/sed -i '/MimeType/d' /usr/share/applications/chromium.desktop
+NeedsTargets
+EOF
+cat <<EOF >/etc/pacman.d/hooks/electron-wayland.hook
+[Trigger]
+Operation = Install
+Operation = Upgrade
+Type = Package
+Target = vscodium-bin
+Target = chromium
+Target = ungoogled-chromium-bin
+Target = signal-desktop
+
+[Action]
+Description = Adding Wayland flags for Electron
+When = PostTransaction
+Exec = /usr/local/sbin/electron-wayland.sh
+NeedsTargets
+EOF
+cat <<EOF >/usr/local/sbin/electron-wayland.sh
+#!/bin/sh
+read pkgname
+if ! pacman -Qq "$pkgname" >/dev/null 2>&1; then
+	echo 'package not found'
+	exit 1
+fi
+SAVEIFS=$IFS
+IFS=$'\n'
+DESKTOP_FILES=($(pacman -Qql "$pkgname" | grep '\.desktop$'))
+IFS=$SAVEIFS
+for (( i=0; i<${#DESKTOP_FILES[@]}; i++ )); do
+	if ! grep -q ' --enable-features=UseOzonePlatform --ozone-platform=wayland ' "${DESKTOP_FILES[$i]}"; then
+		perl -i -pe 's/^Exec=(\S+?)[ \n]/Exec=$1 --enable-features=UseOzonePlatform --ozone-platform=wayland /' "${DESKTOP_FILES[$i]}"
+	fi
+done
+EOF
+chmod +x /usr/local/sbin/electron-wayland.sh
+
 # Notes:
 # https://bbs.archlinux.org/viewtopic.php?id=257315
 # https://www.kernel.org/doc/Documentation/cpu-freq/boost.txt
