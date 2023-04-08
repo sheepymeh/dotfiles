@@ -2,7 +2,7 @@ xwayland disable
 
 set $mod Mod4
 set $term alacritty
-set $menu wofi --show drun
+set $menu swaymsg exec "`wofi --show drun`"
 
 output * bg ~/Pictures/wallpaper.png fill
 exec swayidle -w \
@@ -14,6 +14,7 @@ exec swayidle -w \
     timeout 300 'systemctl suspend' \
     before-sleep 'pgrep -x swaylock >/dev/null || swaylock'
 exec autotiling
+exec 'playerctl metadata --follow --format "{{status}}" | while read -r STATUS; do [ "$STATUS" == 'Playing' ] && systemctl --user start inhibit-while-playing-media.service || systemctl --user stop inhibit-while-playing-media.service; done'
 
 ### Window rules
 for_window [app_id="firefox"] inhibit_idle fullscreen
@@ -49,7 +50,7 @@ font pango:Inter, Font Awesome 5 Brands, Font Awesome 5 Free 9
     bindsym $mod+Shift+c reload
     bindsym $mod+Shift+r restart
     bindsym $mod+Shift+e exec swaynag -t warning -m 'Do you want to log out?' -b 'Yes, exit sway' 'swaymsg exit'
-    bindsym $mod+Shift+s exec systemctl suspend
+    bindsym --locked $mod+Shift+s exec systemctl suspend
     bindsym $mod+e exec thunar ~
     bindsym $mod+b exec firefox
     bindsym $mod+c exec gtk-launch codium
@@ -72,6 +73,7 @@ font pango:Inter, Font Awesome 5 Brands, Font Awesome 5 Free 9
     bindsym $mod+Shift+Right move right
 
     # Hardware keys
+    set $bar notify-send -t 2000 -a "$NOTIF_TEXT Notification" -h "int:value:$NOTIF_VALUE" "$NOTIF_ICON $NOTIF_VALUE" `makoctl list | jq --arg t "$NOTIF_TEXT" -re '"-r " + (.data[][] | select(."app-name".data==$t + " Notification").id.data | tostring)'`
     exec mkfifo $SWAYSOCK.wob && tail -f $SWAYSOCK.wob | wob
     bindsym --locked XF86AudioRaiseVolume exec pamixer -u -i 2 && pamixer --get-volume >$SWAYSOCK.wob
     bindsym --locked XF86AudioLowerVolume exec pamixer -u -d 2 && pamixer --get-volume >$SWAYSOCK.wob
@@ -110,15 +112,15 @@ font pango:Inter, Font Awesome 5 Brands, Font Awesome 5 Free 9
     bindsym $mod+9 workspace $ws9
     bindsym $mod+Tab workspace next_on_output
     bindsym $mod+Grave workspace prev_on_output
-    bindsym $mod+Ctrl+1 move container to workspace $ws1
-    bindsym $mod+Ctrl+2 move container to workspace $ws2
-    bindsym $mod+Ctrl+3 move container to workspace $ws3
-    bindsym $mod+Ctrl+4 move container to workspace $ws4
-    bindsym $mod+Ctrl+5 move container to workspace $ws5
-    bindsym $mod+Ctrl+6 move container to workspace $ws6
-    bindsym $mod+Ctrl+7 move container to workspace $ws7
-    bindsym $mod+Ctrl+8 move container to workspace $ws8
-    bindsym $mod+Ctrl+9 move container to workspace $ws9
+    bindsym $mod+Alt+1 move container to workspace $ws1
+    bindsym $mod+Alt+2 move container to workspace $ws2
+    bindsym $mod+Alt+3 move container to workspace $ws3
+    bindsym $mod+Alt+4 move container to workspace $ws4
+    bindsym $mod+Alt+5 move container to workspace $ws5
+    bindsym $mod+Alt+6 move container to workspace $ws6
+    bindsym $mod+Alt+7 move container to workspace $ws7
+    bindsym $mod+Alt+8 move container to workspace $ws8
+    bindsym $mod+Alt+9 move container to workspace $ws9
 
     # Layout
     # You can "split" the current object of your focus with

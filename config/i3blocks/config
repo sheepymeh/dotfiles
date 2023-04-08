@@ -1,10 +1,15 @@
 [idle]
-command=pkill systemd-inhibit && echo 'Idle' || (echo 'Idle Blocked' && swaymsg exec 'systemd-inhibit --what=idle sleep infinity')
-full_text=Idle
+command=systemctl --quiet --user is-active inhibit-idle && (systemctl --user stop inhibit-idle && echo ) || (systemctl --user start inhibit-idle && echo )
+full_text=
+
+[dnd]
+command=makoctl mode | grep -q do-not-disturb && (echo ; swaymsg exec 'makoctl mode -r do-not-disturb') || (echo ; swaymsg exec 'makoctl mode -a do-not-disturb')
+full_text=
 
 [cpu]
 command=awk '{u=$2+$4; t=$2+$4+$5; if (NR==1){u1=u; t1=t;} else printf " %.1f%\n",($2+$4-u1) * 100 / (t-t1); }' <(grep 'cpu ' /proc/stat) <(sleep 2;grep 'cpu ' /proc/stat)
 interval=5
+full_text=
 
 [memory]
 command=free -m --si | awk 'FNR == 2 {printf " %.1fGB / %d%\n", $3 / 1000, $3 / $2 * 100}'

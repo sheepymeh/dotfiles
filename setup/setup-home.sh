@@ -11,6 +11,8 @@ git clone --depth=1 -q https://github.com/catppuccin/alacritty.git ~/.config/ala
 papirus-folders -C cat-mocha-mauve --theme Papirus-Dark
 wget -qO ~/Pictures/wallpaper.png https://raw.githubusercontent.com/catppuccin/wallpapers/main/waves/cat-waves.png
 
+cd ..
+
 # Copy configs
 cp -r config/* ~/.config
 mkdir -p ~/.swaylog
@@ -45,3 +47,20 @@ cp ff_prefs.js ~/.mozilla/firefox/$FF_PROFILE/prefs.js
 wget https://github.com/catppuccin/firefox/releases/download/old/catppuccin_mocha_mauve.xpi
 firefox catppuccin_mocha_mauve.xpi
 rm catppuccin_mocha_mauve.xpi
+
+# systemd services
+mkdir -p ~/.config/systemd/user/
+cat <<EOF >~/.config/systemd/user/inhibit-while-playing-media.service
+[Unit]
+Description=Inhibit idle while media is playing
+
+[Service]
+ExecStart=systemd-inhibit --what=idle --who=playerctl --why='Active media playing' sleep infinity
+EOF
+cat <<EOF >~/.config/systemd/user/inhibit-idle.service
+[Unit]
+Description=Inhibit idle
+
+[Service]
+ExecStart=systemd-inhibit --what=idle --who=i3blocks --why='User inhibited idle' sleep infinity
+EOF
