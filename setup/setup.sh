@@ -133,6 +133,8 @@ if lspci -k | grep -A 2 -E '(VGA|3D)' | grep -qi amd; then
 fi
 usermod -aG video "$SUDO_USER"
 
+usermod -aG input "$SUDO_USER"
+
 # Plymouth boot splash screen
 git clone https://github.com/sheepymeh/plymouth-theme-arch-agua
 cp -r plymouth-theme-arch-agua /usr/share/plymouth/themes/arch-agua
