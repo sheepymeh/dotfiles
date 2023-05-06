@@ -1,0 +1,5 @@
+[Unit]
+Description=Inhibit idle while media is playing
+
+[Service]
+ExecStart=systemd-inhibit --what=idle --who=playerctl --why='Active media playing' sleep infinity

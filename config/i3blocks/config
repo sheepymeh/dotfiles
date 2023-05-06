@@ -1,10 +1,12 @@
 [idle]
-command=systemctl --quiet --user is-active inhibit-idle && (systemctl --user stop inhibit-idle && echo ) || (systemctl --user start inhibit-idle && echo )
-full_text=
+command=systemctl --quiet --user is-active inhibit-idle && (systemctl --user stop inhibit-idle && echo ) || (systemctl --user start inhibit-idle && echo )
+full_text=
 
 [dnd]
-command=makoctl mode | grep -q do-not-disturb && (echo ; swaymsg exec 'makoctl mode -r do-not-disturb') || (echo ; swaymsg exec 'makoctl mode -a do-not-disturb')
-full_text=
+command=makoctl mode | grep -q do-not-disturb && (echo ; swaymsg exec 'makoctl mode -r do-not-disturb' >/dev/null) || (echo ; swaymsg exec 'makoctl mode -a do-not-disturb' >/dev/null)
+full_text=
+min_width=20
+align=center
 
 [cpu]
 command=awk '{u=$2+$4; t=$2+$4+$5; if (NR==1){u1=u; t1=t;} else printf " %.1f%\n",($2+$4-u1) * 100 / (t-t1); }' <(grep 'cpu ' /proc/stat) <(sleep 2;grep 'cpu ' /proc/stat)
@@ -16,8 +18,8 @@ command=free -m --si | awk 'FNR == 2 {printf " %.1fGB / %d%\n", $3 / 1000, $3
 interval=10
 
 [network]
-command=[[ -z $button ]] || /usr/bin/iwd-wofi; /usr/local/bin/network.sh
-interval=10
+command=[[ -z $button ]] || /usr/bin/iwd-wofi; networkctl status --json=pretty | jq -r '[.Interfaces[] | select(.Type != "loopback") | if .Type == "ether" then if .OperationalState == "routable" then "" else "" end elif .Type == "wlan" then if .OperationalState == "routable" then if .AdministrativeState == "configured" then "" else "" end elif .OperationalState == "no-carrier" then "" else "" end else "" end | select (. != "") ] | join("  ")'
+interval=2
 
 [performance]
 align=right
@@ -50,7 +52,8 @@ format=json
 command=record.sh status
 signal=2
 interval=persist
-min_width=50
+min_width=60
+align=center
 
 [language]
 command=swaymsg -rt get_inputs | jq --unbuffered -r 'first(.[] | select(.type == "keyboard")) | .xkb_active_layout_name | sub("English \\(US\\)"; "EN") | sub("German \\(no dead keys\\)"; "DE")' && swaymsg -mt SUBSCRIBE '["input"]' | jq --unbuffered -r 'select(.change == "xkb_layout") | .input.xkb_active_layout_name | sub("English \\(US\\)"; "EN") | sub("German \\(no dead keys\\)"; "DE")'

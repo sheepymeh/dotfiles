@@ -2,7 +2,7 @@ xwayland disable
 
 set $mod Mod4
 set $term alacritty
-set $menu swaymsg exec "`wofi --show drun`"
+set $menu swaymsg exec -q "`wofi --show drun`"
 
 output * bg ~/Pictures/wallpaper.png fill
 exec swayidle -w \
@@ -12,7 +12,7 @@ exec swayidle -w \
       resume 'swaymsg "output * dpms on"' \
     timeout 160 'swaylock' \
     timeout 300 'systemctl suspend' \
-    before-sleep 'pgrep -x swaylock >/dev/null || swaylock'
+    before-sleep 'playerctl pause; pgrep -x swaylock >/dev/null || swaylock'
 exec autotiling
 exec 'playerctl metadata --follow --format "{{status}}" | while read -r STATUS; do [ "$STATUS" == 'Playing' ] && systemctl --user start inhibit-while-playing-media.service || systemctl --user stop inhibit-while-playing-media.service; done'
 
