@@ -1,0 +1,12 @@
+[Trigger]
+Operation = Install
+Operation = Upgrade
+Type = Package
+Target = chromium
+Target = ungoogled-chromium-bin
+
+[Action]
+Description = Removing defaults for Chromium
+When = PostTransaction
+Exec = /usr/bin/sed -i '/MimeType/d' /usr/share/applications/chromium.desktop
+NeedsTargets

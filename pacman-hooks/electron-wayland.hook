@@ -1,0 +1,14 @@
+[Trigger]
+Operation = Install
+Operation = Upgrade
+Type = Package
+Target = vscodium-bin
+Target = chromium
+Target = ungoogled-chromium-bin
+Target = signal-desktop
+
+[Action]
+Description = Adding Wayland flags for Electron
+When = PostTransaction
+Exec = /usr/local/sbin/electron-wayland.sh
+NeedsTargets
