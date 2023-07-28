@@ -16,3 +16,5 @@ if [[ -z $DISPLAY ]] && [[ "$(tty)" = /dev/tty1 ]]; then
 else
 	neofetch --speed_shorthand on --cpu_temp C --cpu_cores logical --gtk_shorthand on
 fi
+
+export PATH="$PATH:/home/sheepymeh/.local/bin"

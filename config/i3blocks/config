@@ -10,7 +10,7 @@ align=center
 
 [cpu]
 command=awk '{u=$2+$4; t=$2+$4+$5; if (NR==1){u1=u; t1=t;} else printf " %.1f%\n",($2+$4-u1) * 100 / (t-t1); }' <(grep 'cpu ' /proc/stat) <(sleep 2;grep 'cpu ' /proc/stat)
-interval=5
+interval=3
 full_text=
 
 [memory]
@@ -33,7 +33,7 @@ interval=60
 signal=3
 
 [screenshare]
-command=pw-dump | jq -e -r 'map(.info?.props?) | map(select(.["media.name"]? == "webrtc-consume-stream")) | map(.["stream.is-live"]? == true | "") | .[]?'
+command=pw-dump | jq -e -r 'map(.info?.props?) | map(select(.["media.name"]? == "webrtc-consume-stream")) | map(.["stream.is-live"]? == true | "") | .[]?'
 signal=1
 color=#CE575D
 

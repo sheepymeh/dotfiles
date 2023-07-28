@@ -14,6 +14,7 @@ exec swayidle -w \
     timeout 300 'systemctl suspend' \
     before-sleep 'playerctl pause; pgrep -x swaylock >/dev/null || swaylock'
 exec autotiling
+exec dynamic-workspaces.py
 exec 'playerctl metadata --follow --format "{{status}}" | while read -r STATUS; do [ "$STATUS" == 'Playing' ] && systemctl --user start inhibit-while-playing-media.service || systemctl --user stop inhibit-while-playing-media.service; done'
 
 ### Window rules
@@ -32,6 +33,7 @@ input "type:keyboard" {
     xkb_options grp:alt_shift_toggle
     xkb_numlock enabled
 }
+mouse_warping container
 
 ### Appearance
 default_border pixel
@@ -86,41 +88,41 @@ font pango:Inter, Font Awesome 5 Brands, Font Awesome 5 Free 9
     # Screenshots
     bindsym Print exec grim - | wl-copy
     bindsym Ctrl+Print exec grim "$HOME/Pictures/Screenshot $(date +'%m.%d.%y %T').png"
-    bindsym Alt+Print exec grim -g "$(slurp)" - | wl-copy
-    bindsym Ctrl+Alt+Print exec grim -g "$(slurp)" "$HOME/Pictures/Screenshot $(date +'%m.%d.%y %T').png"
+    bindsym Alt+Print exec grim - | imv -f - & IMV_PID=$! && grim -g "$(slurp)" - | wl-copy && imv-msg $IMV_PID quit
+    bindsym Ctrl+Alt+Print exec grim - | imv -f - & IMV_PID=$! && grim -g "$(slurp)" "$HOME/Pictures/Screenshot $(date +'%m.%d.%y %T').png" && imv-msg $IMV_PID quit
     bindsym $mod+Print exec record.sh
-    bindsym $mod+Shift+Print exec record.sh slurp
+    bindsym $mod+Alt+Print exec record.sh slurp
 
     # Workspaces
-    set $ws1 1
-    set $ws2 2
-    set $ws3 3
-    set $ws4 4
-    set $ws5 5
-    set $ws6 6
-    set $ws7 7
-    set $ws8 8
-    set $ws9 9
-    bindsym $mod+1 workspace $ws1
-    bindsym $mod+2 workspace $ws2
-    bindsym $mod+3 workspace $ws3
-    bindsym $mod+4 workspace $ws4
-    bindsym $mod+5 workspace $ws5
-    bindsym $mod+6 workspace $ws6
-    bindsym $mod+7 workspace $ws7
-    bindsym $mod+8 workspace $ws8
-    bindsym $mod+9 workspace $ws9
+    set $ws1 workspace number 1
+    set $ws2 workspace number 2
+    set $ws3 workspace number 3
+    set $ws4 workspace number 4
+    set $ws5 workspace number 5
+    set $ws6 workspace number 6
+    set $ws7 workspace number 7
+    set $ws8 workspace number 8
+    set $ws9 workspace number 9
+    bindsym $mod+1 $ws1
+    bindsym $mod+2 $ws2
+    bindsym $mod+3 $ws3
+    bindsym $mod+4 $ws4
+    bindsym $mod+5 $ws5
+    bindsym $mod+6 $ws6
+    bindsym $mod+7 $ws7
+    bindsym $mod+8 $ws8
+    bindsym $mod+9 $ws9
     bindsym $mod+Tab workspace next_on_output
     bindsym $mod+Grave workspace prev_on_output
-    bindsym $mod+Alt+1 move container to workspace $ws1
-    bindsym $mod+Alt+2 move container to workspace $ws2
-    bindsym $mod+Alt+3 move container to workspace $ws3
-    bindsym $mod+Alt+4 move container to workspace $ws4
-    bindsym $mod+Alt+5 move container to workspace $ws5
-    bindsym $mod+Alt+6 move container to workspace $ws6
-    bindsym $mod+Alt+7 move container to workspace $ws7
-    bindsym $mod+Alt+8 move container to workspace $ws8
-    bindsym $mod+Alt+9 move container to workspace $ws9
+    bindsym $mod+Alt+1 move container to $ws1
+    bindsym $mod+Alt+2 move container to $ws2
+    bindsym $mod+Alt+3 move container to $ws3
+    bindsym $mod+Alt+4 move container to $ws4
+    bindsym $mod+Alt+5 move container to $ws5
+    bindsym $mod+Alt+6 move container to $ws6
+    bindsym $mod+Alt+7 move container to $ws7
+    bindsym $mod+Alt+8 move container to $ws8
+    bindsym $mod+Alt+9 move container to $ws9
 
     # Layout
     # You can "split" the current object of your focus with
@@ -132,7 +134,7 @@ font pango:Inter, Font Awesome 5 Brands, Font Awesome 5 Free 9
     bindsym $mod+f fullscreen
     bindsym $mod+space floating toggle
     # Swap focus between the tiling area and the floating area
-    bindsym $mod+Shift+space focus mode_toggle
+    bindsym $mod+Ctrl+space focus mode_toggle
     # Move focus to the parent container
     bindsym $mod+a focus parent
     # Move focus to urgent workspaces
@@ -140,7 +142,7 @@ font pango:Inter, Font Awesome 5 Brands, Font Awesome 5 Free 9
 
     # Move window between screeens
     bindsym $mod+p focus output right
-    bindsym $mod+Shift+p move workspace to output right
+    bindsym $mod+Ctrl+p move workspace to output right
 
     # Resizing containers
     mode "resize" {

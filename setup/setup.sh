@@ -17,12 +17,12 @@ sed -i 's$#ParallelDownloads$ParallelDownloads$' /etc/pacman.conf # pacman paral
 sed -i '/deny = /c\deny = 0' /etc/security/faillock.conf # turn off disabling accounts after 3 failed login attempts
 
 pacman -Syyu
-pacman -Sq --noconfirm --needed acpi acpid acpi_call bash-completion cups-pdf dialog firefox gnome-keyring htop i3blocks imv jq light nano neofetch nextcloud-client nvtop p7zip s-tui ufw linux-firmware wget
+pacman -Sq --noconfirm --needed acpi acpid acpi_call bash-completion cups-pdf dialog firefox gnome-keyring htop i3blocks imv jq light man-db nano neofetch nextcloud-client nvtop p7zip s-tui ufw linux-firmware wget
 pacman -Sq --noconfirm --needed mpv playerctl pipewire pipewire-pulse pamixer # consider switching pamixer to wpctl
 pacman -Sq --noconfirm --needed inter-font noto-fonts-cjk papirus-icon-theme ttf-font-awesome ttf-jetbrains-mono otf-crimson-pro
 pacman -Sq --noconfirm --needed exfat-utils ffmpegthumbnailer gvfs gvfs-mtp tumbler thunar xdg-user-dirs
 pacman -Sq --noconfirm --needed libreoffice-fresh hunspell hunspell-en_us hunspell-de
-pacman -Sq --noconfirm --needed alacritty android-tools podman git go nodejs npm python-pip
+pacman -Sq --noconfirm --needed alacritty android-tools podman git go nodejs npm python-build python-pip python-pipx
 pacman -Sq --noconfirm --needed grim mako qt5-wayland slurp sway swaybg swayidle swaylock wf-recorder wl-clipboard wofi xdg-desktop-portal xdg-desktop-portal-wlr # xwayland: xorg-server xorg-server-xwayland xorg-xrandr
 
 cat <<EOF >/etc/acpi/events/ac
@@ -49,7 +49,7 @@ if ! command -v yay &> /dev/null; then
 	rm -rf yay-bin
 fi
 wget -qO - https://keys.openpgp.org/vks/v1/by-fingerprint/5C6DA024DDE27178073EA103F4B432D5D67990E3 | gpg --import # Key for wob
-sudo -u "$SUDO_USER" yay -Sq --noconfirm --needed autotiling catppuccin-gtk-theme-mocha libinput-gestures papirus-folders-catppuccin-git plymouth vscodium-bin vscodium-bin-features vscodium-bin-marketplace wob # Install AUR packages
+sudo -u "$SUDO_USER" yay -Sq --noconfirm --needed autotiling catppuccin-gtk-theme-mocha papirus-folders-catppuccin-git plymouth vscodium-bin vscodium-bin-features vscodium-bin-marketplace wob # Install AUR packages
 
 # Build and install i3blocks scripts
 if [ -d /sys/class/power_supply/BAT* ]; then
@@ -68,14 +68,18 @@ cp scripts/mic.sh /usr/local/bin
 chmod a+x /usr/local/bin/mic.sh
 cp scripts/network.sh /usr/local/bin
 chmod a+x /usr/local/bin/network.sh
+cp scripts/dynamic-workspaces.py /usr/local/bin
+chmod a+x /usr/local/bin/dynamic-workspaces.py
 mkdir -p /etc/pacman.d/hooks
 
 # Install iwd-wofi
 git clone --depth=1 https://github.com/sheepymeh/iwd_wofi.git
 cd iwd_wofi
-pip install -qU build
 python -m build -w
-pip install -q dist/iwd_wofi-*-py3-none-any.whl
+su -c "pipx install dist/iwd_wofi-*-py3-none-any.whl" "$SUDO_USER"
+su -c "pipx runpip iwd-wofi install -r requirements.txt" "$SUDO_USER"
+cd ..
+rm -rf iwd_wofi
 
 # Install microcode updates as needed
 if [ "$(grep -m1 vendor_id /proc/cpuinfo | cut -f2 -d':' | cut -c 2-)" == 'AuthenticAMD' ]; then
@@ -183,7 +187,7 @@ EOF
 systemctl restart systemd-resolved.service
 
 # Enable (REI)SUB
-echo kernel.sysrq = 176 >>/etc/sysctl.d/99-sysctl.conf
+echo kernel.sysrq = 176 >/etc/sysctl.d/99-sysctl.conf
 
 # Autologin (since LUKS already requires auth)
 mkdir -p /etc/systemd/system/getty@tty1.service.d/
@@ -244,6 +248,8 @@ for (( i=0; i<${#DESKTOP_FILES[@]}; i++ )); do
 done
 EOF
 chmod +x /usr/local/sbin/electron-wayland.sh
+
+systemctl enable systemd-boot-update.service
 
 # Notes:
 # https://bbs.archlinux.org/viewtopic.php?id=257315

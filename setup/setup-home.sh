@@ -63,5 +63,7 @@ Locked=1
 EOF
 cp ff_prefs.js ~/.mozilla/firefox/$FF_PROFILE/prefs.js
 wget https://github.com/catppuccin/firefox/releases/download/old/catppuccin_mocha_mauve.xpi
-firefox catppuccin_mocha_mauve.xpi
+wget https://gitlab.com/magnolia1234/bpc-uploads/-/raw/master/bypass_paywalls_clean-latest.xpi
+firefox catppuccin_mocha_mauve.xpi bypass_paywalls_clean-latest.xpi
 rm catppuccin_mocha_mauve.xpi
+rm bypass_paywalls_clean-latest.xpi
