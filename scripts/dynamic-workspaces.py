@@ -53,7 +53,7 @@ def rename_workspaces(ipc):
                 if icon in icons:
                     continue
                 icons.append(icon)
-        name_parts["icons"] = " ".join(icons) + " "
+        name_parts["icons"] = "  ".join(icons) + " "
         new_name = construct_workspace_name(name_parts)
         ipc_rename_workspace(workspace.name, new_name)
 

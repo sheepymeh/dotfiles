@@ -35,6 +35,14 @@ codium --install-extension Catppuccin.catppuccin-vsc
 codium --install-extension ms-python.python
 codium --install-extension Vue.volar
 
+# Configure bat
+mkdir -p "$(bat --config-dir)/themes"
+wget -qO "$(bat --config-dir)/themes/Catppuccin-mocha.tmTheme" https://raw.githubusercontent.com/catppuccin/bat/main/Catppuccin-mocha.tmTheme
+bat cache --build
+
+# Configure sway
+wget -qO ~/.config/sway/catppuccin-mocha https://raw.githubusercontent.com/catppuccin/i3/main/themes/catppuccin-mocha
+
 # systemd services
 mkdir -p ~/.config/systemd/user/
 cat <<EOF >~/.config/systemd/user/inhibit-while-playing-media.service
