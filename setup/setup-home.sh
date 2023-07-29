@@ -9,7 +9,7 @@ touch ~/.hushlogin
 # Configure colors
 git clone --depth=1 -q https://github.com/catppuccin/alacritty.git ~/.config/alacritty/catppuccin
 papirus-folders -C cat-mocha-mauve --theme Papirus-Dark
-wget -qO ~/Pictures/wallpaper.png https://raw.githubusercontent.com/catppuccin/wallpapers/main/waves/cat-waves.png
+wget -qO ~/.config/wallpaper.png https://raw.githubusercontent.com/catppuccin/wallpapers/main/waves/cat-waves.png
 
 cd ..
 

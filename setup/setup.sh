@@ -17,13 +17,13 @@ sed -i 's$#ParallelDownloads$ParallelDownloads$' /etc/pacman.conf # pacman paral
 sed -i '/deny = /c\deny = 0' /etc/security/faillock.conf # turn off disabling accounts after 3 failed login attempts
 
 pacman -Syyu
-pacman -Sq --noconfirm --needed acpi acpid acpi_call bash-completion bat cups-pdf dialog firefox gnome-keyring htop i3blocks imv jq light man-db nano neofetch nextcloud-client nvtop p7zip s-tui ufw linux-firmware wget
+pacman -Sq --noconfirm --needed acpi acpid acpi_call bash-completion bat cups-pdf dialog firefox gnome-keyring htop i3blocks imv jq light man-db nano neofetch nextcloud-client nvtop p7zip plymouth sbctl s-tui ufw linux-firmware wget
 pacman -Sq --noconfirm --needed mpv playerctl pipewire pipewire-pulse pamixer # consider switching pamixer to wpctl
 pacman -Sq --noconfirm --needed inter-font noto-fonts-cjk papirus-icon-theme ttf-font-awesome ttf-jetbrains-mono otf-crimson-pro
 pacman -Sq --noconfirm --needed exfat-utils ffmpegthumbnailer gvfs gvfs-mtp tumbler thunar xdg-user-dirs
 pacman -Sq --noconfirm --needed libreoffice-fresh hunspell hunspell-en_us hunspell-de
 pacman -Sq --noconfirm --needed alacritty android-tools podman git go nodejs npm python-build python-pip python-pipx sqlite
-pacman -Sq --noconfirm --needed grim mako qt5-wayland slurp sway swaybg swayidle swaylock wf-recorder wl-clipboard wofi xdg-desktop-portal xdg-desktop-portal-wlr # xwayland: xorg-server xorg-server-xwayland xorg-xrandr
+pacman -Sq --noconfirm --needed grim mako pavucontrol qt5-wayland slurp sway swaybg swayidle swaylock wf-recorder wl-clipboard wofi xdg-desktop-portal xdg-desktop-portal-wlr # xwayland: xorg-server xorg-server-xwayland xorg-xrandr
 
 cat <<EOF >/etc/acpi/events/ac
 event=ac_adapter
@@ -49,7 +49,7 @@ if ! command -v yay &> /dev/null; then
 	rm -rf yay-bin
 fi
 wget -qO - https://keys.openpgp.org/vks/v1/by-fingerprint/5C6DA024DDE27178073EA103F4B432D5D67990E3 | gpg --import # Key for wob
-sudo -u "$SUDO_USER" yay -Sq --noconfirm --needed autotiling catppuccin-gtk-theme-mocha papirus-folders-catppuccin-git plymouth vscodium-bin vscodium-bin-features vscodium-bin-marketplace wob # Install AUR packages
+sudo -u "$SUDO_USER" yay -Sq --noconfirm --needed autotiling catppuccin-gtk-theme-mocha papirus-folders-catppuccin-git vscodium-bin vscodium-bin-features vscodium-bin-marketplace wob # Install AUR packages
 
 # Build and install i3blocks scripts
 if [ -d /sys/class/power_supply/BAT* ]; then
@@ -142,21 +142,16 @@ usermod -aG input "$SUDO_USER"
 # Plymouth boot splash screen
 git clone https://github.com/sheepymeh/plymouth-theme-arch-agua
 cp -r plymouth-theme-arch-agua /usr/share/plymouth/themes/arch-agua
-sed -i '/^HOOKS=(/ s/encrypt/ plymouth plymouth-encrypt/' /etc/mkinitcpio.conf
+sed -i '/^HOOKS=(/ s/encrypt/plymouth encrypt/' /etc/mkinitcpio.conf
 plymouth-set-default-theme -R arch-agua
 
 sed -i 's$timeout 3$timeout 0$' /boot/loader/loader.conf
 
 # Quiet boot
 sed -i '/^options .* quiet/b; /^options / s/$/ quiet splash loglevel=3 rd.systemd.show_status=auto rd.udev.log_level=3/' /boot/loader/entries/*.conf
-
-# TRIM
-sed -i 's/:luksdev /:luksdev:allow-discards /' /boot/loader/entries/*.conf
-sed -i 's/issue_discards = 0/issue_discards = 1/' /etc/lvm/lvm.conf
-systemctl enable fstrim.timer
-
 bootctl update --graceful
 mkinitcpio -P
+systemctl enable systemd-boot-update.service
 
 # Configure podman
 touch /etc/subuid /etc/subgid
@@ -201,10 +196,7 @@ EOF
 cp pacman-hooks/* /etc/pacman.d/hooks
 cp scripts/electron-wayland.sh /usr/local/sbin/electron-wayland.sh
 chmod +x /usr/local/sbin/electron-wayland.sh
-
-systemctl enable systemd-boot-update.service
-
-su -c './setup/setup-home.sh' "$SUDO_USER"
+/usr/local/sbin/electron-wayland.sh <<< vscodium-bin
 
 # Notes:
 # https://bbs.archlinux.org/viewtopic.php?id=257315

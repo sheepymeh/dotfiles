@@ -4,7 +4,7 @@ set $mod Mod4
 set $term alacritty
 set $menu swaymsg exec -q "`wofi --show drun`"
 
-output * bg ~/Pictures/wallpaper.png fill
+output * bg ~/.config/wallpaper.png fill
 exec swayidle -w \
     timeout 140 'light -O ; light -S 5' \
       resume 'light -I' \
@@ -25,6 +25,7 @@ for_window [app_id="firefox" title="— Sharing Indicator$"] floating enable, st
 for_window [app_id="firefox" title="Launch Application"] floating enable
 for_window [app_id="firefox" title="Picture-in-Picture"] floating enable, sticky enable, opacity .9
 for_window [app_id="thunar" title="File Operation Progress"] floating enable
+for_window [app_id="pavucontrol"] floating enable
 
 ### Inputs
 input "type:keyboard" {
