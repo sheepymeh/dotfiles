@@ -22,7 +22,7 @@ pacman -Sq --noconfirm --needed mpv playerctl pipewire pipewire-pulse pamixer # 
 pacman -Sq --noconfirm --needed inter-font noto-fonts-cjk papirus-icon-theme ttf-font-awesome ttf-jetbrains-mono otf-crimson-pro
 pacman -Sq --noconfirm --needed exfat-utils ffmpegthumbnailer gvfs gvfs-mtp tumbler thunar xdg-user-dirs
 pacman -Sq --noconfirm --needed libreoffice-fresh hunspell hunspell-en_us hunspell-de
-pacman -Sq --noconfirm --needed alacritty android-tools podman git go nodejs npm python-build python-pip python-pipx
+pacman -Sq --noconfirm --needed alacritty android-tools podman git go nodejs npm python-build python-pip python-pipx sqlite
 pacman -Sq --noconfirm --needed grim mako qt5-wayland slurp sway swaybg swayidle swaylock wf-recorder wl-clipboard wofi xdg-desktop-portal xdg-desktop-portal-wlr # xwayland: xorg-server xorg-server-xwayland xorg-xrandr
 
 cat <<EOF >/etc/acpi/events/ac
@@ -197,14 +197,14 @@ ExecStart=
 ExecStart=-/usr/bin/agetty --skip-login --nonewline --noissue --autologin "$SUDO_USER" --noclear %I linux
 EOF
 
-su -c './setup/setup-home.sh' "$SUDO_USER"
-
 # Update Pacman hooks
 cp pacman-hooks/* /etc/pacman.d/hooks
 cp scripts/electron-wayland.sh /usr/local/sbin/electron-wayland.sh
 chmod +x /usr/local/sbin/electron-wayland.sh
 
 systemctl enable systemd-boot-update.service
+
+su -c './setup/setup-home.sh' "$SUDO_USER"
 
 # Notes:
 # https://bbs.archlinux.org/viewtopic.php?id=257315

@@ -3,10 +3,11 @@ command=systemctl --quiet --user is-active inhibit-idle && (systemctl --user sto
 full_text=
 
 [dnd]
-command=makoctl mode | grep -q do-not-disturb && (echo ; swaymsg exec 'makoctl mode -r do-not-disturb' >/dev/null) || (echo ; swaymsg exec 'makoctl mode -a do-not-disturb' >/dev/null)
+command=[[ -z $button ]] && (makoctl mode | grep -q do-not-disturb && echo  || echo ) || (makoctl mode | grep -q do-not-disturb && (echo ; swaymsg exec 'makoctl mode -r do-not-disturb' >/dev/null) || (echo ; swaymsg exec 'makoctl mode -a do-not-disturb' >/dev/null))
 full_text=
 min_width=20
 align=center
+signal=4
 
 [cpu]
 command=awk '{u=$2+$4; t=$2+$4+$5; if (NR==1){u1=u; t1=t;} else printf " %.1f%\n",($2+$4-u1) * 100 / (t-t1); }' <(grep 'cpu ' /proc/stat) <(sleep 2;grep 'cpu ' /proc/stat)

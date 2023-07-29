@@ -32,6 +32,7 @@ git config --global pull.rebase false
 
 # Configure Codium
 codium --install-extension Catppuccin.catppuccin-vsc
+codium --install-extension Catppuccin.catppuccin-vsc-icons
 codium --install-extension ms-python.python
 codium --install-extension Vue.volar
 
@@ -69,9 +70,24 @@ cat <<EOF >>~/.mozilla/firefox/profiles.ini
 Default=$FF_PROFILE
 Locked=1
 EOF
-cp ff_prefs.js ~/.mozilla/firefox/$FF_PROFILE/prefs.js
+
 wget https://github.com/catppuccin/firefox/releases/download/old/catppuccin_mocha_mauve.xpi
 wget https://gitlab.com/magnolia1234/bpc-uploads/-/raw/master/bypass_paywalls_clean-latest.xpi
 firefox catppuccin_mocha_mauve.xpi bypass_paywalls_clean-latest.xpi
 rm catppuccin_mocha_mauve.xpi
 rm bypass_paywalls_clean-latest.xpi
+
+cp firefox/* ~/.mozilla/firefox/$FF_PROFILE
+sqlite3 ~/.mozilla/firefox/$FF_PROFILE/permissions.sqlite <<EOF
+INSERT INTO moz_perms (origin, type, permission, expireType, expireTime, modificationTime) VALUES
+('https://mail.tutanota.com', 'cookie', '1', '0', '0', '1600000000000'),
+('https://github.com', 'cookie', '1', '0', '0', '1600000000000'),
+('https://cloud.sheepmeh.net', 'cookie', '1', '0', '0', '1600000000000'),
+('https://discord.com', 'cookie', '1', '0', '0', '1600000000000'),
+('https://notion.so', 'cookie', '1', '0', '0', '1600000000000'),
+('https://chat.openai.com', 'cookie', '1', '0', '0', '1600000000000'),
+('https://web.whatsapp.com', 'cookie', '1', '0', '0', '1600000000000'),
+('https://nebula.tv', 'cookie', '1', '0', '0', '1600000000000'),
+('https://accounts.google.com', 'cookie', '1', '0', '0', '1600000000000'),
+('https://music.youtube.com', 'cookie', '1', '0', '0', '1600000000000');
+EOF

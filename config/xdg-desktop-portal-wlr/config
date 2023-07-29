@@ -1,3 +1,3 @@
 [screencast]
-exec_before=makoctl set-mode dnd; pkill -SIGRTMIN+1 i3blocks
-exec_after=makoctl set-mode default; pkill -SIGRTMIN+1 i3blocks
+exec_before=makoctl mode -a do-not-disturb; pkill -SIGRTMIN+4 i3blocks
+exec_after=makoctl mode -r do-not-disturb; pkill -SIGRTMIN+4 i3blocks
