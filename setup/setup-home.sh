@@ -9,7 +9,7 @@ touch ~/.hushlogin
 # Configure colors
 git clone --depth=1 -q https://github.com/catppuccin/alacritty.git ~/.config/alacritty/catppuccin
 papirus-folders -C cat-mocha-mauve --theme Papirus-Dark
-wget -qO ~/.config/wallpaper.png https://raw.githubusercontent.com/catppuccin/wallpapers/main/waves/cat-waves.png
+wget -qO ~/.config/wallpaper.png https://raw.githubusercontent.com/archcraft-os/archcraft-wallpapers/main/archcraft-backgrounds-minimal/files/minimal-12.jpg
 
 cd ..
 
@@ -90,4 +90,10 @@ INSERT INTO moz_perms (origin, type, permission, expireType, expireTime, modific
 ('https://nebula.tv', 'cookie', '1', '0', '0', '1600000000000'),
 ('https://accounts.google.com', 'cookie', '1', '0', '0', '1600000000000'),
 ('https://music.youtube.com', 'cookie', '1', '0', '0', '1600000000000');
+EOF
+
+# Configure Chromium
+cat <<EOF >~/.config/chromium-flags.conf
+--enable-features=UseOzonePlatform
+--ozone-platform=wayland
 EOF

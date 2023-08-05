@@ -17,7 +17,7 @@ sed -i 's$#ParallelDownloads$ParallelDownloads$' /etc/pacman.conf # pacman paral
 sed -i '/deny = /c\deny = 0' /etc/security/faillock.conf # turn off disabling accounts after 3 failed login attempts
 
 pacman -Syyu
-pacman -Sq --noconfirm --needed acpi acpid acpi_call bash-completion bat cups-pdf dialog firefox gnome-keyring htop i3blocks imv jq light man-db nano neofetch nextcloud-client nvtop p7zip plymouth sbctl s-tui ufw linux-firmware wget
+pacman -Sq --noconfirm --needed acpi acpid acpi_call bash-completion bat cups-pdf dialog firefox gnome-keyring htop i3blocks imv jq light man-db nano neofetch nextcloud-client nvtop p7zip plymouth sbctl s-tui system-config-printer ufw linux-firmware wget
 pacman -Sq --noconfirm --needed mpv playerctl pipewire pipewire-pulse pamixer # consider switching pamixer to wpctl
 pacman -Sq --noconfirm --needed inter-font noto-fonts-cjk papirus-icon-theme ttf-font-awesome ttf-jetbrains-mono otf-crimson-pro
 pacman -Sq --noconfirm --needed exfat-utils ffmpegthumbnailer gvfs gvfs-mtp tumbler thunar xdg-user-dirs
@@ -197,6 +197,9 @@ cp pacman-hooks/* /etc/pacman.d/hooks
 cp scripts/electron-wayland.sh /usr/local/sbin/electron-wayland.sh
 chmod +x /usr/local/sbin/electron-wayland.sh
 /usr/local/sbin/electron-wayland.sh <<< vscodium-bin
+
+# Enable CUPS
+systemctl enable cups.service
 
 # Notes:
 # https://bbs.archlinux.org/viewtopic.php?id=257315
