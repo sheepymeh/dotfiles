@@ -5,6 +5,8 @@ set $term alacritty
 set $menu swaymsg exec -q "`wofi --show drun`"
 
 output * bg ~/.config/wallpaper.png fill
+output 'AMT International Industry AN-270W04K Unknown' pos 1280 0 scale 2 res 3840x2160@60Hz
+#output 'AMT International Industry AN-270W04K Unknown' pos 1280 0 res 2560x1440@60Hz
 exec swayidle -w \
     timeout 140 'light -O ; light -S 5' \
       resume 'light -I' \
@@ -24,7 +26,7 @@ for_window [app_id="firefox" title="^Developer Tools — "] floating enable
 for_window [app_id="firefox" title="— Sharing Indicator$"] floating enable, sticky enable, move position 0 0, opacity .6
 for_window [app_id="firefox" title="Launch Application"] floating enable
 for_window [app_id="firefox" title="Picture-in-Picture"] floating enable, sticky enable, opacity .9
-for_window [app_id="thunar" title="File Operation Progress"] floating enable
+for_window [app_id="thunar" title="File Operation Progress"] floating enable, opacity .5
 for_window [app_id="pavucontrol"] floating enable
 
 ### Inputs
@@ -52,7 +54,7 @@ font pango:Inter, Font Awesome 5 Brands, Font Awesome 5 Free 9
 
 ### Key bindings
     bindsym $mod+Return exec $term
-    bindsym $mod+q kill
+    bindsym --inhibited $mod+q kill
     bindsym $mod+d exec $menu
     floating_modifier $mod normal
     bindsym $mod+Shift+c reload
@@ -64,7 +66,7 @@ font pango:Inter, Font Awesome 5 Brands, Font Awesome 5 Free 9
     bindsym $mod+c exec gtk-launch codium
     bindsym $mod+l exec swaylock
     bindsym $mod+m exec MIC=$(pactl list short sources | awk '$2 !~ /monitor/ && /RUNNING$/ { r = 1; print $2; exit } END { exit !r }') && pamixer --source "$MIC" --toggle-mute
-    bindsym XF86AudioMicMute exec MIC=$(pactl list short sources | awk '$2 !~ /monitor/ && /RUNNING$/ { r = 1; print $2; exit } END { exit !r }') && pamixer --source "$MIC" --toggle-mute
+    bindsym --inhibited XF86AudioMicMute exec MIC=$(pactl list short sources | awk '$2 !~ /monitor/ && /RUNNING$/ { r = 1; print $2; exit } END { exit !r }') && pamixer --source "$MIC" --toggle-mute
     bindsym XF86TouchpadOff exec notify-send "Touchpad disabled" "Press touchpad button to enable"
     bindsym XF86TouchpadOn exec notify-send "Touchpad enabled" "Press touchpad button to disable"
 
@@ -83,13 +85,13 @@ font pango:Inter, Font Awesome 5 Brands, Font Awesome 5 Free 9
     # Hardware keys
     set $bar notify-send -t 2000 -a "$NOTIF_TEXT Notification" -h "int:value:$NOTIF_VALUE" "$NOTIF_ICON $NOTIF_VALUE" `makoctl list | jq --arg t "$NOTIF_TEXT" -re '"-r " + (.data[][] | select(."app-name".data==$t + " Notification").id.data | tostring)'`
     exec mkfifo $SWAYSOCK.wob && tail -f $SWAYSOCK.wob | wob
-    bindsym --locked XF86AudioRaiseVolume exec pamixer -u -i 2 && pamixer --get-volume >$SWAYSOCK.wob
-    bindsym --locked XF86AudioLowerVolume exec pamixer -u -d 2 && pamixer --get-volume >$SWAYSOCK.wob
-    bindsym --locked XF86AudioMute exec pamixer -t && pamixer --get-mute | grep -q true && echo "0" >$SWAYSOCK.wob || pamixer --get-volume >$SWAYSOCK.wob
-    bindsym --locked XF86AudioPlay exec playerctl play-pause
-    bindsym --locked XF86AudioNext exec playerctl next
-    bindsym --locked XF86AudioPrev exec playerctl previous
-    bindsym --locked XF86AudioStop exec playerctl stop
+    bindsym --inhibited --locked XF86AudioRaiseVolume exec pamixer -u -i 2 && pamixer --get-volume >$SWAYSOCK.wob
+    bindsym --inhibited --locked XF86AudioLowerVolume exec pamixer -u -d 2 && pamixer --get-volume >$SWAYSOCK.wob
+    bindsym --inhibited --locked XF86AudioMute exec pamixer -t && pamixer --get-mute | grep -q true && echo "0" >$SWAYSOCK.wob || pamixer --get-volume >$SWAYSOCK.wob
+    bindsym --inhibited --locked XF86AudioPlay exec playerctl play-pause
+    bindsym --inhibited --locked XF86AudioNext exec playerctl next
+    bindsym --inhibited --locked XF86AudioPrev exec playerctl previous
+    bindsym --inhibited --locked XF86AudioStop exec playerctl stop
 
     # Screenshots
     bindsym Print exec grim - | wl-copy
@@ -118,8 +120,8 @@ font pango:Inter, Font Awesome 5 Brands, Font Awesome 5 Free 9
     bindsym $mod+7 $ws7
     bindsym $mod+8 $ws8
     bindsym $mod+9 $ws9
-    bindsym $mod+Tab workspace next_on_output
-    bindsym $mod+Grave workspace prev_on_output
+    bindsym --inhibited $mod+Tab workspace next_on_output
+    bindsym --inhibited $mod+Grave workspace prev_on_output
     bindsym $mod+Alt+1 move container to $ws1
     bindsym $mod+Alt+2 move container to $ws2
     bindsym $mod+Alt+3 move container to $ws3
