@@ -5,8 +5,7 @@ set $term alacritty
 set $menu swaymsg exec -q "`wofi --show drun`"
 
 output * bg ~/.config/wallpaper.png fill
-output 'AMT International Industry AN-270W04K Unknown' pos 1280 0 scale 2 res 3840x2160@60Hz
-#output 'AMT International Industry AN-270W04K Unknown' pos 1280 0 res 2560x1440@60Hz
+output 'AMT International Industry AN-270W04K Unknown' pos 0,0 scale 2 res 3840x2160@60Hz
 exec swayidle -w \
     timeout 140 'light -O ; light -S 5' \
       resume 'light -I' \
