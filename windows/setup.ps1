@@ -1,27 +1,18 @@
 #Requires -RunAsAdministrator
 
-New-Item -ItemType directory -Path "~\Downloads" -Name "setup"
-Set-Location -Path ~\Downloads\setup
+Write-Host "Configuring DNS" -ForegroundColor Green
+Get-NetAdapter -Physical | ForEach-Object { Set-DnsClientServerAddress $_.InterfaceAlias -ServerAddresses "1.1.1.1", "1.0.0.1" }
+Clear-DnsClientCache
 
 Write-Host "Installing Group Policy" -ForegroundColor Green
 Start-BitsTransfer -Source "https://download.microsoft.com/download/8/5/C/85C25433-A1B0-4FFA-9429-7E023E7DA8D8/LGPO.zip" -Destination LGPO.zip
 Expand-Archive lgpo.zip -DestinationPath lgpo
 .\lgpo\LGPO_30\LGPO.exe /t "$PSScriptRoot\grouppolicy.txt"
 
-Write-Host "Ensure that a DoH DNS server has been set up, then continue" -ForegroundColor Yellow
-Pause
+Write-Host "Configuring NTP" -ForegroundColor Green
+w32tm /config /syncfromflags:manual /manualpeerlist:"0.pool.ntp.org 1.pool.ntp.org 2.pool.ntp.org 3.pool.ntp.org"
 
-Write-Host "Enabling Dark Mode" -ForegroundColor Green
-Set-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize -Name SystemUsesLightTheme -Value 0 -Type DWORD -Force
-Set-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize -Name AppsUseLightTheme -Value 0 -Type DWORD -Force
-
-Write-Host "Configuring Power Plan" -ForegroundColor Green
-powercfg /change monitor-timeout-ac 3
-powercfg /change monitor-timeout-dc 3
-powercfg /change standby-timeout-ac 10
-powercfg /change standby-timeout-dc 10
-
-Set-ItemProperty -Path "HKCU:\Control Panel\Keyboard" -Name "PrintScreenKeyForSnippingEnabled" -Type DWORD -Value 1
+Write-Host "Misc. Registry Changes" -ForegroundColor Green
 if (!(Test-Path "HKCU:\Software\Classes\CLSID\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}")) {
 	New-Item -Path "HKCU:\Software\Classes\CLSID\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}"
 }
@@ -29,58 +20,6 @@ if (!(Test-Path "HKCU:\Software\Classes\CLSID\{86ca1aa0-34aa-4e8b-a509-50c905bae
 	New-Item -Path "HKCU:\Software\Classes\CLSID\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}\InprocServer32"
 }
 Set-ItemProperty -Path "HKCU:\Software\Classes\CLSID\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}\InprocServer32" -Name "(Default)" -Value "" -Force
-
-Write-Host "Enabling Storage Sense" -ForegroundColor Green
-$storage_sense_key = "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\StorageSense"
-if (!(Test-Path "$storage_sense_key")) {
-    New-Item -Path "$storage_sense_key"
-}
-if (!(Test-Path "$storage_sense_key\Parameters")) {
-    New-Item -Path "$storage_sense_key\Parameters"
-}
-if (!(Test-Path "$storage_sense_key\Parameters\StoragePolicy")) {
-    New-Item -Path "$storage_sense_key\Parameters\StoragePolicy"
-}
-Set-ItemProperty -Path "$storage_sense_key\Parameters\StoragePolicy" -Name "01" -Type DWord -Value 1
-Set-ItemProperty -Path "$storage_sense_key\Parameters\StoragePolicy" -Name "2048" -Type DWord -Value 7
-Set-ItemProperty -Path "$storage_sense_key\Parameters\StoragePolicy" -Name "04" -Type DWord -Value 1
-Set-ItemProperty -Path "$storage_sense_key\Parameters\StoragePolicy" -Name "08" -Type DWord -Value 1
-Set-ItemProperty -Path "$storage_sense_key\Parameters\StoragePolicy" -Name "256" -Type DWord -Value 14
-
-Write-Host "Setting Time" -ForegroundColor Green
-Set-TimeZone -Name "Malay Peninsula Standard Time"
-
-Write-Host "Enabling BitLocker" -ForegroundColor Green
-Enable-BitLocker -MountPoint "C:" -EncryptionMethod XtsAes128 -UsedSpaceOnly -SkipHardwareTest -TPMProtector
-
-Write-Host "Installing Chocolatey" -ForegroundColor Green
-
-Set-ExecutionPolicy Bypass -Scope Process -Force
-[System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString("https://community.chocolatey.org/install.ps1"))
-choco feature enable -n=useRememberedArgumentsForUpgrades
-
-Write-Host "Installing Software" -ForegroundColor Green
-
-choco install nextcloud-client -y
-choco install 7zip -y
-choco install Firefox --params "/NoDesktopShortcut /NoAutoUpdate /RemoveDistributionDir" -y
-choco install transmission -y
-choco install spotify -y
-choco install signal --params "/NoTray /NoShortcut" -y
-choco install nodejs-lts -y
-choco install php -y
-choco install adb -y
-choco install vscodium --params "/NoDesktopIcon /AssociateWithFiles" -y
-choco install git --params "/GitOnlyOnPath /NoAutoCrlf /NoShellIntegration /NoGuiHereIntegration /NoShellHereIntegration /WindowsTerminal /Editor:VSCodium" -y
-choco install powertoys -y
-
-if ((Get-WmiObject win32_VideoController).description.Contains("NVIDIA")) {
-	choco install nvidia-display-driver --package-parameters="'/dch'" -y
-}
-
-Write-Host "Installing WSL & Sandbox"
-Enable-WindowsOptionalFeature -FeatureName "Containers-DisposableClientVM" -All -NoRestart -Online
-wsl --install
 
 Write-Host "Uninstalling Software"
 $apps = "Microsoft.549981C3F5F10", "microsoft.windowscommunicationsapps", "Microsoft.WindowsCamera", "Microsoft.XboxIdentityProvider", "MicrosoftTeams", "Microsoft.OneDriveSync", "Microsoft.WindowsAlarms", "Microsoft.ZuneMusic", "Microsoft.YourPhone", "Microsoft.XboxSpeechToTextOverlay", "Microsoft.XboxGamingOverlay", "Microsoft.Xbox.TCUI", "Microsoft.WindowsSoundRecorder", "Microsoft.WindowsMaps", "Microsoft.WindowsFeedbackHub", "Microsoft.Todos", "Microsoft.People", "Microsoft.MicrosoftStickyNotes", "Microsoft.MicrosoftSolitaireCollection", "Microsoft.GetHelp", "Microsoft.GamingApp", "Microsoft.BingWeather", "Microsoft.BingNews", "Microsoft.MicrosoftOfficeHub", "Microsoft.XboxGameOverlay"
@@ -100,36 +39,10 @@ foreach ($capability in $capabilities) {
 	Remove-WindowsCapability -Online -Name $capability
 }
 
-$env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
-git config --global user.name 'sheepymeh'
-git config --global user.email 'sheepymeh@users.noreply.github.com'
-git config --global pull.rebase false
-
-codium
-Stop-Process -Name VSCodium
-Copy-Item "$PSScriptRoot\..\code\settings.json" "$env:APPDATA\VSCodium\User"
-Copy-Item "$PSScriptRoot\..\code\keybindings.json" "$env:APPDATA\VSCodium\User"
-Set-Content -Path "$env:APPDATA\VSCodium\product.json" -Value @"
-{
-  "extensionsGallery": {
-    "serviceUrl": "https://marketplace.visualstudio.com/_apis/public/gallery",
-    "cacheUrl": "https://vscode.blob.core.windows.net/gallery/index",
-    "itemUrl": "https://marketplace.visualstudio.com/items"
-  },
-  "nameLong": "Visual Studio Code"
-}
-"@
-
-Write-Host "Adding Languages" -ForegroundColor Green
-$Languages = Get-WinUserLanguageList
-$Languages.add("zh-Hans-CN")
-$Languages.add("de-DE")
-$Languages.add("ja")
-Set-WinUserLanguageList -LanguageList $Languages -Force
-
 Write-Host "Installing Office" -ForegroundColor Green
-Start-BitsTransfer -Source "https://download.microsoft.com/download/2/7/A/27AF1BE6-DD20-4CB4-B154-EBAB8A7D4A7E/officedeploymenttool_12624-20320.exe" -Destination office.exe
+Start-BitsTransfer -Source "https://download.microsoft.com/download/2/7/A/27AF1BE6-DD20-4CB4-B154-EBAB8A7D4A7E/officedeploymenttool_16626-20148.exe" -Destination office.exe
 Start-Process office.exe -Wait -ArgumentList "/extract:office /quiet"
+Write-Host "Downloading Installer"
 Set-Content -Path "office/office.xml" -Value @"
 <Configuration>
   <Add OfficeClientEdition="64" Channel="MonthlyEnterprise">
@@ -166,3 +79,54 @@ Write-Host "Downloading Office"
 Start-Process .\office\setup.exe -Wait -ArgumentList "/download office/office.xml"
 Write-Host "Installing Office"
 Start-Process .\office\setup.exe -Wait -ArgumentList "/configure office/office.xml"
+
+Write-Host "Configuring Optional Features" -ForegroundColor Green
+Enable-WindowsOptionalFeature -FeatureName "Containers-DisposableClientVM" -All -NoRestart -Online
+
+Write-Host "Configuring Power Plan" -ForegroundColor Green
+powercfg /change monitor-timeout-ac 4
+powercfg /change monitor-timeout-dc 4
+powercfg /change standby-timeout-ac 5
+powercfg /change standby-timeout-dc 5
+powercfg /hibernate off
+
+Write-Host "Adding Languages" -ForegroundColor Green
+$Languages = Get-WinUserLanguageList
+$Languages.add("zh-Hans-CN")
+$Languages.add("de-DE")
+$Languages.add("ja")
+Set-WinUserLanguageList $Languages
+
+irm https://christitus.com/win | iex
+
+Write-Host "Configuring Firefox" -ForegroundColor Green
+Start-Process "C:\Program Files\Mozilla Firefox\firefox.exe" -Wait -ArgumentList "--createprofile default-release"
+$FF_PROFILE = ls "$env:APPDATA\Mozilla\Firefox\Profiles\" | Select-Object -ExpandProperty Name
+Copy-Item firefox/* "$env:APPDATA\Mozilla\Firefox\Profiles\$FF_PROFILE"
+Set-Content -Path "$env:APPDATA\Mozilla\Firefox\profiles.ini" -Value @"
+[Install308046B0AF4A39CB]
+Default=Profiles/$FF_PROFILE
+Locked=1
+
+[Profile0]
+Name=default-release
+IsRelative=1
+Path=Profiles/$FF_PROFILE
+
+[General]
+StartWithLastProfile=1
+Version=2
+"@
+wget https://github.com/catppuccin/firefox/releases/download/old/catppuccin_mocha_mauve.xpi -OutFile catppuccin_mocha_mauve.xpi
+wget https://gitlab.com/magnolia1234/bpc-uploads/-/raw/master/bypass_paywalls_clean-latest.xpi -OutFile bypass_paywalls_clean-latest.xpi
+& "C:\Program Files\Mozilla Firefox\firefox.exe" "$pwd\catppuccin_mocha_mauve.xpi" "$pwd\bypass_paywalls_clean-latest.xpi"
+
+Write-Host "Configuring VS Code" -ForegroundColor Green
+Copy-Item code\* "$env:appdata\Code\User"
+& "$env:LOCALAPPDATA\Programs\Microsoft VS Code\Code.exe" --install-extension Catppuccin.catppuccin-vsc
+& "$env:LOCALAPPDATA\Programs\Microsoft VS Code\Code.exe" --install-extension Catppuccin.catppuccin-vsc-icons
+& "$env:LOCALAPPDATA\Programs\Microsoft VS Code\Code.exe" --install-extension ms-python.python
+& "$env:LOCALAPPDATA\Programs\Microsoft VS Code\Code.exe" --install-extension Vue.volar
+& "$env:LOCALAPPDATA\Programs\Microsoft VS Code\Code.exe" --install-extension svelte.svelte-vscode
+
+Write-Host "Please reboot your system to finish" -ForegroundColor Green
