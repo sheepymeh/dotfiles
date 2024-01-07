@@ -9,7 +9,7 @@ fi
 sbctl status
 
 sbctl create-keys
-sbctl enroll-keys
+sbctl enroll-keys --yes-this-might-brick-my-machine
 sbctl verify
 
 sbctl sign -s /boot/vmlinuz-linux

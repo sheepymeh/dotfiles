@@ -172,6 +172,13 @@ XDG_CURRENT_DESKTOP=sway
 XDG_SESSION_TYPE=wayland
 EOF
 
+# Edge TPU udev rules
+cat <<EOF >/usr/lib/udev/rules.d/60-edgetpu.rules
+SUBSYSTEM=="apex", MODE="0660", GROUP="plugdev"
+SUBSYSTEM=="usb",ATTRS{idVendor}=="1a6e",GROUP="plugdev"
+SUBSYSTEM=="usb",ATTRS{idVendor}=="18d1",GROUP="plugdev"
+EOF
+
 # DoT CloudFlare DNS
 mkdir -p /etc/systemd/resolved.conf.d/
 cat <<EOF >/etc/systemd/resolved.conf.d/dns_over_tls.conf

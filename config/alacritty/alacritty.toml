@@ -1,0 +1,16 @@
+import = ["/home/sheepymeh/.config/alacritty/catppuccin/catppuccin-mocha.toml"]
+
+[font.bold]
+family = "JetBrains Mono"
+style = "Bold"
+
+[font.italic]
+family = "JetBrins Mono"
+style = "Italic"
+
+[font.normal]
+family = "JetBrains Mono"
+style = "Regular"
+
+[window]
+opacity = 0.9

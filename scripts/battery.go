@@ -48,7 +48,7 @@ func main() {
 			conservation_mode_output = " "
 		}
 	}
-	fmt.Printf("%s %d%%%s\n", output, charge, conservation_mode_output)
+	fmt.Printf("%s %d%%%s\n\n", output, charge, conservation_mode_output)
 
 	if status == "0" {
 		if charge < 20 {
