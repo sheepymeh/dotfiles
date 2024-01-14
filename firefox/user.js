@@ -10,7 +10,6 @@ user_pref("browser.crashReports.unsubmittedCheck.autoSubmit2", false);
 user_pref("browser.crashReports.unsubmittedCheck.enabled", false);
 user_pref("browser.fixup.alternate.enabled", false);
 user_pref("browser.newtabpage.activity-stream.section.highlights.includePocket", false);
-user_pref("browser.newtabpage.enabled", false);
 user_pref("browser.newtabpage.enhanced", false);
 user_pref("browser.newtabpage.introShown", true);
 user_pref("browser.safebrowsing.appRepURL", "");
@@ -28,6 +27,7 @@ user_pref("browser.shell.checkDefaultBrowser", false);
 user_pref("browser.startup.homepage_override.mstone", "ignore");
 user_pref("browser.tabs.crashReporting.sendReport", false);
 user_pref("browser.tabs.firefox-view", false);
+user_pref("browser.tabs.firefox-view-next", false);
 user_pref("browser.urlbar.groupLabels.enabled", false);
 user_pref("browser.urlbar.quicksuggest.enabled", false);
 user_pref("browser.urlbar.speculativeConnect.enabled", false);
@@ -143,5 +143,6 @@ user_pref("privacy.clearOnShutdown.cookies", true);
 user_pref("signon.rememberSignons", false);
 user_pref("browser.newtabpage.activity-stream.feeds.topsites", false);
 user_pref("browser.toolbars.bookmarks.visibility", "never");
-user_pref("browser.uiCustomization.state", '{"placements":{"widget-overflow-fixed-list":[],"unified-extensions-area":["magnolia_12_34-browser-action","sponsorblocker_ajay_app-browser-action","_7a7a4a92-a2a0-41d1-9fd7-1e92480d612d_-browser-action","_74145f27-f039-47ce-a470-a662b129930a_-browser-action","_7b1bf0b6-a1b9-42b0-b75d-252036438bdc_-browser-action","jid1-bofifl9vbdl2zq_jetpack-browser-action","ublock0_raymondhill_net-browser-action"],"nav-bar":["back-button","forward-button","stop-reload-button","customizableui-special-spring1","urlbar-container","customizableui-special-spring2","save-to-pocket-button","personal-bookmarks","downloads-button","fxa-toolbar-menu-button","unified-extensions-button","_c84d89d9-a826-4015-957b-affebd9eb603_-browser-action","_446900e4-71c2-419f-a6a7-df9c091e268b_-browser-action"],"toolbar-menubar":["menubar-items"],"TabsToolbar":["firefox-view-button","tabbrowser-tabs","alltabs-button"],"PersonalToolbar":["import-button"]},"seen":["magnolia_12_34-browser-action","developer-button","sponsorblocker_ajay_app-browser-action","_c84d89d9-a826-4015-957b-affebd9eb603_-browser-action","_7a7a4a92-a2a0-41d1-9fd7-1e92480d612d_-browser-action","_74145f27-f039-47ce-a470-a662b129930a_-browser-action","_446900e4-71c2-419f-a6a7-df9c091e268b_-browser-action","_7b1bf0b6-a1b9-42b0-b75d-252036438bdc_-browser-action","jid1-bofifl9vbdl2zq_jetpack-browser-action","ublock0_raymondhill_net-browser-action"],"dirtyAreaCache":["unified-extensions-area","nav-bar","PersonalToolbar"],"currentVersion":19,"newElementCount":6}')
-
+user_pref("browser.tabs.inTitlebar", 0);
+user_pref("media.webspeech.synth.dont_notify_on_error", true);
+user_pref("browser.uiCustomization.state", '{"placements":{"widget-overflow-fixed-list":[],"unified-extensions-area":["sponsorblocker_ajay_app-browser-action","magnolia_12_34-browser-action","jid1-bofifl9vbdl2zq_jetpack-browser-action","_74145f27-f039-47ce-a470-a662b129930a_-browser-action","_7a7a4a92-a2a0-41d1-9fd7-1e92480d612d_-browser-action"],"nav-bar":["back-button","forward-button","stop-reload-button","customizableui-special-spring1","urlbar-container","customizableui-special-spring2","save-to-pocket-button","personal-bookmarks","downloads-button","ublock0_raymondhill_net-browser-action","_c84d89d9-a826-4015-957b-affebd9eb603_-browser-action","_446900e4-71c2-419f-a6a7-df9c091e268b_-browser-action","unified-extensions-button"],"toolbar-menubar":["menubar-items"],"TabsToolbar":["firefox-view-button","tabbrowser-tabs","new-tab-button","alltabs-button"],"PersonalToolbar":["import-button"]},"seen":["save-to-pocket-button","developer-button","magnolia_12_34-browser-action","jid1-bofifl9vbdl2zq_jetpack-browser-action","_446900e4-71c2-419f-a6a7-df9c091e268b_-browser-action","_c84d89d9-a826-4015-957b-affebd9eb603_-browser-action","sponsorblocker_ajay_app-browser-action","_74145f27-f039-47ce-a470-a662b129930a_-browser-action","ublock0_raymondhill_net-browser-action","_7a7a4a92-a2a0-41d1-9fd7-1e92480d612d_-browser-action"],"dirtyAreaCache":["nav-bar","PersonalToolbar","unified-extensions-area","toolbar-menubar","TabsToolbar"],"currentVersion":20,"newElementCount":9}')

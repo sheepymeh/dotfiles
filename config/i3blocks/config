@@ -19,7 +19,7 @@ command=free -m --si | awk 'FNR == 2 {printf " %.1fGB / %d%\n", $3 / 1000, $3
 interval=10
 
 [network]
-command=[[ -z $button ]] || iwd-wofi; networkctl status --json=pretty | jq -r '[.Interfaces[] | select(.Type != "loopback") | if .Type == "ether" then if .OperationalState == "routable" then "" else "" end elif .Type == "wlan" then if .OperationalState == "routable" then if .AdministrativeState == "configured" then "" else "" end elif .OperationalState == "no-carrier" then "" else "" end else "" end | select (. != "") ] | join("  ")'
+command=[[ -z $button ]] || $HOME/.local/bin/iwd-wofi; networkctl status --json=pretty | jq -r '[.Interfaces[] | select(.Type != "loopback") | if .Type == "ether" then if .OperationalState == "routable" then "" else "" end elif .Type == "wlan" then if .OperationalState == "routable" then if .AdministrativeState == "configured" then "" else "" end elif .OperationalState == "no-carrier" then "" elif .OperationalState == "off" then "Wi-Fi Off" else "" end else "" end | select (. != "") ] | join("  ")'
 interval=2
 
 [performance]

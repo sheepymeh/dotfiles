@@ -73,7 +73,19 @@ EOF
 
 wget https://github.com/catppuccin/firefox/releases/download/old/catppuccin_mocha_mauve.xpi
 wget https://gitlab.com/magnolia1234/bpc-uploads/-/raw/master/bypass_paywalls_clean-latest.xpi
-firefox catppuccin_mocha_mauve.xpi bypass_paywalls_clean-latest.xpi
+firefox \
+	bypass_paywalls_clean-latest.xpi \
+	https://addons.mozilla.org/en-US/firefox/addon/decentraleyes \
+	https://addons.mozilla.org/en-US/firefox/addon/bitwarden-password-manager \
+	https://addons.mozilla.org/en-US/firefox/addon/history-cleaner \
+	https://addons.mozilla.org/en-US/firefox/addon/mal-sync \
+	https://addons.mozilla.org/en-US/firefox/addon/sponsorblock \
+	catppuccin_mocha_mauve.xpi \
+	https://addons.mozilla.org/en-US/firefox/addon/clearurls \
+	https://addons.mozilla.org/en-US/firefox/addon/google-container \
+	https://addons.mozilla.org/en-US/firefox/addon/ublock-origin \
+	https://addons.mozilla.org/en-US/firefox/addon/styl-us \
+	https://addons.mozilla.org/en-US/firefox/addon/zoom-redirector
 rm catppuccin_mocha_mauve.xpi
 rm bypass_paywalls_clean-latest.xpi
 
@@ -81,10 +93,11 @@ cp firefox/* ~/.mozilla/firefox/$FF_PROFILE
 sqlite3 ~/.mozilla/firefox/$FF_PROFILE/permissions.sqlite <<EOF
 INSERT INTO moz_perms (origin, type, permission, expireType, expireTime, modificationTime) VALUES
 ('https://mail.tutanota.com', 'cookie', '1', '0', '0', '1600000000000'),
+('https://app.tuta.com', 'cookie', '1', '0', '0', '1600000000000'),
 ('https://github.com', 'cookie', '1', '0', '0', '1600000000000'),
-('https://cloud.sheepmeh.net', 'cookie', '1', '0', '0', '1600000000000'),
+('https://cloud.sheepymeh.net', 'cookie', '1', '0', '0', '1600000000000'),
 ('https://discord.com', 'cookie', '1', '0', '0', '1600000000000'),
-('https://notion.so', 'cookie', '1', '0', '0', '1600000000000'),
+('https://www.notion.so', 'cookie', '1', '0', '0', '1600000000000'),
 ('https://chat.openai.com', 'cookie', '1', '0', '0', '1600000000000'),
 ('https://web.whatsapp.com', 'cookie', '1', '0', '0', '1600000000000'),
 ('https://nebula.tv', 'cookie', '1', '0', '0', '1600000000000'),
