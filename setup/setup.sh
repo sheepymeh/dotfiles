@@ -24,6 +24,7 @@ pacman -Sq --noconfirm --needed exfat-utils ffmpegthumbnailer gvfs gvfs-mtp tumb
 pacman -Sq --noconfirm --needed libreoffice-fresh hunspell hunspell-en_us hunspell-de
 pacman -Sq --noconfirm --needed alacritty android-tools podman git go nodejs npm python-build python-pip python-pipx sqlite
 pacman -Sq --noconfirm --needed grim mako pavucontrol qt5-wayland slurp sway swaybg swayidle swaylock wf-recorder wl-clipboard wofi xdg-desktop-portal xdg-desktop-portal-wlr # xwayland: xorg-server xorg-server-xwayland xorg-xrandr
+pacman -Sq --noconfirm --needed python-numpy python-pytorch-opt python-pillow
 
 cat <<EOF >/etc/acpi/events/ac
 event=ac_adapter
