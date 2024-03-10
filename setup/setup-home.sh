@@ -45,6 +45,7 @@ bat cache --build
 wget -qO ~/.config/sway/catppuccin-mocha https://raw.githubusercontent.com/catppuccin/i3/main/themes/catppuccin-mocha
 
 # systemd services
+systemctl --user enable ssh-agent
 mkdir -p ~/.config/systemd/user/
 cat <<EOF >~/.config/systemd/user/inhibit-while-playing-media.service
 [Unit]
