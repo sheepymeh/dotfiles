@@ -17,14 +17,15 @@ sed -i 's$#ParallelDownloads$ParallelDownloads$' /etc/pacman.conf # pacman paral
 sed -i '/deny = /c\deny = 0' /etc/security/faillock.conf # turn off disabling accounts after 3 failed login attempts
 
 pacman -Syyu
-pacman -Sq --noconfirm --needed acpi acpid acpi_call bash-completion bat cups-pdf dialog firefox gnome-keyring htop i3blocks imv jq light man-db nano neofetch nextcloud-client nvtop p7zip plymouth sbctl s-tui system-config-printer ufw linux-firmware wget
+pacman -Sq --noconfirm --needed acpi acpid acpi_call bash-completion bat cups-pdf curl dialog firefox gnome-keyring htop i3blocks imv jq light man-db nano neofetch nextcloud-client nvtop p7zip plymouth sbctl s-tui system-config-printer ufw linux-firmware wget
 pacman -Sq --noconfirm --needed mpv playerctl pipewire pipewire-pulse pamixer # consider switching pamixer to wpctl
 pacman -Sq --noconfirm --needed inter-font noto-fonts-cjk papirus-icon-theme ttf-font-awesome ttf-jetbrains-mono otf-crimson-pro
 pacman -Sq --noconfirm --needed exfat-utils ffmpegthumbnailer gvfs gvfs-mtp tumbler thunar xdg-user-dirs
 pacman -Sq --noconfirm --needed libreoffice-fresh hunspell hunspell-en_us hunspell-de
-pacman -Sq --noconfirm --needed alacritty android-tools podman git go nodejs npm python-build python-pip python-pipx sqlite
 pacman -Sq --noconfirm --needed grim mako pavucontrol qt5-wayland slurp sway swaybg swayidle swaylock wf-recorder wl-clipboard wofi xdg-desktop-portal xdg-desktop-portal-wlr # xwayland: xorg-server xorg-server-xwayland xorg-xrandr
-pacman -Sq --noconfirm --needed python-numpy python-pytorch-opt python-pillow
+pacman -Sq --noconfirm --needed alacritty android-tools podman git go sqlite
+pacman -Sq --noconfirm --needed python-build python-pip python-numpy python-pytorch-opt python-pillow python-opencv python-scikit-learn python-flask python-aiohttp python-pycryptodome
+pacman -Sq --noconfirm --needed nodejs npm typescript
 
 cat <<EOF >/etc/acpi/events/ac
 event=ac_adapter
