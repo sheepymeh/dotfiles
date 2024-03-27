@@ -26,6 +26,7 @@ for_window [app_id="firefox" title="— Sharing Indicator$"] floating enable, st
 for_window [app_id="firefox" title="Launch Application"] floating enable
 for_window [app_id="firefox" title="Picture-in-Picture"] floating enable, sticky enable, opacity .9
 for_window [app_id="thunar" title="File Operation Progress"] floating enable, opacity .5
+for_window [app_id="engrampa" title="Compress"] floating enable
 for_window [app_id="pavucontrol"] floating enable
 
 ### Inputs

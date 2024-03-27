@@ -33,8 +33,14 @@ git config --global pull.rebase false
 # Configure Codium
 codium --install-extension Catppuccin.catppuccin-vsc
 codium --install-extension Catppuccin.catppuccin-vsc-icons
-codium --install-extension ms-python.python
 codium --install-extension Vue.volar
+codium --install-extension ms-pyright.pyright
+codium --install-extension eamodio.gitlens
+codium --install-extension jeanp413.open-remote-ssh
+codium --install-extension ms-toolsai
+wget -O copilot.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/GitHub/vsextensions/copilot/latest/vspackage
+codium --install-extension copilot.vsix
+# https://github.com/VSCodium/vscodium/discussions/1487
 
 # Configure bat
 mkdir -p "$(bat --config-dir)/themes"
@@ -75,13 +81,13 @@ EOF
 wget https://github.com/catppuccin/firefox/releases/download/old/catppuccin_mocha_mauve.xpi
 wget https://gitlab.com/magnolia1234/bpc-uploads/-/raw/master/bypass_paywalls_clean-latest.xpi
 firefox \
+	catppuccin_mocha_mauve.xpi \
 	bypass_paywalls_clean-latest.xpi \
 	https://addons.mozilla.org/en-US/firefox/addon/decentraleyes \
 	https://addons.mozilla.org/en-US/firefox/addon/bitwarden-password-manager \
 	https://addons.mozilla.org/en-US/firefox/addon/history-cleaner \
 	https://addons.mozilla.org/en-US/firefox/addon/mal-sync \
 	https://addons.mozilla.org/en-US/firefox/addon/sponsorblock \
-	catppuccin_mocha_mauve.xpi \
 	https://addons.mozilla.org/en-US/firefox/addon/clearurls \
 	https://addons.mozilla.org/en-US/firefox/addon/google-container \
 	https://addons.mozilla.org/en-US/firefox/addon/ublock-origin \
@@ -106,8 +112,6 @@ INSERT INTO moz_perms (origin, type, permission, expireType, expireTime, modific
 ('https://music.youtube.com', 'cookie', '1', '0', '0', '1600000000000');
 EOF
 
-# Configure Chromium
-cat <<EOF >~/.config/chromium-flags.conf
---enable-features=UseOzonePlatform
---ozone-platform=wayland
-EOF
+# Configure Wine
+wine reg.exe add HKCU\\Software\\Wine\\Drivers /v Graphics /d x11,wayland
+setup_dxvk install

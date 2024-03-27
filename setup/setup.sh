@@ -20,7 +20,7 @@ pacman -Syyu
 pacman -Sq --noconfirm --needed acpi acpid acpi_call bash-completion bat cups-pdf curl dialog firefox gnome-keyring htop i3blocks imv jq light man-db nano neofetch nextcloud-client nvtop p7zip plymouth sbctl s-tui system-config-printer ufw linux-firmware wget
 pacman -Sq --noconfirm --needed mpv playerctl pipewire pipewire-pulse pamixer # consider switching pamixer to wpctl
 pacman -Sq --noconfirm --needed inter-font noto-fonts-cjk papirus-icon-theme ttf-font-awesome ttf-jetbrains-mono otf-crimson-pro
-pacman -Sq --noconfirm --needed exfat-utils ffmpegthumbnailer gvfs gvfs-mtp tumbler thunar xdg-user-dirs
+pacman -Sq --noconfirm --needed exfat-utils engrampa ffmpegthumbnailer gvfs gvfs-mtp tumbler thunar thunar-archive-plugin xdg-user-dirs
 pacman -Sq --noconfirm --needed libreoffice-fresh hunspell hunspell-en_us hunspell-de
 pacman -Sq --noconfirm --needed grim mako pavucontrol qt5-wayland slurp sway swaybg swayidle swaylock wf-recorder wl-clipboard wofi xdg-desktop-portal xdg-desktop-portal-wlr # xwayland: xorg-server xorg-server-xwayland xorg-xrandr
 pacman -Sq --noconfirm --needed alacritty android-tools podman git go sqlite
@@ -51,7 +51,8 @@ if ! command -v yay &> /dev/null; then
 	rm -rf yay-bin
 fi
 wget -qO - https://keys.openpgp.org/vks/v1/by-fingerprint/5C6DA024DDE27178073EA103F4B432D5D67990E3 | gpg --import # Key for wob
-sudo -u "$SUDO_USER" yay -Sq --noconfirm --needed autotiling catppuccin-gtk-theme-mocha papirus-folders-catppuccin-git vscodium-bin vscodium-bin-features vscodium-bin-marketplace wob # Install AUR packages
+sudo -u "$SUDO_USER" yay -Sq --noconfirm --needed --sudoloop autotiling brlaser catppuccin-gtk-theme-mocha papirus-folders-catppuccin-git vscodium-bin vscodium-bin-features vscodium-bin-marketplace wob # Install AUR packages
+sudo -u "$SUDO_USER" yay -Sq --noconfirm --needed --sudoloop wine-wow64 wine-gecko wine-mono dxvk-bin
 
 # Build and install i3blocks scripts
 if [ -d /sys/class/power_supply/BAT* ]; then
