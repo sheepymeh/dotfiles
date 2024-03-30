@@ -7,8 +7,8 @@ set $menu swaymsg exec -q "`wofi --show drun`"
 output * bg ~/.config/wallpaper.png fill
 output 'AMT International Industry AN-270W04K Unknown' pos 0,0 scale 2 res 3840x2160@60Hz
 exec swayidle -w \
-    timeout 140 'light -O ; light -S 5' \
-      resume 'light -I' \
+    timeout 140 'brightnessctl --save; brightnessctl set 5%' \
+      resume 'brightnessctl --restore' \
     timeout 150 'swaymsg "output * dpms off"' \
       resume 'swaymsg "output * dpms on"' \
     timeout 160 'swaylock' \
