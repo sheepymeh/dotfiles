@@ -22,10 +22,10 @@ pacman -Sq --noconfirm --needed mpv playerctl pipewire pipewire-pulse pamixer # 
 pacman -Sq --noconfirm --needed inter-font noto-fonts-cjk papirus-icon-theme ttf-font-awesome ttf-jetbrains-mono otf-crimson-pro
 pacman -Sq --noconfirm --needed exfat-utils engrampa ffmpegthumbnailer gvfs gvfs-mtp tumbler thunar thunar-archive-plugin xdg-user-dirs
 pacman -Sq --noconfirm --needed libreoffice-fresh hunspell hunspell-en_us hunspell-de
-pacman -Sq --noconfirm --needed grim mako pavucontrol qt5-wayland slurp sway swaybg swayidle swaylock wf-recorder wl-clipboard wofi xdg-desktop-portal xdg-desktop-portal-wlr # xwayland: xorg-server xorg-server-xwayland xorg-xrandr
+pacman -Sq --noconfirm --needed grim mako pavucontrol qt5-wayland slurp sway swaybg swayidle swaylock wf-recorder wl-clipboard wofi xdg-desktop-portal xdg-desktop-portal-wlr
 pacman -Sq --noconfirm --needed alacritty android-tools podman git go sqlite
 pacman -Sq --noconfirm --needed python-build python-pip python-numpy python-pytorch-opt python-pillow python-opencv python-scikit-learn python-flask python-aiohttp python-pycryptodome
-pacman -Sq --noconfirm --needed nodejs npm typescript
+pacman -Sq --noconfirm --needed nodejs npm typescript wrangler
 
 cat <<EOF >/etc/acpi/events/ac
 event=ac_adapter
