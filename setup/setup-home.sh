@@ -89,3 +89,8 @@ pipx install dist/iwd_wofi-*-py3-none-any.whlpipx runpip iwd-wofi install -r req
 pipx runpip iwd-wofi install -r requirements.txt
 cd ..
 rm -rf iwd_wofi
+
+systemctl --user enable ssh-agent
+mkdir ~/.ssh
+echo AddKeysToAgent yes >~/.ssh/config
+chmod 600 ~/.ssh/config
