@@ -1,4 +1,14 @@
 #!/bin/sh
+set -euo pipefail
+
+if [ "$EUID" -eq 0 ]; then
+	echo "Script must be run as user"
+	exit
+fi
+if [[ $(basename "$PWD") != "setup" ]]; then
+	echo "Script must be run from /setup"
+	exit
+fi
 
 # Prepare /home/user
 xdg-user-dirs-update
@@ -15,7 +25,6 @@ cd ..
 
 # Copy configs
 cp -r config/* ~/.config
-mkdir -p ~/.swaylog
 mkdir -p ~/.config/VSCodium/User
 cp code/* ~/.config/VSCodium/User
 cp bashrc ~/.bashrc
@@ -38,9 +47,9 @@ codium --install-extension ms-pyright.pyright
 codium --install-extension eamodio.gitlens
 codium --install-extension jeanp413.open-remote-ssh
 codium --install-extension ms-toolsai
-wget -O copilot.vsix https://marketplace.visualstudio.com/_apis/public/gallery/publishers/GitHub/vsextensions/copilot/latest/vspackage
+wget -O - https://marketplace.visualstudio.com/_apis/public/gallery/publishers/GitHub/vsextensions/copilot/latest/vspackage | gzip -d > copilot.vsix
 codium --install-extension copilot.vsix
-# https://github.com/VSCodium/vscodium/discussions/1487
+rm copilot.vsix
 
 # Configure bat
 mkdir -p "$(bat --config-dir)/themes"
@@ -68,50 +77,15 @@ Description=Inhibit idle
 ExecStart=systemd-inhibit --what=idle --who=i3blocks --why='User inhibited idle' sleep infinity
 EOF
 
-# Configure Firefox
-sway &
-firefox --createprofile default-release
-FF_PROFILE="$(grep Path ~/.mozilla/firefox/profiles.ini | cut -f2 -d=)"
-cat <<EOF >>~/.mozilla/firefox/profiles.ini
-[Install4F96D1932A9F858E]
-Default=$FF_PROFILE
-Locked=1
-EOF
-
-wget https://github.com/catppuccin/firefox/releases/download/old/catppuccin_mocha_mauve.xpi
-wget https://gitlab.com/magnolia1234/bpc-uploads/-/raw/master/bypass_paywalls_clean-latest.xpi
-firefox \
-	catppuccin_mocha_mauve.xpi \
-	bypass_paywalls_clean-latest.xpi \
-	https://addons.mozilla.org/en-US/firefox/addon/decentraleyes \
-	https://addons.mozilla.org/en-US/firefox/addon/bitwarden-password-manager \
-	https://addons.mozilla.org/en-US/firefox/addon/history-cleaner \
-	https://addons.mozilla.org/en-US/firefox/addon/mal-sync \
-	https://addons.mozilla.org/en-US/firefox/addon/sponsorblock \
-	https://addons.mozilla.org/en-US/firefox/addon/clearurls \
-	https://addons.mozilla.org/en-US/firefox/addon/google-container \
-	https://addons.mozilla.org/en-US/firefox/addon/ublock-origin \
-	https://addons.mozilla.org/en-US/firefox/addon/styl-us \
-	https://addons.mozilla.org/en-US/firefox/addon/zoom-redirector
-rm catppuccin_mocha_mauve.xpi
-rm bypass_paywalls_clean-latest.xpi
-
-cp firefox/* ~/.mozilla/firefox/$FF_PROFILE
-sqlite3 ~/.mozilla/firefox/$FF_PROFILE/permissions.sqlite <<EOF
-INSERT INTO moz_perms (origin, type, permission, expireType, expireTime, modificationTime) VALUES
-('https://mail.tutanota.com', 'cookie', '1', '0', '0', '1600000000000'),
-('https://app.tuta.com', 'cookie', '1', '0', '0', '1600000000000'),
-('https://github.com', 'cookie', '1', '0', '0', '1600000000000'),
-('https://cloud.sheepymeh.net', 'cookie', '1', '0', '0', '1600000000000'),
-('https://discord.com', 'cookie', '1', '0', '0', '1600000000000'),
-('https://www.notion.so', 'cookie', '1', '0', '0', '1600000000000'),
-('https://chat.openai.com', 'cookie', '1', '0', '0', '1600000000000'),
-('https://web.whatsapp.com', 'cookie', '1', '0', '0', '1600000000000'),
-('https://nebula.tv', 'cookie', '1', '0', '0', '1600000000000'),
-('https://accounts.google.com', 'cookie', '1', '0', '0', '1600000000000'),
-('https://music.youtube.com', 'cookie', '1', '0', '0', '1600000000000');
-EOF
-
 # Configure Wine
 wine reg.exe add HKCU\\Software\\Wine\\Drivers /v Graphics /d x11,wayland
 setup_dxvk install
+
+# Install iwd-wofi
+git clone --depth=1 https://github.com/sheepymeh/iwd_wofi.git
+cd iwd_wofi
+python -m build -w
+pipx install dist/iwd_wofi-*-py3-none-any.whlpipx runpip iwd-wofi install -r requirements.txt
+pipx runpip iwd-wofi install -r requirements.txt
+cd ..
+rm -rf iwd_wofi

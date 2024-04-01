@@ -1,5 +1,5 @@
 #!/bin/sh
-set -e
+set -euo pipefail
 
 if [ "$EUID" -ne 0 ]; then
 	echo "Script must be run as root"
