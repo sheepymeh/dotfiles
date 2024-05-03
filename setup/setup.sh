@@ -18,12 +18,12 @@ sed -i '/deny = /c\deny = 0' /etc/security/faillock.conf # turn off disabling ac
 
 pacman -Syyu
 pacman -Sq --noconfirm --needed \
-	acpi acpid acpi_call bash-completion bat cups-pdf curl dialog firefox gnome-keyring htop i3blocks imv jq brightnessctl man-db nano neofetch nextcloud-client nvtop p7zip plymouth sbctl s-tui system-config-printer ufw linux-firmware wget \
+	acpi acpid acpi_call bash-completion bat cups-pdf curl dialog firefox gnome-keyring htop i3blocks imv jq brightnessctl man-db nano neofetch owncloud-client nvtop p7zip plymouth sbctl s-tui system-config-printer ufw linux-firmware wget \
 	mpv playerctl pipewire pipewire-pulse pamixer \
 	inter-font noto-fonts-cjk papirus-icon-theme ttf-font-awesome ttf-jetbrains-mono otf-crimson-pro \
 	exfat-utils engrampa ffmpegthumbnailer gvfs gvfs-mtp tumbler thunar thunar-archive-plugin xdg-user-dirs \
 	libreoffice-fresh hunspell hunspell-en_us hunspell-de \
-	grim mako pavucontrol qt5-wayland slurp sway swaybg swayidle swaylock wf-recorder wl-clipboard wofi xdg-desktop-portal xdg-desktop-portal-wlr \
+	grim mako pavucontrol qt5-wayland qt6-wayland slurp sway swaybg swayidle swaylock wf-recorder wl-clipboard wofi xdg-desktop-portal xdg-desktop-portal-wlr \
 	alacritty android-tools podman git go sqlite \
 	python-build python-pip python-numpy python-pytorch-opt python-pillow python-opencv python-scikit-learn python-flask python-aiohttp python-pycryptodome python-pipx python-tqdm \
 	nodejs npm typescript wrangler

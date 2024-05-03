@@ -170,7 +170,7 @@ font pango:Inter, Font Awesome 5 Brands, Font Awesome 5 Free 9
 ### Autostart
 exec {
     firefox
-    nextcloud --background
+    owncloud
 }
 
 ### Swaybar

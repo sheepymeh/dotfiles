@@ -17,6 +17,7 @@ WINDOW_ICONS = {
     "pavucontrol": "",
     "virt-manager": "",
     "com.nextcloud.desktopclient.nextcloud": "",
+    "desktopclient.owncloud.com.owncloud": "",
     "nwg-displays": "",
     "blueman-manager": "",
     "libreoffice": "",
