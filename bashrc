@@ -17,3 +17,33 @@ fi
 
 export PATH="$PATH:/home/sheepymeh/.local/bin"
 export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
+
+venv() {
+	if [ -z "$1" ]; then
+		if [ -d venv ]; then
+			venv_to_activate=venv
+		elif [ -d .venv ]; then
+			venv_to_activate=.venv
+		else
+			venv_paths=$(find . -maxdepth 2 -type d -name bin)
+			for venv_path in $venv_paths; do
+				if [ -f "$venv_path/activate" ]; then
+					venv_to_activate="$(dirname $venv_path)"
+					break
+				fi
+			done
+		fi
+	else
+		if [ -d "$1" ]; then
+			source "$1/bin/activate"
+		else
+			venv_path=${1:-venv}
+			echo "Creating venv in $venv_path"
+			/usr/bin/python -m venv --system-site-packages --prompt "$(basename $(dirname $PWD/$venv_path))/$(basename $venv_path)" $venv_path
+		fi
+	fi
+
+	if [ ! -z "$venv_to_activate" ]; then
+		source "$venv_to_activate/bin/activate"
+	fi
+}
