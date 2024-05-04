@@ -34,16 +34,20 @@ venv() {
 			done
 		fi
 	else
-		if [ -d "$1" ]; then
-			source "$1/bin/activate"
-		else
-			venv_path=${1:-venv}
-			echo "Creating venv in $venv_path"
-			/usr/bin/python -m venv --system-site-packages --prompt "$(basename $(dirname $PWD/$venv_path))/$(basename $venv_path)" $venv_path
+		if [ -f "$1/bin/activate" ]; then
+			venv_to_activate="$1"
+		elif [ -d "$1" ]; then
+			echo "$1 is not a venv"
+			return 1
 		fi
 	fi
 
-	if [ ! -z "$venv_to_activate" ]; then
-		source "$venv_to_activate/bin/activate"
+	if [ -z "$venv_to_activate" ]; then
+		venv_path=${1:-venv}
+		echo "Creating venv in $venv_path"
+		uv venv -q --system-site-packages --prompt "$(basename $(dirname $PWD/$venv_path))/$(basename $venv_path)" $venv_path
+		venv_to_activate=$venv_path
 	fi
+	source "$venv_to_activate/bin/activate"
+	unset venv_to_activate
 }
