@@ -6,6 +6,7 @@ set $menu swaymsg exec -q "`wofi --show drun`"
 
 output * bg ~/.config/wallpaper.png fill
 output 'AMT International Industry AN-270W04K Unknown' pos 0,0 scale 2 res 3840x2160@60Hz
+
 exec swayidle -w \
     timeout 140 'brightnessctl -q --save; brightnessctl -q set 5%' \
       resume 'brightnessctl -q --restore' \
@@ -13,7 +14,9 @@ exec swayidle -w \
       resume 'swaymsg "output * dpms on"' \
     timeout 160 'swaylock' \
     timeout 300 'systemctl suspend' \
-    before-sleep 'playerctl pause; pgrep -x swaylock >/dev/null || swaylock'
+    before-sleep 'killall swaybar; playerctl pause; pgrep -x swaylock >/dev/null || swaylock' \
+    after-resume 'swaymsg -t command "exec --no-startup-id swaybar -b bar-0"'
+
 exec autotiling
 exec dynamic-workspaces.py
 exec 'playerctl metadata --follow --format "{{status}}" | while read -r STATUS; do [ "$STATUS" == 'Playing' ] && systemctl --user start inhibit-while-playing-media.service || systemctl --user stop inhibit-while-playing-media.service; done'
