@@ -14,8 +14,8 @@ exec swayidle -w \
       resume 'swaymsg "output * dpms on"' \
     timeout 160 'swaylock' \
     timeout 300 'systemctl suspend' \
-    before-sleep 'killall swaybar; playerctl pause; pgrep -x swaylock >/dev/null || swaylock' \
-    after-resume 'swaymsg -t command "exec --no-startup-id swaybar -b bar-0"'
+    before-sleep 'playerctl pause; pgrep -x swaylock >/dev/null || swaylock' \
+    after-resume 'pkill -SIGRTMIN+5 i3blocks; pkill -SIGRTMIN+3 i3blocks'
 
 exec autotiling
 exec dynamic-workspaces.py
@@ -91,7 +91,6 @@ font pango:Inter, Font Awesome 5 Brands, Font Awesome 5 Free 9
     bindsym $mod+Shift+Right move right
 
     # Hardware keys
-    set $bar notify-send -t 2000 -a "$NOTIF_TEXT Notification" -h "int:value:$NOTIF_VALUE" "$NOTIF_ICON $NOTIF_VALUE" `makoctl list | jq --arg t "$NOTIF_TEXT" -re '"-r " + (.data[][] | select(."app-name".data==$t + " Notification").id.data | tostring)'`
     exec mkfifo $SWAYSOCK.wob && tail -f $SWAYSOCK.wob | wob
     bindsym --inhibited --locked XF86AudioRaiseVolume exec pamixer -u -i 2 && pamixer --get-volume >$SWAYSOCK.wob
     bindsym --inhibited --locked XF86AudioLowerVolume exec pamixer -u -d 2 && pamixer --get-volume >$SWAYSOCK.wob

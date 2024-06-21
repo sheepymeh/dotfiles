@@ -11,12 +11,12 @@ signal=4
 
 [cpu]
 command=awk '{u=$2+$4; t=$2+$4+$5; if (NR==1){u1=u; t1=t;} else printf " %.1f%\n",($2+$4-u1) * 100 / (t-t1); }' <(grep 'cpu ' /proc/stat) <(sleep 1; grep 'cpu ' /proc/stat)
-interval=4
+interval=1
 full_text=
 
 [memory]
 command=free -m --si | awk 'FNR == 2 {printf " %.1fGB / %d%\n", $3 / 1000, $3 / $2 * 100}'
-interval=5
+interval=2
 
 [network]
 command=[[ -z $button ]] || $HOME/.local/bin/iwd-wofi; networkctl status --json=pretty | jq -r '[.Interfaces[] | select(.Type != "loopback") | if .Type == "ether" then if .OperationalState == "routable" then "" else "" end elif .Type == "wlan" then if .OperationalState == "routable" then if .AdministrativeState == "configured" then "" else "" end elif .OperationalState == "no-carrier" then "" elif .OperationalState == "off" then "Wi-Fi Off" else "" end else "" end | select (. != "") ] | join("  ")'
@@ -61,5 +61,6 @@ command=swaymsg -rt get_inputs | jq --unbuffered -r 'first(.[] | select(.type ==
 interval=persist
 
 [time]
-command=[ -z "$full_text" ] && echo " $(date '+%A %d.%m %H:%M')" || ((difference=$(( 60 - $(date "+%-S") % 60 )) && sleep $(( ($difference == 60) ? 0 : $difference ))) && echo " $(date '+%A %d.%m %H:%M')")
-interval=60
+command=echo " $(date '+%A %d.%m %H:%M')" && while :; do sleep $(( 60 - $(date "+%-S") % 60 )) && echo " $(date '+%A %d.%m %H:%M')"; done
+signal=5
+interval=persist

@@ -29,6 +29,7 @@ WINDOW_ICONS = {
     "libreoffice-base": "",
     "imv": "",
     "thunar": "",
+    "thunderbird": "",
 }
 
 DEFAULT_ICON = ""
