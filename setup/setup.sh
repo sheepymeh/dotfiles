@@ -87,23 +87,6 @@ if lspci -k | grep -A 2 -E "(VGA|3D)" | grep -qi nvidia; then
 	pacman -Sq --noconfirm --needed nvidia nvidia-utils
 	systemctl enable nvidia-{suspend,hibernate}
 	echo options nvidia NVreg_PreserveVideoMemoryAllocations=1 NVreg_TemporaryFilePath=/var/tmp >/etc/modprobe.d/nvidia-power-management.conf
-
-	cat <<EOF >/etc/pacman.d/hooks/nvidia.hook
-[Trigger]
-Operation=Install
-Operation=Upgrade
-Operation=Remove
-Type=Package
-Target=nvidia
-Target=linux
-
-[Action]
-Description=Update Nvidia module in initcpio
-Depends=mkinitcpio
-When=PostTransaction
-NeedsTargets
-Exec=/bin/sh -c 'while read -r trg; do case \$trg in linux) exit 0; esac; done; /usr/bin/mkinitcpio -P'
-EOF
 	sed -i '/^options/ s/$/ nvidia_drm.modeset=1/' /boot/loader/entries/*.conf
 	sed -i '/^MODULES=(.*nvidia nvidia_modeset nvidia_uvm nvidia_drm/b; s/MODULES=(/MODULES=(nvidia nvidia_modeset nvidia_uvm nvidia_drm /' /etc/mkinitcpio.conf
 	cat <<EOF >>/etc/environment
@@ -146,15 +129,15 @@ sed -i 's$timeout 3$timeout 0$' /boot/loader/loader.conf
 sed -i '/^options .* quiet/b; /^options / s/$/ quiet splash loglevel=3 rd.systemd.show_status=auto rd.udev.log_level=3/' /boot/loader/entries/*.conf
 bootctl update --graceful
 mkinitcpio -P
-systemctl enable systemd-boot-update.service
+systemctl enable --now systemd-boot-update.service
 
 # Configure podman
 touch /etc/subuid /etc/subgid
 usermod --add-subuids 100000-165535 --add-subgids 100000-165535 "$SUDO_USER"
 echo 'unqualified-search-registries = ["docker.io"]' >>/etc/containers/registries.conf
 
-ufw enable
 systemctl enable --now ufw
+ufw enable
 
 # Wayland env vars
 cat <<EOF >>/etc/environment
@@ -201,7 +184,7 @@ chmod +x /usr/local/sbin/electron-wayland.sh
 /usr/local/sbin/electron-wayland.sh <<< vscodium-bin
 
 # Enable CUPS
-systemctl enable cups.service
+systemctl enable --now cups.service
 
 # Notes:
 # https://bbs.archlinux.org/viewtopic.php?id=257315
