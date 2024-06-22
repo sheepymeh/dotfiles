@@ -15,7 +15,7 @@ exec swayidle -w \
     timeout 160 'swaylock' \
     timeout 300 'systemctl suspend' \
     before-sleep 'playerctl pause; pgrep -x swaylock >/dev/null || swaylock' \
-    after-resume 'pkill -SIGRTMIN+5 i3blocks; pkill -SIGRTMIN+3 i3blocks'
+    after-resume 'pkill -SIGUSR1 date.sh; pkill -SIGRTMIN+3 i3blocks'
 
 exec autotiling
 exec dynamic-workspaces.py

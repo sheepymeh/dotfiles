@@ -67,15 +67,11 @@ if [ -d /sys/bus/platform/drivers/ideapad_acpi/VPC2004:00 ]; then
 	chmod u+s perf
 	mv perf /usr/local/bin
 fi
-cp scripts/record.sh /usr/local/bin
-chmod a+x /usr/local/bin/record.sh
-cp scripts/mic.sh /usr/local/bin
-chmod a+x /usr/local/bin/mic.sh
-cp scripts/network.sh /usr/local/bin
-chmod a+x /usr/local/bin/network.sh
-cp scripts/dynamic-workspaces.py /usr/local/bin
-chmod a+x /usr/local/bin/dynamic-workspaces.py
-mkdir -p /etc/pacman.d/hooks
+
+for script in record.sh mic.sh networks.sh date.sh dynamic-workspaces.py; do
+	cp scripts/"$script" /usr/local/bin
+	chmod a+x /usr/local/bin/"$script"
+done
 
 # Install microcode updates as needed
 if [ "$(grep -m1 vendor_id /proc/cpuinfo | cut -f2 -d':' | cut -c 2-)" == 'AuthenticAMD' ]; then
@@ -83,6 +79,8 @@ if [ "$(grep -m1 vendor_id /proc/cpuinfo | cut -f2 -d':' | cut -c 2-)" == 'Authe
 elif [ "$(grep -m1 vendor_id /proc/cpuinfo | cut -f2 -d':' | cut -c 2-)" == 'GenuineIntel' ]; then
 	pacman -Sq --noconfirm --needed intel-ucode
 fi
+
+mkdir -p /etc/pacman.d/hooks
 
 # Video drivers
 if lspci -k | grep -A 2 -E "(VGA|3D)" | grep -qi nvidia; then

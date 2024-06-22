@@ -61,6 +61,5 @@ command=swaymsg -rt get_inputs | jq --unbuffered -r 'first(.[] | select(.type ==
 interval=persist
 
 [time]
-command=echo " $(date '+%A %d.%m %H:%M')" && while :; do sleep $(( 60 - $(date "+%-S") % 60 )) && echo " $(date '+%A %d.%m %H:%M')"; done
-signal=5
+command=date.sh
 interval=persist
