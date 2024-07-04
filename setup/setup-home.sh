@@ -66,9 +66,12 @@ patch:
   schema_list:
     - schema: pinyin_simp
 EOF
+echo Theme=catppuccin-mocha > ~/.config/fcitx5/conf/classicui.conf
 git clone --depth=1 https://github.com/catppuccin/fcitx5.git
-cp -r ./fcitx5/src/* ~/.local/share/fcitx5/themes
+cp -r ./fcitx5/src/catppuccin-mocha ~/.local/share/fcitx5/themes
 rm -rf fcitx5
+sed 's/FAB387/CBA6F7/g' -i ~/.local/share/fcitx5/themes/catppuccin-mocha/theme.conf
+sed 's/87B0F9/B4BEFE/g' -i ~/.local/share/fcitx5/themes/catppuccin-mocha/theme.conf
 echo Theme=catppuccin-mocha > ~/.config/fcitx5/conf/classicui.conf
 
 # systemd services
