@@ -59,6 +59,18 @@ bat cache --build
 # Configure sway
 wget -qO ~/.config/sway/catppuccin-mocha https://raw.githubusercontent.com/catppuccin/i3/main/themes/catppuccin-mocha
 
+# Configure fcitx5
+mkdir -p ~/.local/share/fcitx5/rime/ ~/.local/share/fcitx5/themes/
+cat <<EOF >~/.local/share/fcitx5/rime/default.custom.yaml
+patch:
+  schema_list:
+    - schema: pinyin_simp
+EOF
+git clone --depth=1 https://github.com/catppuccin/fcitx5.git
+cp -r ./fcitx5/src/* ~/.local/share/fcitx5/themes
+rm -rf fcitx5
+echo Theme=catppuccin-mocha > ~/.config/fcitx5/conf/classicui.conf
+
 # systemd services
 systemctl --user enable ssh-agent
 mkdir -p ~/.config/systemd/user/

@@ -17,6 +17,7 @@ exec swayidle -w \
     before-sleep 'playerctl pause; pgrep -x swaylock >/dev/null || swaylock' \
     after-resume 'pkill -SIGUSR1 date.sh; pkill -SIGRTMIN+3 i3blocks'
 
+exec fcitx5
 exec autotiling
 exec dynamic-workspaces.py
 exec 'playerctl metadata --follow --format "{{status}}" | while read -r STATUS; do [ "$STATUS" == 'Playing' ] && systemctl --user start inhibit-while-playing-media.service || systemctl --user stop inhibit-while-playing-media.service; done'
@@ -36,9 +37,7 @@ for_window [app_id="pavucontrol"] floating enable
 
 ### Inputs
 input "type:keyboard" {
-    xkb_layout us,de
-    xkb_variant ,nodeadkeys
-    xkb_options grp:alt_shift_toggle
+    xkb_layout us
     xkb_numlock enabled
 }
 mouse_warping container
