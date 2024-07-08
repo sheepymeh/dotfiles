@@ -32,7 +32,8 @@ firefox \
 	https://addons.mozilla.org/en-US/firefox/addon/google-container \
 	https://addons.mozilla.org/en-US/firefox/addon/ublock-origin \
 	https://addons.mozilla.org/en-US/firefox/addon/styl-us \
-	https://addons.mozilla.org/en-US/firefox/addon/zoom-redirector
+	https://addons.mozilla.org/en-US/firefox/addon/zoom-redirector \
+	https://addons.mozilla.org/en-US/firefox/addon/wallabagger
 rm catppuccin_mocha_mauve.xpi
 rm bypass_paywalls_clean-latest.xpi
 
