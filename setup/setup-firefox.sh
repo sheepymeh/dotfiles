@@ -40,14 +40,16 @@ rm bypass_paywalls_clean-latest.xpi
 cp firefox/* ~/.mozilla/firefox/$FF_PROFILE
 sqlite3 ~/.mozilla/firefox/$FF_PROFILE/permissions.sqlite <<EOF
 INSERT INTO moz_perms (origin, type, permission, expireType, expireTime, modificationTime) VALUES
-('https://mail.tutanota.com', 'cookie', '1', '0', '0', '1600000000000'),
 ('https://app.tuta.com', 'cookie', '1', '0', '0', '1600000000000'),
 ('https://github.com', 'cookie', '1', '0', '0', '1600000000000'),
 ('https://cloud.sheepymeh.net', 'cookie', '1', '0', '0', '1600000000000'),
 ('https://discord.com', 'cookie', '1', '0', '0', '1600000000000'),
 ('https://www.notion.so', 'cookie', '1', '0', '0', '1600000000000'),
-('https://chat.openai.com', 'cookie', '1', '0', '0', '1600000000000'),
+('https://sheepymeh.net', 'cookie', '1', '0', '0', '1600000000000'),
+('https://chatgpt.com', 'cookie', '1', '0', '0', '1600000000000'),
+('https://search.brave.com', 'cookie', '1', '0', '0', '1600000000000'),
 ('https://web.whatsapp.com', 'cookie', '1', '0', '0', '1600000000000'),
+('https://web.telegram.com', 'cookie', '1', '0', '0', '1600000000000'),
 ('https://nebula.tv', 'cookie', '1', '0', '0', '1600000000000'),
 ('https://accounts.google.com', 'cookie', '1', '0', '0', '1600000000000'),
 ('https://music.youtube.com', 'cookie', '1', '0', '0', '1600000000000');

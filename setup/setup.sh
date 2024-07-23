@@ -132,6 +132,9 @@ bootctl update --graceful
 mkinitcpio -P
 systemctl enable --now systemd-boot-update.service
 
+sed -i "s/PKGEXT=.*/PKGEXT='.pkg.tar'/g" /etc/makepkg.conf
+sed -i "s/SRCEXT=.*/SRCEXT='.src.tar'/g" /etc/makepkg.conf
+
 # Configure podman
 touch /etc/subuid /etc/subgid
 usermod --add-subuids 100000-165535 --add-subgids 100000-165535 "$SUDO_USER"
