@@ -25,8 +25,8 @@ cd ..
 
 # Copy configs
 cp -r config/* ~/.config
-mkdir -p ~/.config/VSCodium/User
-cp code/* ~/.config/VSCodium/User
+mkdir -p ~/.config/Code/User
+cp code/* ~/.config/Code/User
 cp bashrc ~/.bashrc
 sed -i 's$sway >$sway --unsupported-gpu >$' ~/.bashrc
 if [ ! -d /sys/class/power_supply/BAT* ]; then
@@ -39,17 +39,13 @@ git config --global user.email 'sheepymeh@users.noreply.github.com'
 git config --global credential.helper store
 git config --global pull.rebase false
 
-# Configure Codium
-codium --install-extension Catppuccin.catppuccin-vsc
-codium --install-extension Catppuccin.catppuccin-vsc-icons
-codium --install-extension Vue.volar
-codium --install-extension ms-pyright.pyright
-codium --install-extension eamodio.gitlens
-codium --install-extension jeanp413.open-remote-ssh
-codium --install-extension ms-toolsai
-wget -O - https://marketplace.visualstudio.com/_apis/public/gallery/publishers/GitHub/vsextensions/copilot/latest/vspackage | gzip -d > copilot.vsix
-codium --install-extension copilot.vsix
-rm copilot.vsix
+# Configure VS Code
+code --install-extension Catppuccin.catppuccin-vsc
+code --install-extension Catppuccin.catppuccin-vsc-icons
+code --install-extension Vue.volar
+code --install-extension eamodio.gitlens
+code --install-extension GitHub.copilot
+code --install-extension ms-python.python
 
 # Configure bat
 mkdir -p "$(bat --config-dir)/themes"

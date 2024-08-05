@@ -19,7 +19,7 @@ Set-ExecutionPolicy Bypass -Scope Process -Force
 - Node.JS (LTS)
 - PHP
 - ADB
-- VSCodium
+- ~VSCodium~ VS Code
 - PowerToys
 - NVIDIA driver (if necessary)
 - WSL & Windows Sandbox

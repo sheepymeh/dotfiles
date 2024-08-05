@@ -3,6 +3,7 @@ Operation = Install
 Operation = Upgrade
 Type = Package
 Target = vscodium-bin
+Target = visual-studio-code-bin
 Target = chromium
 Target = ungoogled-chromium-bin
 Target = signal-desktop

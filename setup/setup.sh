@@ -54,7 +54,7 @@ if ! command -v yay &> /dev/null; then
 fi
 wget -qO - https://keys.openpgp.org/vks/v1/by-fingerprint/5C6DA024DDE27178073EA103F4B432D5D67990E3 | gpg --import # Key for wob
 sudo -u "$SUDO_USER" yay -Sq --noconfirm --needed --sudoloop \
-	autotiling brlaser catppuccin-gtk-theme-mocha papirus-folders-catppuccin-git vscodium-bin vscodium-bin-features vscodium-bin-marketplace wob \
+	autotiling brlaser catppuccin-gtk-theme-mocha papirus-folders-catppuccin-git visual-studio-code-bin wob \
 	wine wine-gecko wine-mono dxvk-bin
 
 # Build and install i3blocks scripts

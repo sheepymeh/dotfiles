@@ -11,6 +11,7 @@ WINDOW_ICONS = {
     "firefox": "",
     "alacritty": "",
     "codium-url-handler": "",
+    "code-url-handler": "",
     "geforce now": "",
     "chromium": "",
     "signal-desktop": "",
