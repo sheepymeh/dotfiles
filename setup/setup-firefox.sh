@@ -49,7 +49,7 @@ INSERT INTO moz_perms (origin, type, permission, expireType, expireTime, modific
 ('https://chatgpt.com', 'cookie', '1', '0', '0', '1600000000000'),
 ('https://search.brave.com', 'cookie', '1', '0', '0', '1600000000000'),
 ('https://web.whatsapp.com', 'cookie', '1', '0', '0', '1600000000000'),
-('https://web.telegram.com', 'cookie', '1', '0', '0', '1600000000000'),
+('https://web.telegram.org', 'cookie', '1', '0', '0', '1600000000000'),
 ('https://nebula.tv', 'cookie', '1', '0', '0', '1600000000000'),
 ('https://accounts.google.com', 'cookie', '1', '0', '0', '1600000000000'),
 ('https://music.youtube.com', 'cookie', '1', '0', '0', '1600000000000');
