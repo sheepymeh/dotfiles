@@ -18,7 +18,7 @@ sed -i '/deny = /c\deny = 0' /etc/security/faillock.conf # turn off disabling ac
 
 pacman -Syyu
 pacman -Sq --noconfirm --needed \
-	acpi acpid acpi_call bash-completion bat cups-pdf curl dialog firefox gnome-keyring htop i3blocks imv jq brightnessctl man-db nano neofetch owncloud-client nvtop p7zip plymouth sbctl s-tui system-config-printer ufw linux-firmware wget \
+	acpi acpid acpi_call bash-completion bat cups-pdf curl dialog firefox gnome-keyring htop i3blocks imv jq brightnessctl man-db nano neofetch owncloud-client nvtop p7zip plymouth sbctl s-tui system-config-printer thunderbird ufw linux-firmware wget \
 	mpv playerctl pipewire pipewire-pulse pamixer \
 	inter-font noto-fonts-cjk papirus-icon-theme ttf-font-awesome ttf-jetbrains-mono otf-crimson-pro \
 	exfat-utils engrampa ffmpegthumbnailer gvfs gvfs-mtp tumbler thunar thunar-archive-plugin xdg-user-dirs \
@@ -68,8 +68,7 @@ if [ -d /sys/bus/platform/drivers/ideapad_acpi/VPC2004:00 ]; then
 	chmod u+s perf
 	mv perf /usr/local/bin
 fi
-
-for script in record.sh mic.sh networks.sh date.sh dynamic-workspaces.py; do
+for script in record.sh mic.sh date.sh dynamic-workspaces.py; do
 	cp scripts/"$script" /usr/local/bin
 	chmod a+x /usr/local/bin/"$script"
 done
@@ -185,7 +184,7 @@ EOF
 cp pacman-hooks/* /etc/pacman.d/hooks
 cp scripts/electron-wayland.sh /usr/local/sbin/electron-wayland.sh
 chmod +x /usr/local/sbin/electron-wayland.sh
-/usr/local/sbin/electron-wayland.sh <<< vscodium-bin
+/usr/local/sbin/electron-wayland.sh <<< visual-studio-code-bin
 
 # Enable CUPS
 systemctl enable --now cups.service
