@@ -109,7 +109,7 @@ if lspci -k | grep -A 2 -E '(VGA|3D)' | grep -qi intel; then
 	sed -i '/^MODULES=(.*i915/b; s/MODULES=(/MODULES=(i915 /' /etc/mkinitcpio.conf
 fi
 if lspci -k | grep -A 2 -E '(VGA|3D)' | grep -qi amd; then
-	pacman -Sq --noconfirm --needed libva-mesa-driver mesa-vdpau mesa
+	pacman -Sq --noconfirm --needed libva-mesa-driver mesa-vdpau mesa vulkan-radeon
 	sed -i '/^MODULES=(.*amdgpu/b; s/MODULES=(/MODULES=(amdgpu /' /etc/mkinitcpio.conf
 fi
 usermod -aG video "$SUDO_USER"
