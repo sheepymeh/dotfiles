@@ -117,15 +117,15 @@ font pango:Inter, Font Awesome 5 Brands, Font Awesome 5 Free 9
     set $ws7 workspace number 7
     set $ws8 workspace number 8
     set $ws9 workspace number 9
-    bindsym $mod+1 $ws1
-    bindsym $mod+2 $ws2
-    bindsym $mod+3 $ws3
-    bindsym $mod+4 $ws4
-    bindsym $mod+5 $ws5
-    bindsym $mod+6 $ws6
-    bindsym $mod+7 $ws7
-    bindsym $mod+8 $ws8
-    bindsym $mod+9 $ws9
+    bindsym --inhibited $mod+1 $ws1
+    bindsym --inhibited $mod+2 $ws2
+    bindsym --inhibited $mod+3 $ws3
+    bindsym --inhibited $mod+4 $ws4
+    bindsym --inhibited $mod+5 $ws5
+    bindsym --inhibited $mod+6 $ws6
+    bindsym --inhibited $mod+7 $ws7
+    bindsym --inhibited $mod+8 $ws8
+    bindsym --inhibited $mod+9 $ws9
     bindsym --inhibited $mod+Tab workspace next_on_output
     bindsym --inhibited $mod+Grave workspace prev_on_output
     bindsym $mod+Alt+1 move container to $ws1
