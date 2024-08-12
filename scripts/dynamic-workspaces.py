@@ -36,6 +36,8 @@ WINDOW_ICONS = {
 DEFAULT_ICON = ""
 
 def icon_for_window(window):
+    if window.ipc_data['shell'] == 'xwayland':
+        return ''
     name = None
     if window.app_id is not None and len(window.app_id) > 0:
         name = window.app_id.lower()
