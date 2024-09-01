@@ -170,7 +170,9 @@ EOF
 systemctl restart systemd-resolved.service
 
 # Enable (REI)SUB
-echo kernel.sysrq = 176 >/etc/sysctl.d/99-sysctl.conf
+echo kernel.sysrq = 244 >/etc/sysctl.d/99-sysctl.conf
+
+sudo cryptsetup --allow-discards --perf-no_read_workqueue --perf-no_write_workqueue --persistent refresh root
 
 # Autologin (since LUKS already requires auth)
 mkdir -p /etc/systemd/system/getty@tty1.service.d/
