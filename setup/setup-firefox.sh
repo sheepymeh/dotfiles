@@ -19,7 +19,6 @@ Locked=1
 EOF
 
 wget https://github.com/catppuccin/firefox/releases/download/old/catppuccin_mocha_mauve.xpi
-# wget https://gitlab.com/magnolia1234/bpc-uploads/-/raw/master/bypass_paywalls_clean-latest.xpi
 firefox \
 	https://addons.mozilla.org/en-US/firefox/addon/decentraleyes \
 	https://addons.mozilla.org/en-US/firefox/addon/bitwarden-password-manager \
@@ -33,7 +32,6 @@ firefox \
 	https://addons.mozilla.org/en-US/firefox/addon/zoom-redirector \
 	https://addons.mozilla.org/en-US/firefox/addon/wallabagger \
 	catppuccin_mocha_mauve.xpi \
-	# bypass_paywalls_clean-latest.xpi
 rm catppuccin_mocha_mauve.xpi
 # rm bypass_paywalls_clean-latest.xpi
 
@@ -42,15 +40,16 @@ sqlite3 ~/.mozilla/firefox/$FF_PROFILE/permissions.sqlite <<EOF
 INSERT INTO moz_perms (origin, type, permission, expireType, expireTime, modificationTime) VALUES
 ('https://app.tuta.com', 'cookie', '1', '0', '0', '1600000000000'),
 ('https://github.com', 'cookie', '1', '0', '0', '1600000000000'),
-('https://cloud.sheepymeh.net', 'cookie', '1', '0', '0', '1600000000000'),
+('https://sheepymeh.net', 'cookie', '1', '0', '0', '1600000000000'),
 ('https://discord.com', 'cookie', '1', '0', '0', '1600000000000'),
 ('https://www.notion.so', 'cookie', '1', '0', '0', '1600000000000'),
 ('https://sheepymeh.net', 'cookie', '1', '0', '0', '1600000000000'),
 ('https://chatgpt.com', 'cookie', '1', '0', '0', '1600000000000'),
-('https://search.brave.com', 'cookie', '1', '0', '0', '1600000000000'),
+('https://amazon.co.uk', 'cookie', '1', '0', '0', '1600000000000'),
 ('https://web.whatsapp.com', 'cookie', '1', '0', '0', '1600000000000'),
 ('https://web.telegram.org', 'cookie', '1', '0', '0', '1600000000000'),
-('https://nebula.tv', 'cookie', '1', '0', '0', '1600000000000'),
+('https://cam.ac.uk', 'cookie', '1', '0', '0', '1600000000000'),
+('https://login.microsoftonline.com', 'cookie', '1', '0', '0', '1600000000000'),
 ('https://accounts.google.com', 'cookie', '1', '0', '0', '1600000000000'),
 ('https://music.youtube.com', 'cookie', '1', '0', '0', '1600000000000');
 EOF
