@@ -89,8 +89,10 @@ ExecStart=systemd-inhibit --what=idle --who=i3blocks --why='User inhibited idle'
 EOF
 
 # Configure Wine
-wine reg.exe add HKCU\\Software\\Wine\\Drivers /v Graphics /d x11,wayland
-setup_dxvk install
+if command -v wine &>/dev/null; then
+	wine reg.exe add HKCU\\Software\\Wine\\Drivers /v Graphics /d x11,wayland
+	setup_dxvk install
+fi
 
 # Install iwd-wofi
 git clone --depth=1 https://github.com/sheepymeh/iwd_wofi.git

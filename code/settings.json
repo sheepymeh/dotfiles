@@ -22,4 +22,5 @@
 	"github.copilot.editor.enableAutoCompletions": true,
 	"security.workspace.trust.enabled": false,
 	"security.workspace.trust.startupPrompt": "never",
+	"update.mode": "none",
 }

@@ -22,7 +22,7 @@ pacman -Sq --noconfirm --needed \
 	mpv playerctl pipewire pipewire-pulse pamixer \
 	inter-font noto-fonts-cjk papirus-icon-theme ttf-font-awesome ttf-jetbrains-mono otf-crimson-pro \
 	exfat-utils engrampa ffmpegthumbnailer gvfs gvfs-mtp tumbler thunar thunar-archive-plugin xdg-user-dirs \
-	libreoffice-fresh hunspell hunspell-en_us hunspell-de \
+	libreoffice-fresh hunspell hunspell-en_us hunspell-de gutenprint \
 	fcitx5 fcitx5-rime rime-pinyin-simp fcitx5-mozc \
 	grim mako pavucontrol qt5-wayland qt6-wayland slurp sway swaybg swayidle swaylock wf-recorder wl-clipboard wofi xdg-desktop-portal xdg-desktop-portal-wlr \
 	alacritty android-tools podman git go sqlite \
@@ -54,7 +54,10 @@ if ! command -v yay &> /dev/null; then
 fi
 wget -qO - https://keys.openpgp.org/vks/v1/by-fingerprint/5C6DA024DDE27178073EA103F4B432D5D67990E3 | gpg --import # Key for wob
 sudo -u "$SUDO_USER" yay -Sq --noconfirm --needed --sudoloop \
-	autotiling brlaser catppuccin-gtk-theme-mocha papirus-folders-catppuccin-git visual-studio-code-bin wob \
+	autotiling catppuccin-gtk-theme-mocha papirus-folders-catppuccin-git visual-studio-code-bin wob
+
+pacman -Ss '^wine$' \
+	&& sudo -u "$SUDO_USER" yay -Sq --noconfirm --needed --sudoloop \
 	wine wine-gecko wine-mono dxvk-bin
 
 # Build and install i3blocks scripts

@@ -31,7 +31,7 @@ firefox \
 	https://addons.mozilla.org/en-US/firefox/addon/styl-us \
 	https://addons.mozilla.org/en-US/firefox/addon/zoom-redirector \
 	https://addons.mozilla.org/en-US/firefox/addon/wallabagger \
-	catppuccin_mocha_mauve.xpi \
+	catppuccin_mocha_mauve.xpi
 rm catppuccin_mocha_mauve.xpi
 # rm bypass_paywalls_clean-latest.xpi
 
