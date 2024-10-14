@@ -17,7 +17,7 @@ xdg-user-dirs-update
 touch ~/.hushlogin
 
 # Configure colors
-git clone --depth=1 -q https://github.com/catppuccin/alacritty.git ~/.config/alacritty/catppuccin
+wget -qO ~/.config/foot/catppuccin-mocha.ini https://raw.githubusercontent.com/catppuccin/foot/refs/heads/main/themes/catppuccin-mocha.ini
 papirus-folders -C cat-mocha-mauve --theme Papirus-Dark
 wget -qO ~/.config/wallpaper.png https://raw.githubusercontent.com/archcraft-os/archcraft-wallpapers/main/archcraft-backgrounds-minimal/files/minimal-12.jpg
 
@@ -46,6 +46,7 @@ code --install-extension Vue.volar
 code --install-extension eamodio.gitlens
 code --install-extension GitHub.copilot
 code --install-extension ms-python.python
+code --install-extension tomoki1207.pdf
 
 # Configure bat
 mkdir -p "$(bat --config-dir)/themes"
@@ -71,7 +72,7 @@ sed 's/87B0F9/B4BEFE/g' -i ~/.local/share/fcitx5/themes/catppuccin-mocha/theme.c
 echo Theme=catppuccin-mocha > ~/.config/fcitx5/conf/classicui.conf
 
 # systemd services
-systemctl --user enable ssh-agent
+systemctl --user enable foot-server.service
 mkdir -p ~/.config/systemd/user/
 cat <<EOF >~/.config/systemd/user/inhibit-while-playing-media.service
 [Unit]

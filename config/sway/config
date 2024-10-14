@@ -1,7 +1,7 @@
 xwayland disable
 
 set $mod Mod4
-set $term alacritty
+set $term footclient
 set $menu swaymsg exec -q "`wofi --show drun`"
 
 output * bg ~/.config/wallpaper.png fill

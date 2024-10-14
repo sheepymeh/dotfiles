@@ -25,8 +25,10 @@ pacman -Sq --noconfirm --needed \
 	libreoffice-fresh hunspell hunspell-en_us hunspell-de gutenprint \
 	fcitx5 fcitx5-rime rime-pinyin-simp fcitx5-mozc \
 	grim mako pavucontrol qt5-wayland qt6-wayland slurp sway swaybg swayidle swaylock wf-recorder wl-clipboard wofi xdg-desktop-portal xdg-desktop-portal-wlr \
-	alacritty android-tools podman git go sqlite \
-	python-build python-ipykernel python-pip python-numpy python-pytorch-opt python-pillow python-opencv python-scikit-learn python-flask python-aiohttp python-pycryptodome python-pipx python-tqdm uv \
+	foot android-tools podman git go sqlite \
+	tesseract tesseract-data-eng \
+	python-beautifulsoup4 python-build python-ipykernel python-pip python-numpy python-pytorch-opt python-pillow python-opencv python-scikit-learn python-flask python-aiohttp python-pycryptodome python-pipx python-tqdm python-pymupdf uv \
+	jupyter-notebook ocaml opam dune \
 	nodejs npm typescript wrangler
 
 cat <<EOF >/etc/acpi/events/ac

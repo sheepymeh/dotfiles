@@ -10,6 +10,9 @@ import sys
 WINDOW_ICONS = {
     "firefox": "",
     "alacritty": "",
+    "kitty": "",
+    "foot": "",
+    "footclient": "",
     "codium-url-handler": "",
     "code-url-handler": "",
     "geforce now": "",
