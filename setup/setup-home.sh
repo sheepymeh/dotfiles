@@ -33,7 +33,7 @@ if [ ! -d /sys/class/power_supply/BAT* ]; then
 fi
 cat >~/.sqliterc <<EOF
 .headers on
-.mode column
+.mode box --wrap 50
 .changes on
 EOF
 
