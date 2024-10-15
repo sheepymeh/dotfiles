@@ -28,10 +28,14 @@ cp -r config/* ~/.config
 mkdir -p ~/.config/Code/User
 cp code/* ~/.config/Code/User
 cp bashrc ~/.bashrc
-sed -i 's$sway >$sway --unsupported-gpu >$' ~/.bashrc
 if [ ! -d /sys/class/power_supply/BAT* ]; then
 	rm ~/.config/sway/laptop.conf
 fi
+cat >~/.sqliterc <<EOF
+.headers on
+.mode column
+.changes on
+EOF
 
 # Configure git
 git config --global user.name 'sheepymeh'
