@@ -50,7 +50,7 @@ code --install-extension Vue.volar
 code --install-extension eamodio.gitlens
 code --install-extension GitHub.copilot
 code --install-extension ms-python.python
-code --install-extension tomoki1207.pdf
+code --install-extension james-yu.latex-workshop
 
 # Configure bat
 mkdir -p "$(bat --config-dir)/themes"
