@@ -23,4 +23,31 @@
 	"security.workspace.trust.enabled": false,
 	"security.workspace.trust.startupPrompt": "never",
 	"update.mode": "none",
+	"workbench.editorAssociations": {
+		"*.pdf": "latex-workshop-pdf-hook"
+	},
+	"latex-workshop.latex.texDirs": [
+		"/home/sheepymeh/ownCloud/Personal/Cambridge/Supervision Templates"
+	],
+	"latex-workshop.latex.tools": [
+		{
+			"name": "latexmk",
+			"command": "latexmk",
+			"args": [
+				"-synctex=1",
+				"-interaction=nonstopmode",
+				"-file-line-error",
+				"-pdf",
+				"-outdir=%OUTDIR%",
+				"%DOC%"
+			],
+			"env": {
+				"TEXINPUTS": "/home/sheepymeh/ownCloud/Personal/Cambridge/Supervision Templates:"
+			}
+		}
+	],
+	"latex-workshop.latex.autoClean.run": "onBuilt",
+	"latex-workshop.intellisense.biblatexJSON.replace": {
+		
+	},
 }
