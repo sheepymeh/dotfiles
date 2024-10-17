@@ -29,6 +29,7 @@ pacman -Sq --noconfirm --needed \
 	tesseract tesseract-data-eng \
 	python-beautifulsoup4 python-build python-ipykernel python-pip python-numpy python-pytorch-opt python-pillow python-opencv python-scikit-learn python-flask python-aiohttp python-pycryptodome python-pipx python-tqdm python-pymupdf uv \
 	jupyter-notebook ocaml opam dune \
+	texstudio texlive-basic texlive-latex texlive-latexrecommended texlive-fontsrecommended texlive-mathscience \
 	nodejs npm typescript wrangler
 
 cat <<EOF >/etc/acpi/events/ac
