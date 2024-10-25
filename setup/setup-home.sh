@@ -76,7 +76,6 @@ sed 's/87B0F9/B4BEFE/g' -i ~/.local/share/fcitx5/themes/catppuccin-mocha/theme.c
 echo Theme=catppuccin-mocha > ~/.config/fcitx5/conf/classicui.conf
 
 # systemd services
-systemctl --user enable foot-server.service
 mkdir -p ~/.config/systemd/user/
 cat <<EOF >~/.config/systemd/user/inhibit-while-playing-media.service
 [Unit]
