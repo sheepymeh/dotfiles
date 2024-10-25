@@ -103,8 +103,8 @@ font pango:Inter, Font Awesome 5 Brands, Font Awesome 5 Free 9
     # Screenshots
     bindsym Print exec grim - | wl-copy
     bindsym Ctrl+Print exec grim "$HOME/Pictures/Screenshot $(date +'%m.%d.%y %T').png"
-    bindsym Alt+Print exec grim - | imv -f - & IMV_PID=$! && grim -g "$(slurp)" - | wl-copy && imv-msg $IMV_PID quit
-    bindsym Ctrl+Alt+Print exec grim - | imv -f - & IMV_PID=$! && grim -g "$(slurp)" "$HOME/Pictures/Screenshot $(date +'%m.%d.%y %T').png" && imv-msg $IMV_PID quit
+    bindsym Alt+Print exec grim -g "$(slurp)" - | wl-copy
+    bindsym Ctrl+Alt+Print exec grim -g "$(slurp)" "$HOME/Pictures/Screenshot $(date +'%m.%d.%y %T').png"
     bindsym $mod+Print exec record.sh
     bindsym $mod+Alt+Print exec record.sh slurp
 
