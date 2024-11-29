@@ -27,7 +27,7 @@
 		"*.pdf": "latex-workshop-pdf-hook"
 	},
 	"latex-workshop.latex.texDirs": [
-		"/home/sheepymeh/ownCloud/Personal/Cambridge/Supervision Templates"
+		"/home/sheepymeh/ownCloud/Cambridge/Supervision Templates"
 	],
 	"latex-workshop.latex.tools": [
 		{
@@ -42,7 +42,7 @@
 				"%DOC%"
 			],
 			"env": {
-				"TEXINPUTS": "/home/sheepymeh/ownCloud/Personal/Cambridge/Supervision Templates:"
+				"TEXINPUTS": "/home/sheepymeh/ownCloud/Cambridge/Supervision Templates:"
 			}
 		}
 	],
