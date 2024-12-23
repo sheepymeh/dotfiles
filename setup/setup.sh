@@ -18,7 +18,7 @@ sed -i '/deny = /c\deny = 0' /etc/security/faillock.conf # turn off disabling ac
 
 pacman -Syyu
 pacman -Sq --noconfirm --needed \
-	acpi acpid acpi_call bash-completion bat cups-pdf curl dialog firefox gnome-keyring htop i3blocks imv jq brightnessctl man-db nano neofetch owncloud-client nvtop p7zip plymouth sbctl s-tui system-config-printer thunderbird ufw linux-firmware wget \
+	acpi acpid acpi_call bash-completion bat cups-pdf curl dialog firefox gnome-keyring htop i3blocks imv jq brightnessctl man-db nano neofetch owncloud-client nvtop 7zip plymouth sbctl s-tui system-config-printer thunderbird ufw linux-firmware wget \
 	mpv playerctl pipewire pipewire-pulse pamixer \
 	inter-font noto-fonts-cjk papirus-icon-theme ttf-font-awesome ttf-jetbrains-mono otf-crimson-pro \
 	exfat-utils engrampa ffmpegthumbnailer gvfs gvfs-mtp tumbler thunar thunar-archive-plugin xdg-user-dirs \
