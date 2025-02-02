@@ -28,7 +28,7 @@ pacman -Sq --noconfirm --needed \
 	foot android-tools podman git go sqlite \
 	tesseract tesseract-data-eng \
 	python-beautifulsoup4 python-build python-ipykernel python-pip python-numpy python-pytorch-opt python-pillow python-opencv python-scikit-learn python-flask python-aiohttp python-pycryptodome python-pipx python-tqdm python-pymupdf uv \
-	jupyter-notebook ocaml opam dune \
+	jupyter-notebook python-ipywidgets jupyterlab-widgets ocaml opam dune \
 	texlive-basic texlive-binextra texlive-latex texlive-latexrecommended texlive-latexextra texlive-fontsrecommended texlive-mathscience \
 	nodejs npm typescript wrangler
 
