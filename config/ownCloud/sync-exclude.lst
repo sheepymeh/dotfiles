@@ -9,3 +9,5 @@
 ]*.log
 ]*.out
 ]*.synctex(busy)
+]*.synctex.gz
+]_minted-work
