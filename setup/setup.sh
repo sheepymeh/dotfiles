@@ -189,12 +189,6 @@ ExecStart=
 ExecStart=-/usr/bin/agetty --skip-login --nonewline --noissue --autologin "$SUDO_USER" --noclear %I linux
 EOF
 
-# Update Pacman hooks
-cp pacman-hooks/* /etc/pacman.d/hooks
-cp scripts/electron-wayland.sh /usr/local/sbin/electron-wayland.sh
-chmod +x /usr/local/sbin/electron-wayland.sh
-/usr/local/sbin/electron-wayland.sh <<< visual-studio-code-bin
-
 # Enable CUPS
 systemctl enable --now cups.service
 
