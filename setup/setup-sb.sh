@@ -6,6 +6,8 @@ if [ "$EUID" -ne 0 ]; then
 	exit
 fi
 
+pacman -S sbctl
+
 sbctl status
 
 sbctl create-keys
