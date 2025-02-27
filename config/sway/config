@@ -22,6 +22,7 @@ exec autotiling
 exec dynamic-workspaces.py
 exec 'playerctl metadata --follow --format "{{status}}" | while read -r STATUS; do [ "$STATUS" == 'Playing' ] && systemctl --user start inhibit-while-playing-media.service || systemctl --user stop inhibit-while-playing-media.service; done'
 exec 'foot --server'
+exec 'wl-clip-persist --clipboard regular'
 
 ### Window rules
 for_window [app_id="firefox"] inhibit_idle fullscreen
