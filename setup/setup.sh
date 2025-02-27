@@ -18,8 +18,10 @@ sed -i '/deny = /c\deny = 0' /etc/security/faillock.conf # turn off disabling ac
 
 pacman -Syyu
 pacman -Sq --noconfirm --needed \
-	acpi acpid acpi_call bash-completion bat cups-pdf curl dialog firefox gnome-keyring htop i3blocks imv jq brightnessctl man-db nano neofetch owncloud-client nvtop 7zip plymouth sbctl s-tui system-config-printer thunderbird ufw linux-firmware wget \
-	mpv playerctl pipewire pipewire-pulse pamixer \
+	acpi acpid acpi_call bash-completion bat curl dialog firefox gnome-keyring i3blocks jq brightnessctl man-db nano neofetch owncloud-client 7zip plymouth thunderbird ufw linux-firmware wget \
+ 	s-tui htop nvtop \
+ 	cups cups-pdf system-config-printer \
+	imv mpv playerctl pipewire pipewire-pulse pamixer \
 	inter-font noto-fonts-cjk papirus-icon-theme ttf-font-awesome ttf-jetbrains-mono otf-crimson-pro \
 	exfat-utils engrampa ffmpegthumbnailer gvfs gvfs-mtp tumbler thunar thunar-archive-plugin xdg-user-dirs \
 	libreoffice-fresh hunspell hunspell-en_us hunspell-de gutenprint \
@@ -27,8 +29,9 @@ pacman -Sq --noconfirm --needed \
 	grim mako pavucontrol qt5-wayland qt6-wayland slurp sway swaybg swayidle swaylock wf-recorder wl-clipboard wofi xdg-desktop-portal xdg-desktop-portal-wlr \
 	foot android-tools podman git go sqlite \
 	tesseract tesseract-data-eng \
-	python-beautifulsoup4 python-build python-ipykernel python-pip python-numpy python-pytorch-opt python-pillow python-opencv python-scikit-learn python-flask python-aiohttp python-pycryptodome python-pipx python-tqdm python-pymupdf uv \
-	jupyter-notebook python-ipywidgets jupyterlab-widgets ocaml opam dune \
+	python-beautifulsoup4 python-build python-ipykernel python-pip python-numpy python-pytorch-opt python-pillow python-opencv python-scikit-learn python-flask python-aiohttp python-pycryptodome python-tqdm python-pymupdf uv \
+	jupyter-notebook python-ipywidgets jupyterlab-widgets \
+ 	ocaml opam dune \
 	texlive-basic texlive-binextra texlive-latex texlive-latexrecommended texlive-latexextra texlive-fontsrecommended texlive-mathscience \
 	nodejs npm typescript wrangler
 
@@ -59,8 +62,9 @@ wget -qO - https://keys.openpgp.org/vks/v1/by-fingerprint/5C6DA024DDE27178073EA1
 sudo -u "$SUDO_USER" yay -Sq --noconfirm --needed --sudoloop \
 	autotiling catppuccin-gtk-theme-mocha papirus-folders-catppuccin-git visual-studio-code-bin wob
 
-pacman -Ss '^wine$' \
-	&& sudo -u "$SUDO_USER" yay -Sq --noconfirm --needed --sudoloop \
+# Install wine if multilib is enabled
+pacman -Ss '^wine$' && \
+	sudo -u "$SUDO_USER" yay -Sq --noconfirm --needed --sudoloop \
 	wine wine-gecko wine-mono dxvk-bin
 
 # Build and install i3blocks scripts
@@ -85,8 +89,6 @@ if [ "$(grep -m1 vendor_id /proc/cpuinfo | cut -f2 -d':' | cut -c 2-)" == 'Authe
 elif [ "$(grep -m1 vendor_id /proc/cpuinfo | cut -f2 -d':' | cut -c 2-)" == 'GenuineIntel' ]; then
 	pacman -Sq --noconfirm --needed intel-ucode
 fi
-
-mkdir -p /etc/pacman.d/hooks
 
 # Video drivers
 if lspci -k | grep -A 2 -E "(VGA|3D)" | grep -qi nvidia; then
@@ -118,8 +120,8 @@ if lspci -k | grep -A 2 -E '(VGA|3D)' | grep -qi amd; then
 	pacman -Sq --noconfirm --needed libva-mesa-driver mesa-vdpau mesa vulkan-radeon
 	sed -i '/^MODULES=(.*amdgpu/b; s/MODULES=(/MODULES=(amdgpu /' /etc/mkinitcpio.conf
 fi
-usermod -aG video "$SUDO_USER"
 
+usermod -aG video "$SUDO_USER"
 usermod -aG input "$SUDO_USER"
 
 # Plymouth boot splash screen
@@ -152,12 +154,12 @@ ufw enable
 cat <<EOF >>/etc/environment
 SDL_VIDEODRIVER=wayland
 GDK_BACKEND=wayland
-MOZ_ENABLE_WAYLAND=1
-QT_QPA_PLATFORM=wayland-egl
+QT_QPA_PLATFORM=wayland
 QT_WAYLAND_DISABLE_WINDOWDECORATION=1
 XDG_CURRENT_DESKTOP=sway
 XDG_SESSION_TYPE=wayland
-ELECTRON_OZONE_PLATFORM_HINT=wayland
+ELECTRON_OZONE_PLATFORM_HINT=auto
+JAVA_TOOL_OPTIONS="-Dawt.toolkit.name=WLToolkit"
 EOF
 
 # Edge TPU udev rules
@@ -179,6 +181,7 @@ systemctl restart systemd-resolved.service
 # Enable (REI)SUB
 echo kernel.sysrq = 244 >/etc/sysctl.d/99-sysctl.conf
 
+# Enable TRIM
 sudo cryptsetup --allow-discards --perf-no_read_workqueue --perf-no_write_workqueue --persistent refresh root
 
 # Autologin (since LUKS already requires auth)
