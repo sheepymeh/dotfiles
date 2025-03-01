@@ -45,6 +45,8 @@ INSERT INTO moz_perms (origin, type, permission, expireType, expireTime, modific
 ('https://www.notion.so', 'cookie', '1', '0', '0', '1600000000000'),
 ('https://sheepymeh.net', 'cookie', '1', '0', '0', '1600000000000'),
 ('https://chatgpt.com', 'cookie', '1', '0', '0', '1600000000000'),
+('https://chat.deepseek.com', 'cookie', '1', '0', '0', '1600000000000'),
+('https://chat.mistral.ai', 'cookie', '1', '0', '0', '1600000000000'),
 ('https://amazon.co.uk', 'cookie', '1', '0', '0', '1600000000000'),
 ('https://web.whatsapp.com', 'cookie', '1', '0', '0', '1600000000000'),
 ('https://web.telegram.org', 'cookie', '1', '0', '0', '1600000000000'),

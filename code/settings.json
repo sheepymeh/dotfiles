@@ -11,6 +11,7 @@
 	"editor.minimap.enabled": false,
 	"editor.fontLigatures": true,
 	"telemetry.telemetryLevel": "off",
+	"gitlens.telemetry.enabled": false,
 	"git.enableSmartCommit": true,
 	"git.confirmSync": false,
 	"git.autofetch": true,
@@ -26,9 +27,6 @@
 	"workbench.editorAssociations": {
 		"*.pdf": "latex-workshop-pdf-hook"
 	},
-	"latex-workshop.latex.texDirs": [
-		"/home/sheepymeh/ownCloud/Cambridge/Supervision Templates"
-	],
 	"latex-workshop.latex.tools": [
 		{
 			"name": "latexmk",
@@ -43,12 +41,9 @@
 				"%DOC%"
 			],
 			"env": {
-				"TEXINPUTS": "/home/sheepymeh/ownCloud/Cambridge/Supervision Templates:"
+				"TEXINPUTS": "/home/sheepymeh/Cambridge/Supervision Templates:"
 			}
 		}
 	],
 	"latex-workshop.latex.autoClean.run": "onBuilt",
-	"latex-workshop.intellisense.biblatexJSON.replace": {
-		
-	},
 }

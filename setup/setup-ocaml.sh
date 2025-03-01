@@ -8,7 +8,7 @@ fi
 
 opam init --auto-setup --compiler=4.14.2
 eval $(opam env --switch=4.14.2)
-opam install -y ocaml-lsp-server ocamlformat jupyter # jupyter only supports ocaml 4 for now
+opam install -y ocamlformat jupyter ocaml-lsp-server # jupyter only supports ocaml 4 for now
 code --install-extension ocamllabs.ocaml-platform
 
 touch ~/.ocamlinit

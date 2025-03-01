@@ -17,9 +17,17 @@ xdg-user-dirs-update
 touch ~/.hushlogin
 
 # Configure colors
+mkdir -p ~/.config/foot
 wget -qO ~/.config/foot/catppuccin-mocha.ini https://raw.githubusercontent.com/catppuccin/foot/refs/heads/main/themes/catppuccin-mocha.ini
 papirus-folders -C cat-mocha-mauve --theme Papirus-Dark
 wget -qO ~/.config/wallpaper.png https://raw.githubusercontent.com/archcraft-os/archcraft-wallpapers/main/archcraft-backgrounds-minimal/files/minimal-12.jpg
+
+wget https://github.com/catppuccin/gtk/releases/download/v1.0.3/catppuccin-mocha-mauve-standard+default.zip
+mkdir .themes
+cd .themes
+7za x ../catppuccin-mocha-mauve-standard+default.zip
+cd ..
+mv .themes ~/.themes
 
 cd ..
 
@@ -51,6 +59,7 @@ code --install-extension eamodio.gitlens
 code --install-extension GitHub.copilot
 code --install-extension ms-python.python
 code --install-extension james-yu.latex-workshop
+code --install-extension ms-toolsai.jupyter
 
 # Configure bat
 mkdir -p "$(bat --config-dir)/themes"
@@ -94,15 +103,6 @@ if command -v wine &>/dev/null; then
 	wine reg.exe add HKCU\\Software\\Wine\\Drivers /v Graphics /d x11,wayland
 	setup_dxvk install
 fi
-
-# Install iwd-wofi
-git clone --depth=1 https://github.com/sheepymeh/iwd_wofi.git
-cd iwd_wofi
-python -m build -w
-pipx install dist/iwd_wofi-*-py3-none-any.whlpipx runpip iwd-wofi install -r requirements.txt
-pipx runpip iwd-wofi install -r requirements.txt
-cd ..
-rm -rf iwd_wofi
 
 systemctl --user enable ssh-agent
 mkdir ~/.ssh
