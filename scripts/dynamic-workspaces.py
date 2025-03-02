@@ -36,6 +36,11 @@ WINDOW_ICONS = {
     "imv": "",
     "thunar": "",
     "thunderbird": "",
+    "anki": "",
+    "org.pulseaudio.pavucontrol": "",
+    "mpv": "",
+    "system-config-printer": "",
+    "wine": "",
 }
 
 DEFAULT_ICON = ""
@@ -45,7 +50,7 @@ def icon_for_window(window):
         return ''
     name = None
     if window.app_id is not None and len(window.app_id) > 0:
-        name = window.app_id.lower()
+        name = "wine" if window.app_id.endswith(".exe") else window.app_id.lower()
     elif window.window_class is not None and len(window.window_class) > 0:
         name = window.window_class.lower()
     return WINDOW_ICONS.get(name, DEFAULT_ICON)
@@ -77,7 +82,7 @@ def undo_window_renaming(ipc):
 
 def parse_workspace_name(name):
     return re.match(
-        "(?P<num>[0-9]+):?(?P<shortname>\w+)? ?(?P<icons>.+)?", name
+        r"(?P<num>[0-9]+):?(?P<shortname>\w+)? ?(?P<icons>.+)?", name
     ).groupdict()
 
 def construct_workspace_name(parts):

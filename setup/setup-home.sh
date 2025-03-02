@@ -29,6 +29,10 @@ cd .themes
 cd ..
 mv .themes ~/.themes
 
+mkdir -p ~/.config/imv ~/.config/mpv
+wget -qO ~/.config/imv/config https://raw.githubusercontent.com/catppuccin/imv/refs/heads/main/themes/mocha.config
+wget -qO ~/.config/mpv/mpv.conf https://raw.githubusercontent.com/catppuccin/mpv/refs/heads/main/themes/mocha/mauve.conf
+
 cd ..
 
 # Copy configs
@@ -50,6 +54,7 @@ git config --global user.name 'sheepymeh'
 git config --global user.email 'sheepymeh@users.noreply.github.com'
 git config --global credential.helper store
 git config --global pull.rebase false
+git config --global init.defaultBranch main
 
 # Configure VS Code
 code --install-extension Catppuccin.catppuccin-vsc
@@ -63,7 +68,7 @@ code --install-extension ms-toolsai.jupyter
 
 # Configure bat
 mkdir -p "$(bat --config-dir)/themes"
-wget -qO "$(bat --config-dir)/themes/Catppuccin-mocha.tmTheme" https://raw.githubusercontent.com/catppuccin/bat/main/Catppuccin-mocha.tmTheme
+wget -P "$(bat --config-dir)/themes" https://github.com/catppuccin/bat/raw/main/themes/Catppuccin%20Mocha.tmTheme
 bat cache --build
 
 # Configure sway
@@ -100,7 +105,7 @@ EOF
 
 # Configure Wine
 if command -v wine &>/dev/null; then
-	wine reg.exe add HKCU\\Software\\Wine\\Drivers /v Graphics /d x11,wayland
+	wineboot
 	setup_dxvk install
 fi
 

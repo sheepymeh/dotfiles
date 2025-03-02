@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <oor:items xmlns:oor="http://openoffice.org/2001/registry" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 <item oor:path="/org.openoffice.Office.Common/Misc"><prop oor:name="ShowTipOfTheDay" oor:op="fuse"><value>false</value></prop></item>
+<item oor:path="/org.openoffice.Office.Common/Misc"><prop oor:name="SymbolStyle" oor:op="fuse"><value>colibre_dark_svg</value></prop></item>
 
 <!-- Disable AutoComplete -->
 <item oor:path="/org.openoffice.Office.Writer/AutoFunction/Completion"><prop oor:name="Enable" oor:op="fuse"><value>true</value></prop></item>
-
-<!-- Dark theme -->
-<item oor:path="/org.openoffice.Office.ExtendedColorScheme/ExtendedColorScheme/ColorSchemes"><node oor:name="LibreOffice Dark" oor:op="replace"></node></item>
-<item oor:path="/org.openoffice.Office.Common/Misc"><prop oor:name="SymbolStyle" oor:op="fuse"><value>colibre_dark_svg</value></prop></item>
 
 <!-- Set Inter as default font -->
 <item oor:path="/org.openoffice.Office.Writer/DefaultFont"><prop oor:name="Caption" oor:op="fuse"><value>Inter</value></prop></item>
@@ -15,4 +12,87 @@
 <item oor:path="/org.openoffice.Office.Writer/DefaultFont"><prop oor:name="Index" oor:op="fuse"><value>Inter</value></prop></item>
 <item oor:path="/org.openoffice.Office.Writer/DefaultFont"><prop oor:name="List" oor:op="fuse"><value>Inter</value></prop></item>
 <item oor:path="/org.openoffice.Office.Writer/DefaultFont"><prop oor:name="Standard" oor:op="fuse"><value>Inter</value></prop></item>
+
+<item oor:path="/org.openoffice.Office.UI.ToolbarMode"><prop oor:name="ActiveCalc" oor:op="fuse"><value>notebookbar.ui</value></prop></item>
+<item oor:path="/org.openoffice.Office.UI.ToolbarMode"><prop oor:name="ActiveDraw" oor:op="fuse"><value>notebookbar.ui</value></prop></item>
+<item oor:path="/org.openoffice.Office.UI.ToolbarMode"><prop oor:name="ActiveImpress" oor:op="fuse"><value>notebookbar.ui</value></prop></item>
+<item oor:path="/org.openoffice.Office.UI.ToolbarMode"><prop oor:name="ActiveWriter" oor:op="fuse"><value>notebookbar.ui</value></prop></item>
+<item oor:path="/org.openoffice.Office.UI.ToolbarMode/Applications/org.openoffice.Office.UI.ToolbarMode:Application['Calc']"><prop oor:name="Active" oor:op="fuse"><value>notebookbar.ui</value></prop></item>
+<item oor:path="/org.openoffice.Office.UI.ToolbarMode/Applications/org.openoffice.Office.UI.ToolbarMode:Application['Draw']"><prop oor:name="Active" oor:op="fuse"><value>notebookbar.ui</value></prop></item>
+<item oor:path="/org.openoffice.Office.UI.ToolbarMode/Applications/org.openoffice.Office.UI.ToolbarMode:Application['Impress']"><prop oor:name="Active" oor:op="fuse"><value>notebookbar.ui</value></prop></item>
+<item oor:path="/org.openoffice.Office.UI.ToolbarMode/Applications/org.openoffice.Office.UI.ToolbarMode:Application['Writer']"><prop oor:name="Active" oor:op="fuse"><value>notebookbar.ui</value></prop></item>
+<item oor:path="/org.openoffice.Office.UI.WriterWindowState/UIElements/States/org.openoffice.Office.UI.WindowState:WindowStateType['private:resource/toolbar/standardbar']"><prop oor:name="Visible" oor:op="fuse"><value>false</value></prop></item>
+<item oor:path="/org.openoffice.Office.UI.WriterWindowState/UIElements/States/org.openoffice.Office.UI.WindowState:WindowStateType['private:resource/toolbar/textobjectbar']"><prop oor:name="Visible" oor:op="fuse"><value>false</value></prop></item>
+
+
+<!-- https://github.com/catppuccin/libreoffice/blob/main/themes/mocha/mauve/catppuccin-mocha-mauve.xcu -->
+<item oor:path="/org.openoffice.Office.UI/ColorScheme/ColorSchemes">
+<node oor:name="Catppuccin mocha - mauve" oor:op="replace">
+	<node oor:name="Links"><prop oor:name="Color" oor:op="fuse"><value>13346551</value></prop><prop oor:name="IsVisible" oor:op="fuse"><value>true</value></prop></node>
+	<node oor:name="Spell"><prop oor:name="Color" oor:op="fuse"><value>15961000</value></prop></node>
+	<node oor:name="Shadow"><prop oor:name="Color" oor:op="fuse"><value>13489908</value></prop><prop oor:name="IsVisible" oor:op="fuse"><value>true</value></prop></node>
+	<node oor:name="CalcGrid"><prop oor:name="Color" oor:op="fuse"><value>5790576</value></prop></node>
+	<node oor:name="CalcText"><prop oor:name="Color" oor:op="fuse"><value>13346551</value></prop></node>
+	<node oor:name="DocColor"><prop oor:name="Color" oor:op="fuse"><value>1973806</value></prop></node>
+	<node oor:name="DrawGrid"><prop oor:name="Color" oor:op="fuse"><value>3224132</value></prop><prop oor:name="IsVisible" oor:op="fuse"><value>true</value></prop></node>
+	<node oor:name="HTMLSGML"><prop oor:name="Color" oor:op="fuse"><value>9024762</value></prop></node>
+	<node oor:name="CalcValue"><prop oor:name="Color" oor:op="fuse"><value>9024762</value></prop></node>
+	<node oor:name="FontColor"><prop oor:name="Color" oor:op="fuse"><value>13489908</value></prop></node>
+	<node oor:name="SQLNumber"><prop oor:name="Color" oor:op="fuse"><value>10937249</value></prop></node>
+	<node oor:name="SQLString"><prop oor:name="Color" oor:op="fuse"><value>16376495</value></prop></node>
+	<node oor:name="SmartTags"><prop oor:name="Color" oor:op="fuse"><value>16106215</value></prop></node>
+	<node oor:name="BASICError"><prop oor:name="Color" oor:op="fuse"><value>15961000</value></prop></node>
+	<node oor:name="SQLComment"><prop oor:name="Color" oor:op="fuse"><value>9024762</value></prop></node>
+	<node oor:name="SQLKeyword"><prop oor:name="Color" oor:op="fuse"><value>9757397</value></prop></node>
+	<node oor:name="BASICNumber"><prop oor:name="Color" oor:op="fuse"><value>13346551</value></prop></node>
+	<node oor:name="BASICString"><prop oor:name="Color" oor:op="fuse"><value>16376495</value></prop></node>
+	<node oor:name="CalcFormula"><prop oor:name="Color" oor:op="fuse"><value>10937249</value></prop></node>
+	<node oor:name="HTMLComment"><prop oor:name="Color" oor:op="fuse"><value>10937249</value></prop></node>
+	<node oor:name="HTMLKeyword"><prop oor:name="Color" oor:op="fuse"><value>15961000</value></prop></node>
+	<node oor:name="HTMLUnknown"><prop oor:name="Color" oor:op="fuse"><value>13489908</value></prop></node>
+	<node oor:name="SQLOperator"><prop oor:name="Color" oor:op="fuse"><value>13489908</value></prop></node>
+	<node oor:name="BASICComment"><prop oor:name="Color" oor:op="fuse"><value>9024762</value></prop></node>
+	<node oor:name="BASICKeyword"><prop oor:name="Color" oor:op="fuse"><value>16429959</value></prop></node>
+	<node oor:name="LinksVisited"><prop oor:name="Color" oor:op="fuse"><value>13346551</value></prop><prop oor:name="IsVisible" oor:op="fuse"><value>true</value></prop></node>
+	<node oor:name="SQLParameter"><prop oor:name="Color" oor:op="fuse"><value>16429959</value></prop></node>
+	<node oor:name="AppBackground"><prop oor:name="Color" oor:op="fuse"><value>1118491</value></prop></node>
+	<node oor:name="BASICOperator"><prop oor:name="Color" oor:op="fuse"><value>10937249</value></prop></node>
+	<node oor:name="CalcDetective"><prop oor:name="Color" oor:op="fuse"><value>9757397</value></prop></node>
+	<node oor:name="CalcPageBreak"><prop oor:name="Color" oor:op="fuse"><value>9024762</value></prop></node>
+	<node oor:name="CalcReference"><prop oor:name="Color" oor:op="fuse"><value>16106215</value></prop></node>
+	<node oor:name="DocBoundaries"><prop oor:name="Color" oor:op="fuse"><value>1973806</value></prop><prop oor:name="IsVisible" oor:op="fuse"><value>true</value></prop></node>
+	<node oor:name="SQLIdentifier"><prop oor:name="Color" oor:op="fuse"><value>10937249</value></prop></node>
+	<node oor:name="WriterTextGrid"><prop oor:name="Color" oor:op="fuse"><value>1973806</value></prop></node>
+	<node oor:name="BASICIdentifier"><prop oor:name="Color" oor:op="fuse"><value>9757397</value></prop></node>
+	<node oor:name="TableBoundaries"><prop oor:name="Color" oor:op="fuse"><value>1973806</value></prop><prop oor:name="IsVisible" oor:op="fuse"><value>true</value></prop></node>
+	<node oor:name="ObjectBoundaries"><prop oor:name="Color" oor:op="fuse"><value>13489908</value></prop><prop oor:name="IsVisible" oor:op="fuse"><value>true</value></prop></node>
+	<node oor:name="WriterPageBreaks"><prop oor:name="Color" oor:op="fuse"><value>9024762</value></prop></node>
+	<node oor:name="WriterIdxShadings"><prop oor:name="Color" oor:op="fuse"><value>1973806</value></prop><prop oor:name="IsVisible" oor:op="fuse"><value>true</value></prop></node>
+	<node oor:name="CalcDetectiveError"><prop oor:name="Color" oor:op="fuse"><value>15961000</value></prop></node>
+	<node oor:name="WriterDirectCursor"><prop oor:name="Color" oor:op="fuse"><value>13489908</value></prop><prop oor:name="IsVisible" oor:op="fuse"><value>true</value></prop></node>
+	<node oor:name="CalcNotesBackground"><prop oor:name="Color" oor:op="fuse"><value>1973806</value></prop></node>
+	<node oor:name="CalcPageBreakManual"><prop oor:name="Color" oor:op="fuse"><value>9024762</value></prop></node>
+	<node oor:name="WriterFieldShadings"><prop oor:name="Color" oor:op="fuse"><value>1973806</value></prop><prop oor:name="IsVisible" oor:op="fuse"><value>true</value></prop></node>
+	<node oor:name="WriterScriptIndicator"><prop oor:name="Color" oor:op="fuse"><value>10937249</value></prop></node>
+	<node oor:name="CalcPageBreakAutomatic"><prop oor:name="Color" oor:op="fuse"><value>1973806</value></prop></node>
+	<node oor:name="WriterHeaderFooterMark"><prop oor:name="Color" oor:op="fuse"><value>9757397</value></prop></node>
+	<node oor:name="CalcProtectedBackground"><prop oor:name="Color" oor:op="fuse"><value>1973806</value></prop></node>
+	<node oor:name="WriterSectionBoundaries"><prop oor:name="Color" oor:op="fuse"><value>1973806</value></prop><prop oor:name="IsVisible" oor:op="fuse"><value>true</value></prop></node>
+</node>
+</item>
+
+<!-- https://github.com/catppuccin/libreoffice/blob/main/themes/mocha/mauve/catppuccin-mocha-mauve.soc -->
+<office:color-table xmlns:office="http://openoffice.org/2000/office" xmlns:style="http://openoffice.org/2000/style" xmlns:text="http://openoffice.org/2000/text" xmlns:table="http://openoffice.org/2000/table" xmlns:draw="http://openoffice.org/2000/drawing" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:meta="http://openoffice.org/2000/meta" xmlns:number="http://openoffice.org/2000/datastyle" xmlns:svg="http://www.w3.org/2000/svg" xmlns:chart="http://openoffice.org/2000/chart" xmlns:dr3d="http://openoffice.org/2000/dr3d" xmlns:math="http://www.w3.org/1998/Math/MathML" xmlns:form="http://openoffice.org/2000/form" xmlns:script="http://openoffice.org/2000/script">
+	<draw:color draw:name="Background"    draw:color="#1e1e2e"/>
+	<draw:color draw:name="Current Line"  draw:color="#cba6f7"/>
+	<draw:color draw:name="Comment"       draw:color="#313244"/>
+	<draw:color draw:name="Foreground"    draw:color="#f5e0dc"/>
+	<draw:color draw:name="Green"         draw:color="#a6e3a1"/>
+	<draw:color draw:name="Cyan"          draw:color="#89dceb"/>
+	<draw:color draw:name="Purple"        draw:color="#cba6f7"/>
+	<draw:color draw:name="Pink"          draw:color="#f5c2e7"/>
+	<draw:color draw:name="Red"           draw:color="#f38ba8"/>
+	<draw:color draw:name="Orange"        draw:color="#fab387"/>
+	<draw:color draw:name="Yellow "       draw:color="#f9e2af"/>
+</office:color-table>
 </oor:items>

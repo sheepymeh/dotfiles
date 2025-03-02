@@ -9,12 +9,11 @@ alias ls='ls --color=auto'
 PS1='[\[\e[1;36m\]\u\[\e[m\]@\[\e[1;32m\]\h \[\e[1;31m\]\W\[\e[m\]]$ '
 
 if [[ -z $DISPLAY ]] && [[ "$(tty)" = /dev/tty1 ]]; then
-	sleep .3
+	systemd-inhibit --what=handle-lid-switch sleep .3
 	exec systemd-cat --identifier=sway sway
-else
-	neofetch --speed_shorthand on --cpu_temp C --cpu_cores logical --gtk_shorthand on
 fi
 
+fastfetch
 export PATH="$PATH:/home/sheepymeh/.local/bin"
 export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
 

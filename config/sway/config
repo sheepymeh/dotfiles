@@ -4,6 +4,7 @@ set $mod Mod4
 set $term footclient
 set $menu swaymsg exec -q "`wofi --show drun`"
 
+output * adaptive_sync on
 output * bg ~/.config/wallpaper.png fill
 output 'AMT International Industry AN-270W04K Unknown' pos 0,0 scale 2 res 3840x2160@60Hz
 
@@ -28,14 +29,16 @@ exec 'wl-clip-persist --clipboard regular'
 for_window [app_id="firefox"] inhibit_idle fullscreen
 for_window [app_id="firefox" title="About Mozilla Firefox"] floating enable
 for_window [app_id="firefox" title="^Developer Tools — "] floating enable
-for_window [app_id="firefox" title="— Sharing Indicator$"] floating enable, sticky enable, move position 0 0, opacity .6
 for_window [app_id="firefox" title="Launch Application"] floating enable
 for_window [app_id="firefox" title="Picture-in-Picture"] floating enable, sticky enable, opacity .9
+for_window [app_id="thunderbird"] floating enable, move position center
+for_window [app_id="thunderbird" title="- Mozilla Thunderbird$"] floating disable
 for_window [app_id="thunar" title="File Operation Progress"] floating enable, opacity .9
 for_window [app_id="thunar" title="Confirm to replace files"] floating enable
 for_window [app_id="engrampa" title="Compress"] floating enable
 for_window [app_id="engrampa" title="Extract"] floating enable
 for_window [app_id="pavucontrol"] floating enable
+for_window [app_id="wineboot.exe"] floating enable
 
 ### Inputs
 input "type:keyboard" {

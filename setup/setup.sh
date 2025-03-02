@@ -18,18 +18,18 @@ sed -i '/deny = /c\deny = 0' /etc/security/faillock.conf # turn off disabling ac
 
 pacman -Syyu
 pacman -Sq --noconfirm --needed \
-	acpi acpid acpi_call bash-completion bat curl dialog firefox gnome-keyring i3blocks jq brightnessctl man-db nano neofetch owncloud-client 7zip plymouth thunderbird ufw linux-firmware wget wl-clip-persist \
- 	s-tui htop nvtop \
+	acpi acpid acpi_call bash-completion bat curl dialog firefox gnome-keyring jq brightnessctl man-db nano owncloud-client 7zip plymouth thunderbird ufw linux-firmware wget \
+ 	fastfetch s-tui htop nvtop \
  	cups cups-pdf system-config-printer \
-	imv mpv playerctl pipewire pipewire-pulse pamixer \
+	imv mpv playerctl pipewire pipewire-pulse pamixer signal-desktop \
 	inter-font noto-fonts-cjk papirus-icon-theme ttf-font-awesome ttf-jetbrains-mono otf-crimson-pro \
 	exfat-utils engrampa ffmpegthumbnailer gvfs gvfs-mtp tumbler thunar thunar-archive-plugin xdg-user-dirs \
 	libreoffice-fresh hunspell hunspell-en_us hunspell-de gutenprint \
 	fcitx5 fcitx5-rime rime-pinyin-simp fcitx5-mozc \
-	grim mako pavucontrol qt5-wayland qt6-wayland slurp sway swaybg swayidle swaylock wf-recorder wl-clipboard wofi xdg-desktop-portal xdg-desktop-portal-wlr \
+	grim i3blocks mako pavucontrol qt5-wayland qt6-wayland slurp sway swaybg swayidle swaylock wf-recorder wl-clipboard wl-clip-persist wofi xdg-desktop-portal xdg-desktop-portal-wlr \
 	foot android-tools podman git go sqlite \
 	tesseract tesseract-data-eng \
-	python-beautifulsoup4 python-build python-ipykernel python-pip python-numpy python-pytorch-opt python-pillow python-opencv python-scikit-learn python-flask python-aiohttp python-pycryptodome python-tqdm python-pymupdf uv \
+	python-beautifulsoup4 python-build python-ipykernel python-pip python-numpy python-pytorch-opt python-torchvision python-pillow python-opencv python-scikit-learn python-flask python-aiohttp python-pycryptodome python-tqdm python-pymupdf uv \
 	jupyter-notebook python-ipywidgets jupyterlab-widgets \
  	ocaml opam dune \
 	texlive-basic texlive-binextra texlive-latex texlive-latexrecommended texlive-latexextra texlive-fontsrecommended texlive-mathscience \
@@ -60,12 +60,15 @@ if ! command -v yay &> /dev/null; then
 fi
 wget -qO - https://keys.openpgp.org/vks/v1/by-fingerprint/5C6DA024DDE27178073EA103F4B432D5D67990E3 | gpg --import # Key for wob
 sudo -u "$SUDO_USER" yay -Sq --noconfirm --needed --sudoloop \
-	autotiling papirus-folders-catppuccin-git visual-studio-code-bin wob
+	autotiling papirus-folders-catppuccin-git python-catppuccin signal-desktop-fix-sway visual-studio-code-bin wob
 
 # Install wine if multilib is enabled
 pacman -Ss '^wine$' && \
 	sudo -u "$SUDO_USER" yay -Sq --noconfirm --needed --sudoloop \
-	wine wine-gecko wine-mono dxvk-bin
+	wine wine-gecko wine-mono dxvk-bin lib32-vulkan-radeon lib32-gnutls
+
+yay -Scc
+yay -Qqtd | yay -Rsn -
 
 # Build and install i3blocks scripts
 if [ -d /sys/class/power_supply/BAT* ]; then
@@ -148,6 +151,7 @@ usermod --add-subuids 100000-165535 --add-subgids 100000-165535 "$SUDO_USER"
 echo 'unqualified-search-registries = ["docker.io"]' >>/etc/containers/registries.conf
 
 systemctl enable --now ufw
+ufw logging off
 ufw enable
 
 # Wayland env vars
@@ -160,6 +164,12 @@ XDG_CURRENT_DESKTOP=sway
 XDG_SESSION_TYPE=wayland
 ELECTRON_OZONE_PLATFORM_HINT=auto
 JAVA_TOOL_OPTIONS="-Dawt.toolkit.name=WLToolkit"
+WINEDEBUG=-all
+
+PYTORCH_NO_HIP_MEMORY_CACHING=1
+HSA_DISABLE_FRAGMENT_ALLOCATOR=1
+TORCH_BLAS_PREFER_HIPBLASLT=0
+HSA_OVERRIDE_GFX_VERSION=9.0.0
 EOF
 
 # Edge TPU udev rules

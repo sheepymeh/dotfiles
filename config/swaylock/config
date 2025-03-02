@@ -26,3 +26,5 @@ text-clear-color=cdd6f4ee
 text-caps-lock-color=fab387ee
 text-ver-color=cdd6f4ee
 text-wrong-color=cdd6f4ee
+
+# https://github.com/catppuccin/swaylock/blob/main/themes/mocha.conf
