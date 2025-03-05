@@ -9,30 +9,33 @@ if [[ $(basename "$PWD") != "setup" ]]; then
 	echo "Script must be run from /setup"
 	exit
 fi
-cd .. # Script should be run from /setup
+cd ..
 
 sed -i 's$#Color$Color\nILoveCandy$' /etc/pacman.conf # pacman color output
 sed -i 's$#ParallelDownloads$ParallelDownloads$' /etc/pacman.conf # pacman parallel downloads
+mkdir /etc/pacman.d/hooks
+cp pacman-hooks/chromium-no-defaults.hook /etc/pacman.d/hooks
 
-sed -i '/deny = /c\deny = 0' /etc/security/faillock.conf # turn off disabling accounts after 3 failed login attempts
+sed -i '/deny = /c\deny = 6' /etc/security/faillock.conf # increase allowed failed attempt count
 
 pacman -Syyu
 pacman -Sq --noconfirm --needed \
-	acpi acpid acpi_call bash-completion bat curl dialog firefox gnome-keyring jq brightnessctl man-db nano owncloud-client 7zip plymouth thunderbird ufw linux-firmware wget \
- 	fastfetch s-tui htop nvtop \
- 	cups cups-pdf system-config-printer \
-	imv mpv playerctl pipewire pipewire-pulse pamixer signal-desktop \
+	acpi acpid acpi_call bash-completion bat curl dialog gnome-keyring jq brightnessctl man-db nano plymouth ufw linux-firmware wget \
+	firefox imv mpv signal-desktop thunderbird \
+	fastfetch s-tui htop nvtop \
+	cups cups-pdf system-config-printer \
+	playerctl pipewire pipewire-pulse pamixer \
 	inter-font noto-fonts-cjk papirus-icon-theme ttf-font-awesome ttf-jetbrains-mono otf-crimson-pro \
-	exfat-utils engrampa ffmpegthumbnailer gvfs gvfs-mtp tumbler thunar thunar-archive-plugin xdg-user-dirs \
+	exfat-utils engrampa ffmpegthumbnailer gvfs gvfs-mtp owncloud-client tumbler thunar thunar-archive-plugin xdg-user-dirs 7zip \
 	libreoffice-fresh hunspell hunspell-en_us hunspell-de gutenprint \
 	fcitx5 fcitx5-rime rime-pinyin-simp fcitx5-mozc \
 	grim i3blocks mako pavucontrol qt5-wayland qt6-wayland slurp sway swaybg swayidle swaylock wf-recorder wl-clipboard wl-clip-persist wofi xdg-desktop-portal xdg-desktop-portal-wlr \
 	foot android-tools podman git go sqlite \
 	tesseract tesseract-data-eng \
+	texlive-basic texlive-binextra texlive-latex texlive-latexrecommended texlive-latexextra texlive-fontsrecommended texlive-mathscience \
 	python-beautifulsoup4 python-build python-ipykernel python-pip python-numpy python-pytorch-opt python-torchvision python-pillow python-opencv python-scikit-learn python-flask python-aiohttp python-pycryptodome python-tqdm python-pymupdf uv \
 	jupyter-notebook python-ipywidgets jupyterlab-widgets \
- 	ocaml opam dune \
-	texlive-basic texlive-binextra texlive-latex texlive-latexrecommended texlive-latexextra texlive-fontsrecommended texlive-mathscience \
+	ocaml opam dune \
 	nodejs npm typescript wrangler
 
 cat <<EOF >/etc/acpi/events/ac
@@ -164,6 +167,7 @@ XDG_CURRENT_DESKTOP=sway
 XDG_SESSION_TYPE=wayland
 ELECTRON_OZONE_PLATFORM_HINT=auto
 JAVA_TOOL_OPTIONS="-Dawt.toolkit.name=WLToolkit"
+_JAVA_AWT_WM_NONREPARENTING=1
 WINEDEBUG=-all
 
 PYTORCH_NO_HIP_MEMORY_CACHING=1
