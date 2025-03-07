@@ -19,7 +19,6 @@ touch ~/.hushlogin
 # Configure colors
 mkdir -p ~/.config/foot
 wget -qO ~/.config/foot/catppuccin-mocha.ini https://raw.githubusercontent.com/catppuccin/foot/refs/heads/main/themes/catppuccin-mocha.ini
-papirus-folders -C cat-mocha-mauve --theme Papirus-Dark
 wget -qO ~/.config/wallpaper.png https://raw.githubusercontent.com/archcraft-os/archcraft-wallpapers/main/archcraft-backgrounds-minimal/files/minimal-12.jpg
 
 wget https://github.com/catppuccin/gtk/releases/download/v1.0.3/catppuccin-mocha-mauve-standard+default.zip
@@ -28,6 +27,7 @@ cd .themes
 7za x ../catppuccin-mocha-mauve-standard+default.zip
 cd ..
 mv .themes ~/.themes
+rm catppuccin-mocha-mauve-standard+default.zip
 
 mkdir -p ~/.config/imv ~/.config/mpv
 wget -qO ~/.config/imv/config https://raw.githubusercontent.com/catppuccin/imv/refs/heads/main/themes/mocha.config
@@ -75,7 +75,7 @@ bat cache --build
 wget -qO ~/.config/sway/catppuccin-mocha https://raw.githubusercontent.com/catppuccin/i3/main/themes/catppuccin-mocha
 
 # Configure fcitx5
-mkdir -p ~/.local/share/fcitx5/rime/ ~/.local/share/fcitx5/themes/
+mkdir -p ~/.local/share/fcitx5/rime ~/.local/share/fcitx5/themes ~/.config/fcitx5/conf
 cat <<EOF >~/.local/share/fcitx5/rime/default.custom.yaml
 patch:
   schema_list:

@@ -39,6 +39,7 @@ for_window [app_id="engrampa" title="Compress"] floating enable
 for_window [app_id="engrampa" title="Extract"] floating enable
 for_window [app_id="pavucontrol"] floating enable
 for_window [app_id="wineboot.exe"] floating enable
+for_window [app_id="io.missioncenter.MissionCenter"] floating enable
 
 ### Inputs
 input "type:keyboard" {

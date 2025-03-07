@@ -41,6 +41,7 @@ WINDOW_ICONS = {
     "mpv": "",
     "system-config-printer": "",
     "wine": "",
+    "io.missioncenter.MissionCenter": "",
 }
 
 DEFAULT_ICON = ""

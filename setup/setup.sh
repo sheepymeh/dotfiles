@@ -22,7 +22,7 @@ pacman -Syyu
 pacman -Sq --noconfirm --needed \
 	acpi acpid acpi_call bash-completion bat curl dialog gnome-keyring jq brightnessctl man-db nano plymouth ufw linux-firmware wget \
 	firefox imv mpv signal-desktop thunderbird \
-	fastfetch s-tui htop nvtop \
+	fastfetch htop mission-center nvtop \
 	cups cups-pdf system-config-printer \
 	playerctl pipewire pipewire-pulse pamixer \
 	inter-font noto-fonts-cjk papirus-icon-theme ttf-font-awesome ttf-jetbrains-mono otf-crimson-pro \
@@ -70,8 +70,7 @@ pacman -Ss '^wine$' && \
 	sudo -u "$SUDO_USER" yay -Sq --noconfirm --needed --sudoloop \
 	wine wine-gecko wine-mono dxvk-bin lib32-vulkan-radeon lib32-gnutls
 
-yay -Scc
-yay -Qqtd | yay -Rsn -
+yay -Scc --noconfirm
 
 # Build and install i3blocks scripts
 if [ -d /sys/class/power_supply/BAT* ]; then
@@ -138,6 +137,7 @@ plymouth-set-default-theme -R arch-agua
 rm -rf plymouth-theme-arch-agua
 
 sed -i 's$timeout 3$timeout 0$' /boot/loader/loader.conf
+papirus-folders -C cat-mocha-mauve --theme Papirus-Dark
 
 # Quiet boot
 sed -i '/^options .* quiet/b; /^options / s/$/ quiet splash loglevel=3 rd.systemd.show_status=auto rd.udev.log_level=3/' /boot/loader/entries/*.conf
@@ -196,7 +196,7 @@ systemctl restart systemd-resolved.service
 echo kernel.sysrq = 244 >/etc/sysctl.d/99-sysctl.conf
 
 # Enable TRIM
-sudo cryptsetup --allow-discards --perf-no_read_workqueue --perf-no_write_workqueue --persistent refresh root
+cryptsetup --allow-discards --perf-no_read_workqueue --perf-no_write_workqueue --persistent refresh root
 
 # Autologin (since LUKS already requires auth)
 mkdir -p /etc/systemd/system/getty@tty1.service.d/

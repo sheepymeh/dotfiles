@@ -1,6 +1,8 @@
 {
 	"window.zoomLevel": 0,
 	"window.menuBarVisibility": "toggle",
+	"window.titleBarStyle": "native",
+	"window.customTitleBarVisibility": "never",
 	"files.autoSave": "onWindowChange",
 	"files.eol": "\n",
 	"editor.fontSize": 13,
