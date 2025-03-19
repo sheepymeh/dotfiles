@@ -9,13 +9,15 @@ alias ls='ls --color=auto'
 PS1='[\[\e[1;36m\]\u\[\e[m\]@\[\e[1;32m\]\h \[\e[1;31m\]\W\[\e[m\]]$ '
 
 if [[ -z $DISPLAY ]] && [[ "$(tty)" = /dev/tty1 ]]; then
-	systemd-inhibit --what=handle-lid-switch sleep .3
+	export JAVA_TOOL_OPTIONS="-Dawt.toolkit.name=WLToolkit"
+	export PATH="$PATH:$HOME/.local/bin"
+	export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
+	systemd-inhibit --what=handle-lid-switch sleep .5 &
 	exec systemd-cat --identifier=sway sway
 fi
 
+unset JAVA_TOOL_OPTIONS
 fastfetch
-export PATH="$PATH:/home/sheepymeh/.local/bin"
-export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
 
 venv() {
 	if [ -z "$1" ]; then

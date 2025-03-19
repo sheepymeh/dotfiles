@@ -21,6 +21,7 @@ WINDOW_ICONS = {
     "chromium": "",
     "signal-desktop": "",
     "pavucontrol": "",
+    "engrampa": "",
     "virt-manager": "",
     "com.nextcloud.desktopclient.nextcloud": "",
     "desktopclient.owncloud.com.owncloud": "",
@@ -42,6 +43,13 @@ WINDOW_ICONS = {
     "system-config-printer": "",
     "wine": "",
     "io.missioncenter.MissionCenter": "",
+    "jetbrains-pycharm": "",
+    "jetbrains-datagrip": "",
+    "jetbrains-idea": "",
+    "jetbrains-rustrover": "",
+    "jetbrains-webstorm": "",
+    "jetbrains-goland": "",
+    "jetbrains-phpstorm": "",
 }
 
 DEFAULT_ICON = ""

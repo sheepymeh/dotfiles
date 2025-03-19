@@ -107,6 +107,7 @@ EOF
 if command -v wine &>/dev/null; then
 	wineboot
 	setup_dxvk install
+	setup_vkd3d_proton install
 fi
 
 systemctl --user enable ssh-agent

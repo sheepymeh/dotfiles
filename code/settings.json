@@ -43,7 +43,7 @@
 				"%DOC%"
 			],
 			"env": {
-				"TEXINPUTS": "/home/sheepymeh/Cambridge/Supervision Templates:"
+				"TEXINPUTS": "$HOME/Cambridge/Supervision Templates:"
 			}
 		}
 	],

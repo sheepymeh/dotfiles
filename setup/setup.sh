@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 set -euo pipefail
 
 if [ "$EUID" -ne 0 ]; then
@@ -13,30 +13,30 @@ cd ..
 
 sed -i 's$#Color$Color\nILoveCandy$' /etc/pacman.conf # pacman color output
 sed -i 's$#ParallelDownloads$ParallelDownloads$' /etc/pacman.conf # pacman parallel downloads
-mkdir /etc/pacman.d/hooks
+mkdir -p /etc/pacman.d/hooks
 cp pacman-hooks/chromium-no-defaults.hook /etc/pacman.d/hooks
 
 sed -i '/deny = /c\deny = 6' /etc/security/faillock.conf # increase allowed failed attempt count
 
-pacman -Syyu
-pacman -Sq --noconfirm --needed \
-	acpi acpid acpi_call bash-completion bat curl dialog gnome-keyring jq brightnessctl man-db nano plymouth ufw linux-firmware wget \
-	firefox imv mpv signal-desktop thunderbird \
-	fastfetch htop mission-center nvtop \
-	cups cups-pdf system-config-printer \
-	playerctl pipewire pipewire-pulse pamixer \
-	inter-font noto-fonts-cjk papirus-icon-theme ttf-font-awesome ttf-jetbrains-mono otf-crimson-pro \
-	exfat-utils engrampa ffmpegthumbnailer gvfs gvfs-mtp owncloud-client tumbler thunar thunar-archive-plugin xdg-user-dirs 7zip \
-	libreoffice-fresh hunspell hunspell-en_us hunspell-de gutenprint \
-	fcitx5 fcitx5-rime rime-pinyin-simp fcitx5-mozc \
-	grim i3blocks mako pavucontrol qt5-wayland qt6-wayland slurp sway swaybg swayidle swaylock wf-recorder wl-clipboard wl-clip-persist wofi xdg-desktop-portal xdg-desktop-portal-wlr \
-	foot android-tools podman git go sqlite \
-	tesseract tesseract-data-eng \
-	texlive-basic texlive-binextra texlive-latex texlive-latexrecommended texlive-latexextra texlive-fontsrecommended texlive-mathscience \
-	python-beautifulsoup4 python-build python-ipykernel python-pip python-numpy python-pytorch-opt python-torchvision python-pillow python-opencv python-scikit-learn python-flask python-aiohttp python-pycryptodome python-tqdm python-pymupdf uv \
-	jupyter-notebook python-ipywidgets jupyterlab-widgets \
-	ocaml opam dune \
-	nodejs npm typescript wrangler
+# pacman -Syyu --noconfirm
+# pacman -Sq --noconfirm --needed \
+# 	acpi acpid acpi_call bash-completion bat curl dialog gnome-keyring jq brightnessctl man-db nano plymouth ufw linux-firmware wget \
+# 	firefox imv mpv signal-desktop thunderbird \
+# 	fastfetch htop mission-center nvtop \
+# 	cups cups-pdf system-config-printer \
+# 	playerctl pipewire pipewire-pulse pamixer pavucontrol \
+# 	inter-font noto-fonts-cjk papirus-icon-theme ttf-font-awesome ttf-jetbrains-mono otf-crimson-pro \
+# 	exfat-utils engrampa ffmpegthumbnailer gvfs gvfs-mtp owncloud-client tumbler thunar thunar-archive-plugin xdg-user-dirs 7zip \
+# 	libreoffice-fresh hunspell hunspell-en_us hunspell-de gutenprint \
+# 	fcitx5 fcitx5-rime rime-pinyin-simp fcitx5-mozc \
+# 	grim i3blocks mako qt6-wayland slurp sway swaybg swayidle swaylock wf-recorder wl-clipboard wl-clip-persist wofi xdg-desktop-portal xdg-desktop-portal-wlr polkit-gnome \
+# 	foot android-tools podman git go sqlite \
+# 	tesseract tesseract-data-eng \
+# 	texlive-basic texlive-binextra texlive-latex texlive-latexrecommended texlive-latexextra texlive-fontsrecommended texlive-mathscience \
+# 	python-beautifulsoup4 python-build python-ipykernel python-pip python-numpy python-pytorch-opt python-torchvision python-pillow python-opencv python-scikit-learn python-flask python-aiohttp python-pycryptodome python-tqdm python-pymupdf uv \
+# 	jupyter-notebook python-ipywidgets jupyterlab-widgets \
+# 	ocaml opam dune \
+# 	nodejs npm typescript wrangler
 
 cat <<EOF >/etc/acpi/events/ac
 event=ac_adapter
@@ -68,7 +68,7 @@ sudo -u "$SUDO_USER" yay -Sq --noconfirm --needed --sudoloop \
 # Install wine if multilib is enabled
 pacman -Ss '^wine$' && \
 	sudo -u "$SUDO_USER" yay -Sq --noconfirm --needed --sudoloop \
-	wine wine-gecko wine-mono dxvk-bin lib32-vulkan-radeon lib32-gnutls
+	wine wine-gecko wine-mono mangohud dxvk-bin vkd3d-proton-bin lib32-vulkan-radeon lib32-gnutls
 
 yay -Scc --noconfirm
 
@@ -118,12 +118,12 @@ EOF
 fi
 if lspci -k | grep -A 2 -E '(VGA|3D)' | grep -qi intel; then
 	pacman -Sq --noconfirm --needed intel-media-driver libva-intel-driver
-	sudo -u "$SUDO_USER" yay -Sq --noconfirm --needed intel-hybrid-codec-driver
+	# sudo -u "$SUDO_USER" yay -Sq --noconfirm --needed intel-hybrid-codec-driver
 	sed -i '/^MODULES=(.*i915/b; s/MODULES=(/MODULES=(i915 /' /etc/mkinitcpio.conf
 fi
 if lspci -k | grep -A 2 -E '(VGA|3D)' | grep -qi amd; then
 	pacman -Sq --noconfirm --needed libva-mesa-driver mesa-vdpau mesa vulkan-radeon
-	sed -i '/^MODULES=(.*amdgpu/b; s/MODULES=(/MODULES=(amdgpu /' /etc/mkinitcpio.conf
+	sed -i '/^MODULES=(/ { /amdgpu/! s/MODULES=(/MODULES=(amdgpu / }' /etc/mkinitcpio.conf
 fi
 
 usermod -aG video "$SUDO_USER"
@@ -132,17 +132,20 @@ usermod -aG input "$SUDO_USER"
 # Plymouth boot splash screen
 git clone https://github.com/sheepymeh/plymouth-theme-arch-agua
 cp -r plymouth-theme-arch-agua /usr/share/plymouth/themes/arch-agua
-sed -i '/^HOOKS=(/ s/encrypt/plymouth encrypt/' /etc/mkinitcpio.conf
-plymouth-set-default-theme -R arch-agua
 rm -rf plymouth-theme-arch-agua
+sed -i '/^HOOKS=(/ { /plymouth/! s/encrypt/plymouth encrypt/ }' /etc/mkinitcpio.conf
+sed -i 's/ )$/)/' /etc/mkinitcpio.conf
+plymouth-set-default-theme -R arch-agua
 
-sed -i 's$timeout 3$timeout 0$' /boot/loader/loader.conf
 papirus-folders -C cat-mocha-mauve --theme Papirus-Dark
 
+sed -i 's/^#SystemMaxUse=$/SystemMaxUse=200M/' /etc/systemd/journald.conf
+sed -i 's/^#MaxRetentionSec=0$/MaxRetentionSec=7d/' /etc/systemd/journald.conf
+
 # Quiet boot
+sed -i 's$timeout 3$timeout 0$' /boot/loader/loader.conf
 sed -i '/^options .* quiet/b; /^options / s/$/ quiet splash loglevel=3 rd.systemd.show_status=auto rd.udev.log_level=3/' /boot/loader/entries/*.conf
 bootctl update --graceful
-mkinitcpio -P
 systemctl enable --now systemd-boot-update.service
 
 sed -i "s/PKGEXT=.*/PKGEXT='.pkg.tar'/g" /etc/makepkg.conf
@@ -166,7 +169,6 @@ QT_WAYLAND_DISABLE_WINDOWDECORATION=1
 XDG_CURRENT_DESKTOP=sway
 XDG_SESSION_TYPE=wayland
 ELECTRON_OZONE_PLATFORM_HINT=auto
-JAVA_TOOL_OPTIONS="-Dawt.toolkit.name=WLToolkit"
 _JAVA_AWT_WM_NONREPARENTING=1
 WINEDEBUG=-all
 
@@ -174,14 +176,17 @@ PYTORCH_NO_HIP_MEMORY_CACHING=1
 HSA_DISABLE_FRAGMENT_ALLOCATOR=1
 TORCH_BLAS_PREFER_HIPBLASLT=0
 HSA_OVERRIDE_GFX_VERSION=9.0.0
+
+ANV_VIDEO_DECODE=1
+RADV_PERFTEST=video_decode,video_encode
 EOF
 
 # Edge TPU udev rules
-cat <<EOF >/usr/lib/udev/rules.d/60-edgetpu.rules
-SUBSYSTEM=="apex", MODE="0660", GROUP="plugdev"
-SUBSYSTEM=="usb",ATTRS{idVendor}=="1a6e",GROUP="plugdev"
-SUBSYSTEM=="usb",ATTRS{idVendor}=="18d1",GROUP="plugdev"
-EOF
+# cat <<EOF >/usr/lib/udev/rules.d/60-edgetpu.rules
+# SUBSYSTEM=="apex", MODE="0660", GROUP="plugdev"
+# SUBSYSTEM=="usb",ATTRS{idVendor}=="1a6e",GROUP="plugdev"
+# SUBSYSTEM=="usb",ATTRS{idVendor}=="18d1",GROUP="plugdev"
+# EOF
 
 # DoT CloudFlare DNS
 mkdir -p /etc/systemd/resolved.conf.d/
@@ -193,7 +198,7 @@ EOF
 systemctl restart systemd-resolved.service
 
 # Enable (REI)SUB
-echo kernel.sysrq = 244 >/etc/sysctl.d/99-sysctl.conf
+# echo kernel.sysrq = 244 >/etc/sysctl.d/99-sysctl.conf
 
 # Enable TRIM
 cryptsetup --allow-discards --perf-no_read_workqueue --perf-no_write_workqueue --persistent refresh root
