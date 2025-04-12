@@ -214,6 +214,14 @@ EOF
 # Enable CUPS
 systemctl enable --now cups.service
 
+sed -i 's/^#en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen
+sed -i 's/^#en_GB.UTF-8 UTF-8/en_GB.UTF-8 UTF-8/' /etc/locale.gen
+cat <<EOF >/etc/locale.conf
+LANG=en_US.UTF-8
+LC_TIME=en_GB.UTF-8
+EOF
+locale-gen
+
 # Notes:
 # https://bbs.archlinux.org/viewtopic.php?id=257315
 # https://www.kernel.org/doc/Documentation/cpu-freq/boost.txt
