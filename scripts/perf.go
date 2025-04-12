@@ -11,12 +11,18 @@ import (
 func update(mode string) {
 	switch (mode) {
 		case "0x0":
+			// balanced -> performance
+			ioutil.WriteFile("/sys/devices/system/cpu/cpufreq/boost", []byte("1"), 0644)
 			ioutil.WriteFile("/proc/acpi/call", []byte("\\_SB.PCI0.LPC0.EC0.VPC0.DYTC 0x0012B001"), 0660)
 			fmt.Println("")
 		case "0x1":
+			// performance -> battery saver
+			ioutil.WriteFile("/sys/devices/system/cpu/cpufreq/boost", []byte("0"), 0644)
 			ioutil.WriteFile("/proc/acpi/call", []byte("\\_SB.PCI0.LPC0.EC0.VPC0.DYTC 0x0013B001"), 0660)
 			fmt.Println("")
 		case "0x2":
+			// battery saver -> balanced
+			ioutil.WriteFile("/sys/devices/system/cpu/cpufreq/boost", []byte("1"), 0644)
 			ioutil.WriteFile("/proc/acpi/call", []byte("\\_SB.PCI0.LPC0.EC0.VPC0.DYTC 0x000FB001"), 0660)
 			fmt.Println("")
 		default:

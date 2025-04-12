@@ -18,25 +18,25 @@ cp pacman-hooks/chromium-no-defaults.hook /etc/pacman.d/hooks
 
 sed -i '/deny = /c\deny = 6' /etc/security/faillock.conf # increase allowed failed attempt count
 
-# pacman -Syyu --noconfirm
-# pacman -Sq --noconfirm --needed \
-# 	acpi acpid acpi_call bash-completion bat curl dialog gnome-keyring jq brightnessctl man-db nano plymouth ufw linux-firmware wget \
-# 	firefox imv mpv signal-desktop thunderbird \
-# 	fastfetch htop mission-center nvtop \
-# 	cups cups-pdf system-config-printer \
-# 	playerctl pipewire pipewire-pulse pamixer pavucontrol \
-# 	inter-font noto-fonts-cjk papirus-icon-theme ttf-font-awesome ttf-jetbrains-mono otf-crimson-pro \
-# 	exfat-utils engrampa ffmpegthumbnailer gvfs gvfs-mtp owncloud-client tumbler thunar thunar-archive-plugin xdg-user-dirs 7zip \
-# 	libreoffice-fresh hunspell hunspell-en_us hunspell-de gutenprint \
-# 	fcitx5 fcitx5-rime rime-pinyin-simp fcitx5-mozc \
-# 	grim i3blocks mako qt6-wayland slurp sway swaybg swayidle swaylock wf-recorder wl-clipboard wl-clip-persist wofi xdg-desktop-portal xdg-desktop-portal-wlr polkit-gnome \
-# 	foot android-tools podman git go sqlite \
-# 	tesseract tesseract-data-eng \
-# 	texlive-basic texlive-binextra texlive-latex texlive-latexrecommended texlive-latexextra texlive-fontsrecommended texlive-mathscience \
-# 	python-beautifulsoup4 python-build python-ipykernel python-pip python-numpy python-pytorch-opt python-torchvision python-pillow python-opencv python-scikit-learn python-flask python-aiohttp python-pycryptodome python-tqdm python-pymupdf uv \
-# 	jupyter-notebook python-ipywidgets jupyterlab-widgets \
-# 	ocaml opam dune \
-# 	nodejs npm typescript wrangler
+pacman -Syyu --noconfirm
+pacman -Sq --noconfirm --needed \
+	acpi acpid acpi_call bash-completion bat curl dialog gnome-keyring jq brightnessctl man-db nano plymouth ufw linux-firmware wget \
+	firefox imv mpv signal-desktop thunderbird \
+	fastfetch htop mission-center nvtop \
+	cups cups-pdf system-config-printer \
+	playerctl pipewire pipewire-pulse pamixer pavucontrol \
+	inter-font noto-fonts-cjk papirus-icon-theme ttf-font-awesome ttf-jetbrains-mono otf-crimson-pro \
+	exfat-utils engrampa ffmpegthumbnailer gvfs gvfs-mtp owncloud-client tumbler thunar thunar-archive-plugin xdg-user-dirs 7zip \
+	libreoffice-fresh hunspell hunspell-en_us hunspell-de gutenprint \
+	fcitx5 fcitx5-rime rime-pinyin-simp fcitx5-mozc \
+	grim i3blocks mako qt6-wayland slurp sway swaybg swayidle swaylock wf-recorder wl-clipboard wofi xdg-desktop-portal xdg-desktop-portal-wlr polkit-gnome \
+	foot android-tools podman git go sqlite \
+	tesseract tesseract-data-eng \
+	texlive-basic texlive-binextra texlive-latex texlive-latexrecommended texlive-latexextra texlive-fontsrecommended texlive-mathscience \
+	python-beautifulsoup4 python-build python-ipykernel python-pip python-numpy python-pytorch-opt python-torchvision python-pillow python-opencv python-scikit-learn python-flask python-aiohttp python-pycryptodome python-tqdm python-pymupdf uv \
+	jupyter-notebook python-ipywidgets jupyterlab-widgets \
+	ocaml opam dune \
+	nodejs npm typescript wrangler
 
 cat <<EOF >/etc/acpi/events/ac
 event=ac_adapter

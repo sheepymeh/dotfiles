@@ -17,3 +17,6 @@ border-color=#fab387
 
 [mode=do-not-disturb]
 invisible=1
+
+[mode=screencast]
+invisible=1

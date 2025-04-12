@@ -7,17 +7,17 @@ set $menu swaymsg exec -q "`wofi --show drun`"
 output * adaptive_sync on
 output * bg ~/.config/wallpaper.png fill
 output 'AMT International Industry AN-270W04K Unknown' pos 0,0 scale 2 res 3840x2160@60Hz
+output 'BNQ BenQ GW2490E S4R0495301Q' pos 0,0 res 1920x1080@100Hz
 
 ### Autostart
-exec {
-    firefox
+exec firefox
+exec --no-startup-id {
     owncloud
     fcitx5
     autotiling
     dynamic-workspaces.py
     playerctl metadata --follow --format "{{status}}" | while read -r STATUS; do [ "$STATUS" == 'Playing' ] && systemctl --user start inhibit-while-playing-media.service || systemctl --user stop inhibit-while-playing-media.service; done
     foot --server
-    wl-clip-persist --clipboard regular
     /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
     swayidle -w \
         timeout 140 'brightnessctl -q --save; brightnessctl -q set 5%' \
@@ -78,15 +78,15 @@ font pango:Inter, Font Awesome 5 Brands, Font Awesome 5 Free 9
     bindsym $mod+Shift+c reload
     bindsym $mod+Shift+r restart
     bindsym $mod+Shift+e exec swaynag -t warning -m 'Do you want to log out?' -b 'Yes, exit sway' 'swaymsg exit'
-    bindsym --locked $mod+Shift+s exec systemctl suspend
+    bindsym --locked $mod+Shift+s exec --no-startup-id systemctl suspend
     bindsym $mod+e exec thunar ~
     bindsym $mod+b exec firefox
     bindsym $mod+c exec gtk-launch code
     bindsym $mod+l exec swaylock
-    bindsym $mod+m exec pactl list short sources | awk '/input.*RUNNING/ {system("pactl set-source-mute " $1 " toggle")}'
-    bindsym --inhibited XF86AudioMicMute pactl list short sources | awk '/input.*RUNNING/ {system("pactl set-source-mute " $1 " toggle")}'
-    bindsym XF86TouchpadOff exec notify-send "Touchpad disabled" "Press touchpad button to enable"
-    bindsym XF86TouchpadOn exec notify-send "Touchpad enabled" "Press touchpad button to disable"
+    bindsym $mod+m exec --no-startup-id pactl list short sources | awk '/input.*RUNNING/ {system("pactl set-source-mute " $1 " toggle")}'
+    bindsym --inhibited XF86AudioMicMute exec --no-startup-id pactl list short sources | awk '/input.*RUNNING/ {system("pactl set-source-mute " $1 " toggle")}'
+    bindsym XF86TouchpadOff exec --no-startup-id notify-send "Touchpad disabled" "Press touchpad button to enable"
+    bindsym XF86TouchpadOn exec --no-startup-id notify-send "Touchpad enabled" "Press touchpad button to disable"
 
     # Move
     bindsym $mod+Left focus left
@@ -102,21 +102,21 @@ font pango:Inter, Font Awesome 5 Brands, Font Awesome 5 Free 9
 
     # Hardware keys
     exec mkfifo $SWAYSOCK.wob && tail -f $SWAYSOCK.wob | wob
-    bindsym --inhibited --locked XF86AudioRaiseVolume exec pamixer -u -i 2 && pamixer --get-volume >$SWAYSOCK.wob
-    bindsym --inhibited --locked XF86AudioLowerVolume exec pamixer -u -d 2 && pamixer --get-volume >$SWAYSOCK.wob
-    bindsym --inhibited --locked XF86AudioMute exec pamixer -t && pamixer --get-mute | grep -q true && echo "0" >$SWAYSOCK.wob || pamixer --get-volume >$SWAYSOCK.wob
-    bindsym --inhibited --locked XF86AudioPlay exec playerctl play-pause
-    bindsym --inhibited --locked XF86AudioNext exec playerctl next
-    bindsym --inhibited --locked XF86AudioPrev exec playerctl previous
-    bindsym --inhibited --locked XF86AudioStop exec playerctl stop
+    bindsym --inhibited --locked XF86AudioRaiseVolume exec --no-startup-id pamixer -u -i 2 && pamixer --get-volume >$SWAYSOCK.wob
+    bindsym --inhibited --locked XF86AudioLowerVolume exec --no-startup-id pamixer -u -d 2 && pamixer --get-volume >$SWAYSOCK.wob
+    bindsym --inhibited --locked XF86AudioMute exec --no-startup-id pamixer -t && pamixer --get-mute | grep -q true && echo "0" >$SWAYSOCK.wob || pamixer --get-volume >$SWAYSOCK.wob
+    bindsym --inhibited --locked XF86AudioPlay exec --no-startup-id playerctl play-pause
+    bindsym --inhibited --locked XF86AudioNext exec --no-startup-id playerctl next
+    bindsym --inhibited --locked XF86AudioPrev exec --no-startup-id playerctl previous
+    bindsym --inhibited --locked XF86AudioStop exec --no-startup-id playerctl stop
 
     # Screenshots
-    bindsym Print exec grim - | wl-copy
-    bindsym Ctrl+Print exec grim "$HOME/Pictures/Screenshot $(date +'%m.%d.%y %T').png"
-    bindsym Alt+Print exec grim -g "$(slurp)" - | wl-copy
-    bindsym Ctrl+Alt+Print exec grim -g "$(slurp)" "$HOME/Pictures/Screenshot $(date +'%m.%d.%y %T').png"
-    bindsym $mod+Print exec record.sh
-    bindsym $mod+Alt+Print exec record.sh slurp
+    bindsym Print exec --no-startup-id grim - | wl-copy
+    bindsym Ctrl+Print exec --no-startup-id grim "$HOME/Pictures/Screenshot $(date +'%m.%d.%y %T').png"
+    bindsym Alt+Print exec --no-startup-id grim -g "$(slurp)" - | wl-copy
+    bindsym Ctrl+Alt+Print exec --no-startup-id grim -g "$(slurp)" "$HOME/Pictures/Screenshot $(date +'%m.%d.%y %T').png"
+    bindsym $mod+Print exec --no-startup-id record.sh
+    bindsym $mod+Alt+Print exec --no-startup-id record.sh slurp
 
     # Workspaces
     set $ws1 workspace number 1
@@ -200,7 +200,7 @@ bar {
     }
 }
 
-exec_always {
+exec_always --no-startup-id {
     gsettings set org.gnome.desktop.interface gtk-theme catppuccin-mocha-mauve-standard+default
     gsettings set org.gnome.desktop.interface icon-theme Papirus-Dark
     gsettings set org.gnome.desktop.interface font-name 'Inter 9'
