@@ -136,9 +136,11 @@ font pango:Inter, Font Awesome 5 Brands, Font Awesome 5 Free 9
     bindsym --inhibited $mod+6 $ws6
     bindsym --inhibited $mod+7 $ws7
     bindsym --inhibited $mod+8 $ws8
-    bindsym --inhibited $mod+9 $ws9
+    bindsym --inhibited $mod+9 exec swaymsg workspace number $(swaymsg -t get_workspaces | jq 'max_by(.num).num')
     bindsym --inhibited $mod+Tab workspace next_on_output
     bindsym --inhibited $mod+Grave workspace prev_on_output
+    bindsym --inhibited $mod+A workspace back_and_forth
+    bindsym --inhibited $mod+Escape exec swaymsg workspace $(swaymsg -t get_workspaces | jq 'max_by(.num).num+1')
     bindsym $mod+Alt+1 move container to $ws1
     bindsym $mod+Alt+2 move container to $ws2
     bindsym $mod+Alt+3 move container to $ws3
@@ -159,9 +161,7 @@ font pango:Inter, Font Awesome 5 Brands, Font Awesome 5 Free 9
     bindsym $mod+f fullscreen
     bindsym $mod+space floating toggle
     # Swap focus between the tiling area and the floating area
-    bindsym $mod+Ctrl+space focus mode_toggle
-    # Move focus to the parent container
-    bindsym $mod+a focus parent
+    bindsym $mod+Alt+space focus mode_toggle
     # Move focus to urgent workspaces
     for_window [urgent=latest] focus
 
