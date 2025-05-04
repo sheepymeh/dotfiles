@@ -8,7 +8,7 @@ anchor=bottom-right
 layer=overlay
 
 # Colors (https://github.com/catppuccin/mako/)
-background-color=#1e1e2e
+background-color=#1e1e2eee
 text-color=#cdd6f4
 border-color=#cba6f7
 progress-color=over #313244
