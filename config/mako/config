@@ -5,6 +5,7 @@ default-timeout=6000
 width=500
 max-icon-size=56
 anchor=bottom-right
+layer=overlay
 
 # Colors (https://github.com/catppuccin/mako/)
 background-color=#1e1e2e
