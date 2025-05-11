@@ -88,13 +88,6 @@ echo Theme=catppuccin-mocha-mauve > ~/.config/fcitx5/conf/classicui.conf
 
 # systemd services
 mkdir -p ~/.config/systemd/user/
-cat <<EOF >~/.config/systemd/user/inhibit-while-playing-media.service
-[Unit]
-Description=Inhibit idle while media is playing
-
-[Service]
-ExecStart=systemd-inhibit --what=idle --who=playerctl --why='Active media playing' sleep infinity
-EOF
 cat <<EOF >~/.config/systemd/user/inhibit-idle.service
 [Unit]
 Description=Inhibit idle

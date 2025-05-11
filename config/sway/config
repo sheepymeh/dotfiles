@@ -16,16 +16,15 @@ exec --no-startup-id {
     fcitx5
     autotiling
     dynamic-workspaces.py
-    playerctl metadata --follow --format "{{status}}" | while read -r STATUS; do [ "$STATUS" == 'Playing' ] && systemctl --user start inhibit-while-playing-media.service || systemctl --user stop inhibit-while-playing-media.service; done
     foot --server
+    sway-audio-idle-inhibit >/dev/null
     /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
     swayidle -w \
         timeout 140 'brightnessctl -q --save; brightnessctl -q set 5%' \
         resume 'brightnessctl -q --restore' \
-        timeout 150 'swaymsg "output * dpms off"' \
+        timeout 300 'swaymsg "output * dpms off"' \
         resume 'swaymsg "output * dpms on"' \
-        timeout 160 'swaylock' \
-        timeout 300 'systemctl suspend' \
+        timeout 400 'systemctl suspend' \
         before-sleep 'playerctl pause; pgrep -x swaylock >/dev/null || swaylock' \
         after-resume 'pkill -SIGUSR1 date.sh; pkill -SIGRTMIN+3 i3blocks'
 }
@@ -38,10 +37,10 @@ for_window [app_id="firefox" title="Launch Application"] floating enable
 for_window [app_id="firefox" title="Picture-in-Picture"] floating enable, sticky enable, opacity .9
 for_window [app_id="thunderbird"] floating enable, move position center
 for_window [app_id="thunderbird" title="- Mozilla Thunderbird$"] floating disable
-for_window [app_id="thunar" title="File Operation Progress"] floating enable, opacity .9
+for_window [app_id="thunar" title="File Operation Progress"] floating enable, opacity .9, inhibit_idle open
 for_window [app_id="thunar" title="Confirm to replace files"] floating enable
-for_window [app_id="engrampa" title="Compress"] floating enable
-for_window [app_id="engrampa" title="Extract"] floating enable
+for_window [app_id="engrampa" title="Compress"] floating enable, inhibit_idle open
+for_window [app_id="engrampa" title="Extract"] floating enable, inhibit_idle open
 for_window [app_id="pavucontrol"] floating enable
 for_window [app_id="wineboot.exe"] floating enable
 for_window [app_id="io.missioncenter.MissionCenter"] floating enable

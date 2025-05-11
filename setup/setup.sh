@@ -63,7 +63,7 @@ if ! command -v yay &> /dev/null; then
 fi
 wget -qO - https://keys.openpgp.org/vks/v1/by-fingerprint/5C6DA024DDE27178073EA103F4B432D5D67990E3 | gpg --import # Key for wob
 sudo -u "$SUDO_USER" yay -Sq --noconfirm --needed --sudoloop \
-	autotiling papirus-folders-catppuccin-git python-catppuccin signal-desktop-fix-sway visual-studio-code-bin wob
+	autotiling papirus-folders-catppuccin-git python-catppuccin signal-desktop-fix-sway sway-audio-idle-inhibit-git visual-studio-code-bin wob
 
 # Install wine if multilib is enabled
 pacman -Ss '^wine$' && \
