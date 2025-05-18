@@ -43,6 +43,7 @@ for_window [app_id="engrampa" title="Compress"] floating enable, inhibit_idle op
 for_window [app_id="engrampa" title="Extract"] floating enable, inhibit_idle open
 for_window [app_id="pavucontrol"] floating enable
 for_window [app_id="wineboot.exe"] floating enable
+for_window [app_id="\*.exe$"] inhibit_idle fullscreen
 for_window [app_id="io.missioncenter.MissionCenter"] floating enable
 
 ### Inputs
