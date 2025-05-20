@@ -20,12 +20,10 @@ exec --no-startup-id {
     sway-audio-idle-inhibit >/dev/null
     /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
     swayidle -w \
-        timeout 140 'brightnessctl -q --save; brightnessctl -q set 5%' \
+        timeout 140 'brightnessctl -q --save; brightnessctl -q set 10%' \
         resume 'brightnessctl -q --restore' \
-        timeout 300 'swaymsg "output * dpms off"' \
-        resume 'swaymsg "output * dpms on"' \
-        timeout 400 'systemctl suspend' \
-        before-sleep 'playerctl pause; pgrep -x swaylock >/dev/null || swaylock' \
+        timeout 300 'chayang -d 10 && systemctl suspend' \
+        before-sleep 'playerctl pause; swaylock' \
         after-resume 'pkill -SIGUSR1 date.sh; pkill -SIGRTMIN+3 i3blocks'
 }
 
