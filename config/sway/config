@@ -22,8 +22,8 @@ exec --no-startup-id {
     swayidle -w \
         timeout 140 'brightnessctl -q --save; brightnessctl -q set 10%' \
         resume 'brightnessctl -q --restore' \
-        timeout 300 'chayang -d 10 && systemctl suspend' \
-        before-sleep 'playerctl pause; swaylock' \
+        timeout 300 '(pgrep -x swaylock >/dev/null || chayang -d 10) && systemctl suspend' \
+        before-sleep 'playerctl pause 2>/dev/null; swaylock 2>/dev/null' \
         after-resume 'pkill -SIGUSR1 date.sh; pkill -SIGRTMIN+3 i3blocks'
 }
 
