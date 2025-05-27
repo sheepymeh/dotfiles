@@ -1,5 +1,5 @@
 #!/bin/sh
-set -euo pipefail
+set -Eeuo pipefail
 
 if [ "$EUID" -eq 0 ]; then
 	echo "Script must be run as user"
@@ -9,6 +9,38 @@ if [[ $(basename "$PWD") != "setup" ]]; then
 	echo "Script must be run from /setup"
 	exit
 fi
+
+install_catppuccin_gtk() {
+	wget -q https://github.com/catppuccin/gtk/releases/download/v1.0.3/catppuccin-mocha-mauve-standard+default.zip
+	mkdir -p ~/.themes
+	unzip -qo catppuccin-mocha-mauve-standard+default.zip -d ~/.themes
+	rm -rf themes catppuccin-mocha-mauve-standard+default.zip
+}
+
+install_vscode_ext() {
+	code --install-extension Catppuccin.catppuccin-vsc
+	code --install-extension Catppuccin.catppuccin-vsc-icons
+	code --install-extension Vue.volar
+	code --install-extension eamodio.gitlens
+	code --install-extension GitHub.copilot
+	code --install-extension ms-python.python
+	code --install-extension james-yu.latex-workshop
+	code --install-extension ms-toolsai.jupyter
+}
+
+install_wine() {
+	# Configure Wine
+	if command -v wine &>/dev/null; then
+		wineboot
+		setup_dxvk install
+		setup_vkd3d_proton install
+	fi
+}
+
+# Start slow-running jobs
+install_catppuccin_gtk &
+install_vscode_ext &
+install_wine &
 
 # Prepare /home/user
 xdg-user-dirs-update
@@ -20,14 +52,6 @@ touch ~/.hushlogin
 mkdir -p ~/.config/foot
 wget -qO ~/.config/foot/catppuccin-mocha.ini https://raw.githubusercontent.com/catppuccin/foot/refs/heads/main/themes/catppuccin-mocha.ini
 wget -qO ~/.config/wallpaper.png https://raw.githubusercontent.com/archcraft-os/archcraft-wallpapers/main/archcraft-backgrounds-minimal/files/minimal-12.jpg
-
-wget https://github.com/catppuccin/gtk/releases/download/v1.0.3/catppuccin-mocha-mauve-standard+default.zip
-mkdir .themes
-cd .themes
-7za x ../catppuccin-mocha-mauve-standard+default.zip
-cd ..
-mv .themes ~/.themes
-rm catppuccin-mocha-mauve-standard+default.zip
 
 mkdir -p ~/.config/imv ~/.config/mpv
 wget -qO ~/.config/imv/config https://raw.githubusercontent.com/catppuccin/imv/refs/heads/main/themes/mocha.config
@@ -56,19 +80,9 @@ git config --global credential.helper store
 git config --global pull.rebase false
 git config --global init.defaultBranch main
 
-# Configure VS Code
-code --install-extension Catppuccin.catppuccin-vsc
-code --install-extension Catppuccin.catppuccin-vsc-icons
-code --install-extension Vue.volar
-code --install-extension eamodio.gitlens
-code --install-extension GitHub.copilot
-code --install-extension ms-python.python
-code --install-extension james-yu.latex-workshop
-code --install-extension ms-toolsai.jupyter
-
 # Configure bat
 mkdir -p "$(bat --config-dir)/themes"
-wget -P "$(bat --config-dir)/themes" https://github.com/catppuccin/bat/raw/main/themes/Catppuccin%20Mocha.tmTheme
+wget -qO "$(bat --config-dir)/themes/Catppuccin Mocha.tmTheme" https://github.com/catppuccin/bat/raw/main/themes/Catppuccin%20Mocha.tmTheme
 bat cache --build
 
 # Configure sway
@@ -80,11 +94,11 @@ cat <<EOF >~/.local/share/fcitx5/rime/default.custom.yaml
 patch:
   schema_list:
     - schema: pinyin_simp
+  notifications: false
 EOF
 git clone --depth=1 https://github.com/catppuccin/fcitx5.git
 cp -r ./fcitx5/src/catppuccin-mocha-mauve/ ~/.local/share/fcitx5/themes
 rm -rf fcitx5
-echo Theme=catppuccin-mocha-mauve > ~/.config/fcitx5/conf/classicui.conf
 
 # systemd services
 mkdir -p ~/.config/systemd/user/
@@ -96,14 +110,8 @@ Description=Inhibit idle
 ExecStart=systemd-inhibit --what=idle --who=i3blocks --why='User inhibited idle' sleep infinity
 EOF
 
-# Configure Wine
-if command -v wine &>/dev/null; then
-	wineboot
-	setup_dxvk install
-	setup_vkd3d_proton install
-fi
-
 systemctl --user enable ssh-agent
-mkdir ~/.ssh
-echo AddKeysToAgent yes >~/.ssh/config
+mkdir ~/.ssh && echo AddKeysToAgent yes >~/.ssh/config
 chmod 600 ~/.ssh/config
+
+wait
