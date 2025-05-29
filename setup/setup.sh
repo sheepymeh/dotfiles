@@ -31,9 +31,8 @@ setup_packages() {
 		ocaml opam dune \
 		nodejs npm typescript wrangler
 
-	# Bluetooth detection does not work
 	BT_SYS_PATH="/sys/class/bluetooth"
-	if [ -d "$BT_SYS_PATH" ] && [ -z "$(ls -A "$BT_SYS_PATH")" ]; then
+	if [ -d "$BT_SYS_PATH" ] && [ -n "$(ls -A "$BT_SYS_PATH")" ]; then
 		pacman -Sq --noconfirm --needed blueman bluez-utils
 		systemctl --quiet enable --now bluetooth
 		usermod -aG rfkill "$SUDO_USER"
@@ -105,7 +104,7 @@ setup_locale() {
 LANG=en_US.UTF-8
 LC_TIME=en_GB.UTF-8
 LC_PAPER=en_GB.UTF-8
-LC_MEASUREMENT=metric
+LC_MEASUREMENT=en_GB.UTF-8
 LC_COLLATE=C.UTF-8
 EOF
 }
