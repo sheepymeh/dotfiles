@@ -108,7 +108,7 @@ Description=Inhibit idle
 ExecStart=systemd-inhibit --what=idle --who=i3blocks --why='User inhibited idle' sleep infinity
 EOF
 
-systemctl --user enable --now foot-server.service
+systemctl --user enable --now foot-server.socket
 
 systemctl --user enable ssh-agent
 if [ ! -d ~/.ssh ]; then
