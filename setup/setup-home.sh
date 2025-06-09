@@ -10,13 +10,6 @@ if [[ $(basename "$PWD") != "setup" ]]; then
 	exit
 fi
 
-install_catppuccin_gtk() {
-	wget -q https://github.com/catppuccin/gtk/releases/download/v1.0.3/catppuccin-mocha-mauve-standard+default.zip
-	mkdir -p ~/.themes
-	unzip -qo catppuccin-mocha-mauve-standard+default.zip -d ~/.themes
-	rm -rf themes catppuccin-mocha-mauve-standard+default.zip
-}
-
 install_vscode_ext() {
 	code --install-extension Catppuccin.catppuccin-vsc
 	code --install-extension Catppuccin.catppuccin-vsc-icons
@@ -38,7 +31,6 @@ install_wine() {
 }
 
 # Start slow-running jobs
-install_catppuccin_gtk &
 install_vscode_ext &
 install_wine &
 
@@ -56,6 +48,12 @@ wget -qO ~/.config/wallpaper.png https://raw.githubusercontent.com/archcraft-os/
 mkdir -p ~/.config/imv ~/.config/mpv
 wget -qO ~/.config/imv/config https://raw.githubusercontent.com/catppuccin/imv/refs/heads/main/themes/mocha.config
 wget -qO ~/.config/mpv/mpv.conf https://raw.githubusercontent.com/catppuccin/mpv/refs/heads/main/themes/mocha/mauve.conf
+
+# Install Catppuccin GTK
+wget -q https://github.com/catppuccin/gtk/releases/download/v1.0.3/catppuccin-mocha-mauve-standard+default.zip
+mkdir -p ~/.themes
+unzip -qo catppuccin-mocha-mauve-standard+default.zip -d ~/.themes
+rm catppuccin-mocha-mauve-standard+default.zip
 
 cd ..
 
@@ -96,7 +94,7 @@ patch:
     - schema: pinyin_simp
   notifications: false
 EOF
-git clone --depth=1 https://github.com/catppuccin/fcitx5.git
+git clone -q --depth=1 https://github.com/catppuccin/fcitx5.git
 cp -r ./fcitx5/src/catppuccin-mocha-mauve/ ~/.local/share/fcitx5/themes
 rm -rf fcitx5
 
@@ -110,8 +108,13 @@ Description=Inhibit idle
 ExecStart=systemd-inhibit --what=idle --who=i3blocks --why='User inhibited idle' sleep infinity
 EOF
 
+systemctl --user enable --now foot-server.service
+
 systemctl --user enable ssh-agent
-mkdir ~/.ssh && echo AddKeysToAgent yes >~/.ssh/config
-chmod 600 ~/.ssh/config
+if [ ! -d ~/.ssh ]; then
+	mkdir ~/.ssh
+	echo AddKeysToAgent yes >~/.ssh/config
+	chmod 600 ~/.ssh/config
+fi
 
 wait

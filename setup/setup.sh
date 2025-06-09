@@ -22,7 +22,7 @@ setup_packages() {
 		exfat-utils engrampa ffmpegthumbnailer gvfs gvfs-mtp owncloud-client tumbler thunar thunar-archive-plugin unzip xdg-user-dirs 7zip \
 		libreoffice-fresh hunspell hunspell-en_us hunspell-de gutenprint \
 		fcitx5 fcitx5-rime rime-pinyin-simp fcitx5-mozc \
-		grim i3blocks mako qt6-wayland slurp sway swaybg swayidle swaylock wf-recorder wl-clipboard wofi xdg-desktop-portal xdg-desktop-portal-wlr xdg-desktop-portal-gtk polkit-gnome \
+		autotiling grim i3blocks mako qt6-wayland slurp sway swaybg swayidle swaylock wf-recorder wl-clipboard wofi xdg-desktop-portal xdg-desktop-portal-wlr xdg-desktop-portal-gtk polkit-gnome wob \
 		foot android-tools sqlite \
 		tesseract tesseract-data-eng \
 		texlive-basic texlive-binextra texlive-latex texlive-latexrecommended texlive-latexextra texlive-fontsrecommended texlive-mathscience \
@@ -130,22 +130,22 @@ pacman -S --noconfirm --needed acpi acpid acpi_call plymouth wget ufw cups podma
 # Install yay-bin
 if ! command -v yay &> /dev/null; then
 	su -c "echo MAKEFLAGS="-j$(nproc)" >/home/"$SUDO_USER"/.makepkg.conf" "$SUDO_USER" # Multithreaded AUR build
-	su -c 'git clone --depth=1 https://aur.archlinux.org/yay-bin.git' "$SUDO_USER"
+	su -c 'git clone -q --depth=1 https://aur.archlinux.org/yay-bin.git' "$SUDO_USER"
 	cd yay-bin
 	sudo -u "$SUDO_USER" makepkg -si --noconfirm
 	cd ..
 	rm -rf yay-bin
 fi
 
-wget -qO - https://keys.openpgp.org/vks/v1/by-fingerprint/5C6DA024DDE27178073EA103F4B432D5D67990E3 | gpg --import # Key for wob
 sudo -u "$SUDO_USER" yay -Sq --noconfirm --needed --sudoloop \
-	autotiling chayang papirus-folders-catppuccin-git python-catppuccin signal-desktop-fix-sway sway-audio-idle-inhibit-git visual-studio-code-bin wob
+	chayang papirus-folders-catppuccin-git python-catppuccin sway-audio-idle-inhibit-git visual-studio-code-bin
 
 # Install wine if multilib is enabled
 pacman -Ss '^wine$' && \
 	sudo -u "$SUDO_USER" yay -Sq --noconfirm --needed --sudoloop \
 	wine wine-gecko wine-mono mangohud dxvk-bin vkd3d-proton-bin lib32-vulkan-radeon lib32-gnutls
 
+# Start slow-running jobs
 setup_packages &
 setup_i3blocks &
 setup_locale &
@@ -231,14 +231,14 @@ sed -i '/^options .* quiet/b; /^options / s/$/ quiet splash loglevel=3 rd.system
 bootctl update --graceful
 systemctl enable --now systemd-boot-update.service
 
-wait
-
 # Plymouth boot splash screen
-git clone --depth=1 https://github.com/sheepymeh/plymouth-theme-arch-agua
+git clone -q --depth=1 https://github.com/sheepymeh/plymouth-theme-arch-agua
 cp -r plymouth-theme-arch-agua /usr/share/plymouth/themes/arch-agua
 rm -rf plymouth-theme-arch-agua
 sed -i '/^HOOKS=(/ { /plymouth/! s/encrypt/plymouth encrypt/ }' /etc/mkinitcpio.conf
 sed -i 's/ )$/)/' /etc/mkinitcpio.conf
+
+wait
 plymouth-set-default-theme -R arch-agua
 
 # Notes:
