@@ -42,7 +42,7 @@ WINDOW_ICONS = {
     "mpv": "",
     "system-config-printer": "",
     "wine": "",
-    "io.missioncenter.MissionCenter": "",
+    "io.missioncenter.missioncenter": "",
     "jetbrains-pycharm": "",
     "jetbrains-datagrip": "",
     "jetbrains-idea": "",
