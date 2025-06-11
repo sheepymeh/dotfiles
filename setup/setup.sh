@@ -14,7 +14,7 @@ cd ..
 setup_packages() {
 	pacman -Sq --noconfirm --needed \
 		bash-completion bat curl dialog gnome-keyring jq brightnessctl man-db nano linux-firmware \
-		firefox imv mpv signal-desktop thunderbird \
+		firefox imv mpv signal-desktop thunderbird transmission-gtk \
 		fastfetch htop mission-center nvtop \
 		cups-pdf system-config-printer \
 		playerctl pipewire pipewire-pulse pamixer pavucontrol \
@@ -28,7 +28,6 @@ setup_packages() {
 		texlive-basic texlive-binextra texlive-latex texlive-latexrecommended texlive-latexextra texlive-fontsrecommended texlive-mathscience \
 		python-beautifulsoup4 python-pip python-numpy python-pytorch-opt python-torchvision python-pillow python-opencv python-scikit-learn python-flask python-aiohttp python-pycryptodome python-tqdm python-pymupdf python-uv python-virtualenv \
 		jupyter-notebook python-ipykernel python-ipywidgets jupyterlab-widgets \
-		ocaml opam dune \
 		nodejs npm typescript wrangler
 
 	BT_SYS_PATH="/sys/class/bluetooth"
@@ -90,7 +89,7 @@ setup_i3blocks() {
 		chmod u+s perf
 		mv perf /usr/local/bin
 	fi
-	for script in record.sh mic.sh date.sh dynamic-workspaces.py; do
+	for script in record.sh mic.sh date.sh blink-leds.sh dynamic-workspaces.py; do
 		cp "scripts/$script" /usr/local/bin
 		chmod a+x "/usr/local/bin/$script"
 	done
@@ -201,6 +200,11 @@ EOF
 # SUBSYSTEM=="usb",ATTRS{idVendor}=="1a6e",GROUP="plugdev"
 # SUBSYSTEM=="usb",ATTRS{idVendor}=="18d1",GROUP="plugdev"
 # EOF
+
+cat /etc/udev/rules.d/99-leds.rules <<EOF >
+SUBSYSTEM=="leds", KERNEL=="*::capslock", ATTR{brightness}=="*", GROUP="input", MODE="0664"
+ACTION=="add", SUBSYSTEM=="leds", KERNEL=="*::capslock", RUN+="/usr/bin/chown root:input /sys/class/leds/%k/brightness", RUN+="/usr/bin/chmod 0664 /sys/class/leds/%k/brightness"
+EOF
 
 # DoT CloudFlare DNS
 mkdir -p /etc/systemd/resolved.conf.d/

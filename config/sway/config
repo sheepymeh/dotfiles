@@ -12,9 +12,10 @@ output 'BNQ BenQ GW2490E S4R0495301Q' pos 0,0 res 1920x1080@100Hz
 ### Autostart
 exec firefox
 exec --no-startup-id {
-    owncloud
     fcitx5
+    owncloud
     autotiling
+    foot --server
     dynamic-workspaces.py
     sway-audio-idle-inhibit
     /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
@@ -25,7 +26,7 @@ exec --no-startup-id {
             resume 'swaymsg "output * dpms on"' \
         timeout 250 'systemctl suspend' \
         before-sleep 'playerctl pause 2>/dev/null; swaylock 2>/dev/null' \
-        after-resume 'pkill -SIGUSR1 date.sh; pkill -SIGRTMIN+3 i3blocks'
+        after-resume 'pkill -SIGUSR1 date.sh; pkill -SIGRTMIN+3 i3blocks; blink-leds.sh'
 }
 
 ### Window rules
@@ -85,7 +86,7 @@ font pango:Inter, Font Awesome 5 Brands, Font Awesome 5 Free 9
     bindsym $mod+l exec swaylock
     set $mutecmd pactl list short sources | awk '/input.*RUNNING/ {system("pactl set-source-mute " $1 " toggle")}'
     bindsym $mod+m exec --no-startup-id $mutecmd
-    bindsym --inhibited XF86AudioMicMute exec $mutecmd
+    bindsym --inhibited XF86AudioMicMute --no-startup-id exec $mutecmd
     bindsym XF86TouchpadOff exec --no-startup-id notify-send "Touchpad disabled" "Press touchpad button to enable"
     bindsym XF86TouchpadOn exec --no-startup-id notify-send "Touchpad enabled" "Press touchpad button to disable"
 

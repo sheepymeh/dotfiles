@@ -6,9 +6,12 @@ if [ "$EUID" -eq 0 ]; then
 	exit
 fi
 
+sudo pacman -S ocaml opam dune
+
+# https://github.com/akabe/ocaml-jupyter/pull/199
 opam init --auto-setup --compiler=4.14.2
 eval $(opam env --switch=4.14.2)
-opam install -y ocamlformat jupyter ocaml-lsp-server # jupyter only supports ocaml 4 for now
+opam install -y ocamlformat jupyter ocaml-lsp-server
 code --install-extension ocamllabs.ocaml-platform
 
 touch ~/.ocamlinit
