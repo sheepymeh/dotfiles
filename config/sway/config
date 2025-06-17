@@ -20,7 +20,7 @@ exec --no-startup-id {
     sway-audio-idle-inhibit
     /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
     swayidle -w \
-        timeout 120 'brightnessctl -q --save; brightnessctl -q set 10%' \
+        timeout 200 'brightnessctl -q --save; brightnessctl -q set 10%' \
             resume 'brightnessctl -q --restore' \
         timeout 240 '(pgrep -x swaylock >/dev/null || chayang -d 5) && swaymsg "output * dpms off"' \
             resume 'swaymsg "output * dpms on"' \
@@ -69,7 +69,8 @@ client.urgent            $peach    $base $peach $peach    $peach
 client.placeholder       $overlay0 $base $text  $overlay0 $overlay0
 client.background        $base
 
-font pango:Inter, Font Awesome 5 Brands, Font Awesome 5 Free 9
+# fc-list
+font pango:Inter Semibold, JetBrainsMono Nerd Font Propo 9
 
 ### Key bindings
     bindsym $mod+Return exec $term
@@ -185,7 +186,7 @@ font pango:Inter, Font Awesome 5 Brands, Font Awesome 5 Free 9
 set $bg #000000b0
 bar {
     tray_output none
-    font pango:Inter Semibold, Font Awesome 5 Brands, Font Awesome 5 Free 10
+    font pango:Inter Semibold, JetBrainsMono Nerd Font Propo 10
     position bottom
     status_command i3blocks
     separator_symbol " ॥ "
@@ -207,7 +208,7 @@ exec_always --no-startup-id {
     gsettings set org.gnome.desktop.interface gtk-theme catppuccin-mocha-mauve-standard+default
     gsettings set org.gnome.desktop.interface icon-theme Papirus-Dark
     gsettings set org.gnome.desktop.interface font-name 'Inter 9'
-    gsettings set org.gnome.desktop.interface monospace-font-name 'JetBrains Mono 9'
+    gsettings set org.gnome.desktop.interface monospace-font-name 'JetBrainsMono Nerd Font Propo 9'
 }
 
 include /etc/sway/config.d/*

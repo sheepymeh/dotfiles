@@ -6,7 +6,7 @@
 	"files.autoSave": "onWindowChange",
 	"files.eol": "\n",
 	"editor.fontSize": 13,
-	"editor.fontFamily": "'JetBrains Mono', 'Roboto Mono', monospace",
+	"editor.fontFamily": "'JetBrainsMono Nerd Font Mono', 'Roboto Mono', monospace",
 	"editor.renderWhitespace": "boundary",
 	"editor.insertSpaces": false,
 	"editor.smoothScrolling": true,

@@ -123,7 +123,7 @@ user_pref("browser.messaging-system.whatsNewPanel.enabled", false);
 user_pref("media.av1.enabled", false);
 user_pref("findbar.highlightAll", true);
 user_pref("font.default.x-western", "sans-serif");
-user_pref("font.name.monospace.x-western", "JetBrains Mono");
+user_pref("font.name.monospace.x-western", "JetBrainsMono Nerd Font Mono");
 user_pref("font.name.sans-serif.x-western", "Inter");
 user_pref("font.name.serif.x-western", "Crimson Pro");
 user_pref("browser.compactmode.show", true);

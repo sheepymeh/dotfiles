@@ -43,9 +43,9 @@ func main() {
 	conservation_mode_output := ""
 	if status == "1" {
 		if conservation_mode == "0" {
-			conservation_mode_output = " "
+			conservation_mode_output = " 󰂄"
 		} else {
-			conservation_mode_output = " "
+			conservation_mode_output = " 󰂏"
 		}
 	}
 	fmt.Printf("%s %d%%%s\n\n", output, charge, conservation_mode_output)

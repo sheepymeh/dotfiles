@@ -7,7 +7,7 @@ if [ "$1" = status ]; then
 	if RECPID=$(pgrep -n wf-recorder); then
 		while TIME=$(ps -p $RECPID -o etime=); do
 			TIME=${TIME#"${TIME%%[![:space:]]*}"}
-			printf ' %s\n' "$TIME"
+			printf '󰻃 %s\n' "$TIME"
 			sleep 1
 		done
 		echo

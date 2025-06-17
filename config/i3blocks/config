@@ -12,10 +12,10 @@ signal=4
 [cpu]
 command=enable sleep; prev="$(grep 'cpu ' /proc/stat)"; while :; do sleep 2; curr="$(grep 'cpu ' /proc/stat)"; awk '{ u1=$2+$4; t1=u1+$5; u2=$13+$15; t2=u2+$16; printf " %.1f%\n", 100 * (u2-u1) / (t2-t1) "%"; }' <<< "$prev $curr"; prev="$curr"; done
 interval=persist
-full_text=
+full_text= CPU
 
 [memory]
-command=awk 'FNR == 2 {printf " %.1fGB / %d%\n", $3 / 1000, $3 / $2 * 100}' <(free -m --si)
+command=awk 'FNR == 2 {printf " %.1fGB / %d%\n", $3 / 1000, $3 / $2 * 100}' <(free -m --si)
 interval=2
 
 [network]
@@ -24,7 +24,7 @@ interval=2
 
 [performance]
 align=right
-full_text=
+full_text=󰾅
 command=/usr/local/bin/perf
 
 [battery]
@@ -34,7 +34,7 @@ interval=60
 signal=3
 
 [screenshare]
-command=jq -r '.[]?.info?.props? | select(.["media.name"] == "webrtc-consume-stream" and .["stream.is-live"]) | ""' <(pw-dump)
+command=jq -r '.[]?.info?.props? | select(.["media.name"] == "webrtc-consume-stream" and .["stream.is-live"]) | "󱒃"' <(pw-dump)
 signal=1
 color=#CE575D
 

@@ -18,12 +18,12 @@ setup_packages() {
 		fastfetch htop mission-center nvtop \
 		cups-pdf system-config-printer \
 		playerctl pipewire pipewire-pulse pamixer pavucontrol \
-		inter-font noto-fonts-cjk ttf-font-awesome ttf-jetbrains-mono otf-crimson-pro \
+		inter-font noto-fonts-cjk ttf-jetbrains-mono-nerd otf-crimson-pro \
 		exfat-utils engrampa ffmpegthumbnailer gvfs gvfs-mtp owncloud-client tumbler thunar thunar-archive-plugin unzip xdg-user-dirs 7zip \
 		libreoffice-fresh hunspell hunspell-en_us hunspell-de gutenprint \
 		fcitx5 fcitx5-rime rime-pinyin-simp fcitx5-mozc \
 		autotiling grim i3blocks mako qt6-wayland slurp sway swaybg swayidle swaylock wf-recorder wl-clipboard wofi xdg-desktop-portal xdg-desktop-portal-wlr xdg-desktop-portal-gtk polkit-gnome wob \
-		foot android-tools sqlite \
+		android-tools foot impala sqlite \
 		tesseract tesseract-data-eng \
 		texlive-basic texlive-binextra texlive-latex texlive-latexrecommended texlive-latexextra texlive-fontsrecommended texlive-mathscience \
 		python-beautifulsoup4 python-pip python-numpy python-pytorch-opt python-torchvision python-pillow python-opencv python-scikit-learn python-flask python-aiohttp python-pycryptodome python-tqdm python-pymupdf python-uv python-virtualenv \
@@ -145,7 +145,7 @@ pacman -Ss '^wine$' && \
 	wine wine-gecko wine-mono mangohud dxvk-bin vkd3d-proton-bin lib32-vulkan-radeon lib32-gnutls
 
 # Start slow-running jobs
-setup_packages &
+# setup_packages &
 setup_i3blocks &
 setup_locale &
 
@@ -201,7 +201,7 @@ EOF
 # SUBSYSTEM=="usb",ATTRS{idVendor}=="18d1",GROUP="plugdev"
 # EOF
 
-cat /etc/udev/rules.d/99-leds.rules <<EOF >
+cat <<EOF >/etc/udev/rules.d/99-leds.rules
 SUBSYSTEM=="leds", KERNEL=="*::capslock", ATTR{brightness}=="*", GROUP="input", MODE="0664"
 ACTION=="add", SUBSYSTEM=="leds", KERNEL=="*::capslock", RUN+="/usr/bin/chown root:input /sys/class/leds/%k/brightness", RUN+="/usr/bin/chmod 0664 /sys/class/leds/%k/brightness"
 EOF
@@ -241,6 +241,8 @@ cp -r plymouth-theme-arch-agua /usr/share/plymouth/themes/arch-agua
 rm -rf plymouth-theme-arch-agua
 sed -i '/^HOOKS=(/ { /plymouth/! s/encrypt/plymouth encrypt/ }' /etc/mkinitcpio.conf
 sed -i 's/ )$/)/' /etc/mkinitcpio.conf
+
+fc-cache -f
 
 wait
 plymouth-set-default-theme -R arch-agua
