@@ -6,7 +6,7 @@ if [ "$EUID" -ne 0 ]; then
 	exit
 fi
 
-pacman -S sbctl
+pacman -S --noconfirm --needed sbctl
 
 sbctl status
 
