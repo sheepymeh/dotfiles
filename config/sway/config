@@ -206,6 +206,7 @@ bar {
 
 exec_always --no-startup-id {
     gsettings set org.gnome.desktop.interface gtk-theme catppuccin-mocha-mauve-standard+default
+    gsettings set org.gnome.desktop.interface color-scheme prefer-dark
     gsettings set org.gnome.desktop.interface icon-theme Papirus-Dark
     gsettings set org.gnome.desktop.interface font-name 'Inter 9'
     gsettings set org.gnome.desktop.interface monospace-font-name 'JetBrainsMono Nerd Font Propo 9'

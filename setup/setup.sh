@@ -145,7 +145,7 @@ pacman -Ss '^wine$' && \
 	wine wine-gecko wine-mono mangohud dxvk-bin vkd3d-proton-bin lib32-vulkan-radeon lib32-gnutls
 
 # Start slow-running jobs
-# setup_packages &
+setup_packages &
 setup_i3blocks &
 setup_locale &
 
@@ -230,10 +230,15 @@ EOF
 systemctl enable --now cups.service
 
 # Quiet boot
-sed -i 's$timeout 3$timeout 0$' /boot/loader/loader.conf
-sed -i '/^options .* quiet/b; /^options / s/$/ quiet splash loglevel=3 rd.systemd.show_status=auto rd.udev.log_level=3/' /boot/loader/entries/*.conf
-bootctl update --graceful
-systemctl enable --now systemd-boot-update.service
+if [ command -v bootctl ]; then
+	sed -i 's$timeout 3$timeout 0$' /boot/loader/loader.conf
+	sed -i '/^options .* quiet/b; /^options / s/$/ quiet splash loglevel=3 rd.systemd.show_status=auto rd.udev.log_level=3/' /boot/loader/entries/*.conf
+	bootctl update --graceful
+	systemctl enable --now systemd-boot-update.service
+else
+	mkdir -p /etc/cmdline.d
+	echo 'quiet splash loglevel=3 rd.systemd.show_status=auto rd.udev.log_level=3' >/etc/cmdline.d/default.conf
+fi
 
 # Plymouth boot splash screen
 git clone -q --depth=1 https://github.com/sheepymeh/plymouth-theme-arch-agua

@@ -18,7 +18,7 @@ WINDOW_ICONS = {
     "code-url-handler": "󰨞",
     "code": "󰨞",
     "chromium": "",
-    "signal-desktop": "󰭹",
+    "signal": "󰭹",
     "pavucontrol": "󱡫",
     "org.pulseaudio.pavucontrol": "󱡫",
     "engrampa": "",
