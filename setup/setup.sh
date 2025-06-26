@@ -249,6 +249,12 @@ sed -i 's/ )$/)/' /etc/mkinitcpio.conf
 
 fc-cache -f
 
+cat <<EOF >/etc/iwd/main.conf
+[General]
+AddressRandomization=once
+AddressRandomizationRange=full
+EOF
+
 wait
 plymouth-set-default-theme -R arch-agua
 
