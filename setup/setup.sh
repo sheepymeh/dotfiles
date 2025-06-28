@@ -28,7 +28,8 @@ setup_packages() {
 		texlive-basic texlive-binextra texlive-latex texlive-latexrecommended texlive-latexextra texlive-fontsrecommended texlive-mathscience \
 		python-beautifulsoup4 python-pip python-numpy python-pytorch-opt python-torchvision python-pillow python-opencv python-scikit-learn python-flask python-aiohttp python-pycryptodome python-tqdm python-pymupdf python-uv python-virtualenv \
 		jupyter-notebook python-ipykernel python-ipywidgets jupyterlab-widgets \
-		nodejs npm typescript wrangler
+		nodejs npm typescript wrangler \
+		wine wine-gecko wine-mono mangohud
 
 	BT_SYS_PATH="/sys/class/bluetooth"
 	if [ -d "$BT_SYS_PATH" ] && [ -n "$(ls -A "$BT_SYS_PATH")" ]; then
@@ -137,12 +138,8 @@ if ! command -v yay &> /dev/null; then
 fi
 
 sudo -u "$SUDO_USER" yay -Sq --noconfirm --needed --sudoloop \
-	chayang papirus-folders-catppuccin-git python-catppuccin sway-audio-idle-inhibit-git visual-studio-code-bin
-
-# Install wine if multilib is enabled
-pacman -Ss '^wine$' && \
-	sudo -u "$SUDO_USER" yay -Sq --noconfirm --needed --sudoloop \
-	wine wine-gecko wine-mono mangohud dxvk-bin vkd3d-proton-bin lib32-vulkan-radeon lib32-gnutls
+	chayang papirus-folders-catppuccin-git python-catppuccin sway-audio-idle-inhibit-git visual-studio-code-bin \
+	dxvk-bin vkd3d-proton-bin
 
 # Start slow-running jobs
 setup_packages &

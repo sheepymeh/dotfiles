@@ -13,7 +13,7 @@ show() {
 }
 
 monitor() {
-	/usr/bin/pactl subscribe | /usr/bin/grep --line-buffered "'change' on source" |
+	/usr/bin/pactl subscribe 2>/dev/null | /usr/bin/grep --line-buffered "'change' on source" |
 		while read -r _; do
 			show
 		done
