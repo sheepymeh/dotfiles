@@ -6,8 +6,9 @@ set $menu swaymsg exec -q "`wofi --show drun`"
 
 output * adaptive_sync on
 output * bg ~/.config/wallpaper.png fill
-output 'AMT International Industry AN-270W04K Unknown' pos 0,0 scale 2 res 3840x2160@60Hz
-output 'BNQ BenQ GW2490E S4R0495301Q' pos 0,0 res 1920x1080@100Hz
+output 'AMT International Industry AN-270W04K Unknown' pos 0,200 scale 2 res 3840x2160@60Hz
+output 'BNQ BenQ GW2490E S4R0495301Q' pos 0,200 res 1920x1080@100Hz
+output 'BNQ BenQ RD280U H7R0551701Q' pos 0,0 res 3840x2560@60Hz scale 2
 
 ### Autostart
 exec firefox
@@ -54,7 +55,7 @@ input "type:keyboard" {
 }
 mouse_warping container
 input "type:mouse" {
-    pointer_accel 0.8
+    pointer_accel 0
 }
 
 ### Appearance

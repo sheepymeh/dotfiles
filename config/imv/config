@@ -1,0 +1,6 @@
+# https://raw.githubusercontent.com/catppuccin/imv/refs/heads/main/themes/mocha.config
+
+[options]
+background=000000
+overlay_text_color=cdd6f4
+overlay_background_color=11111b

@@ -45,10 +45,6 @@ mkdir -p ~/.config/foot
 wget -qO ~/.config/foot/catppuccin-mocha.ini https://raw.githubusercontent.com/catppuccin/foot/refs/heads/main/themes/catppuccin-mocha.ini
 wget -qO ~/.config/wallpaper.png https://raw.githubusercontent.com/archcraft-os/archcraft-wallpapers/main/archcraft-backgrounds-minimal/files/minimal-12.jpg
 
-mkdir -p ~/.config/imv ~/.config/mpv
-wget -qO ~/.config/imv/config https://raw.githubusercontent.com/catppuccin/imv/refs/heads/main/themes/mocha.config
-wget -qO ~/.config/mpv/mpv.conf https://raw.githubusercontent.com/catppuccin/mpv/refs/heads/main/themes/mocha/mauve.conf
-
 # Install Catppuccin GTK
 wget -q https://github.com/catppuccin/gtk/releases/download/v1.0.3/catppuccin-mocha-mauve-standard+default.zip
 mkdir -p ~/.themes

@@ -1,0 +1,4 @@
+[Default Applications]
+application/x-msdownload=wine.desktop;
+image/jpeg=imv.desktop;
+image/png=imv.desktop;
