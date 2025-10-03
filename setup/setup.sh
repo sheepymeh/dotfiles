@@ -52,12 +52,12 @@ setup_packages() {
 		echo options nvidia NVreg_PreserveVideoMemoryAllocations=1 NVreg_TemporaryFilePath=/var/tmp >/etc/modprobe.d/nvidia-power-management.conf
 		sed -i '/^options/ s/$/ nvidia_drm.modeset=1/' /boot/loader/entries/*.conf
 		sed -i '/^MODULES=(.*nvidia nvidia_modeset nvidia_uvm nvidia_drm/b; s/MODULES=(/MODULES=(nvidia nvidia_modeset nvidia_uvm nvidia_drm /' /etc/mkinitcpio.conf
-		grep -q GBM_BACKEND /etc/environment || cat <<EOF >>/etc/environment
-GBM_BACKEND=nvidia-drm
-WLR_NO_HARDWARE_CURSORS=1
-__GLX_VENDOR_LIBRARY_NAME=nvidia
-__GL_ExperimentalPerfStrategy=1
-EOF
+		grep -q GBM_BACKEND /etc/environment || cat <<-EOF >>/etc/environment
+		GBM_BACKEND=nvidia-drm
+		WLR_NO_HARDWARE_CURSORS=1
+		__GLX_VENDOR_LIBRARY_NAME=nvidia
+		__GL_ExperimentalPerfStrategy=1
+		EOF
 
 		# Nvidia Optimus for battery operated devices
 		if [ -d /proc/acpi/battery/BAT* ]; then
@@ -67,7 +67,7 @@ EOF
 		fi
 	fi
 	if lspci -k | grep -A 2 -E '(VGA|3D)' | grep -qi intel; then
-		pacman -Sq --noconfirm --needed intel-media-driver libva-intel-driver
+		pacman -Sq --noconfirm --needed intel-media-driver libva-intel-driver vulkan-intel
 		# sudo -u "$SUDO_USER" yay -Sq --noconfirm --needed intel-hybrid-codec-driver
 		sed -i '/^MODULES=(.*i915/b; s/MODULES=(/MODULES=(i915 /' /etc/mkinitcpio.conf
 	fi
@@ -100,13 +100,13 @@ setup_locale() {
 	sed -i 's/^#en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen
 	sed -i 's/^#en_GB.UTF-8 UTF-8/en_GB.UTF-8 UTF-8/' /etc/locale.gen
 	locale-gen
-	cat <<EOF >/etc/locale.conf
-LANG=en_US.UTF-8
-LC_TIME=en_GB.UTF-8
-LC_PAPER=en_GB.UTF-8
-LC_MEASUREMENT=en_GB.UTF-8
-LC_COLLATE=C.UTF-8
-EOF
+	cat <<-EOF >/etc/locale.conf
+	LANG=en_US.UTF-8
+	LC_TIME=en_GB.UTF-8
+	LC_PAPER=en_GB.UTF-8
+	LC_MEASUREMENT=en_GB.UTF-8
+	LC_COLLATE=C.UTF-8
+	EOF
 }
 
 touch /etc/environment
