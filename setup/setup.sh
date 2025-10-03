@@ -101,11 +101,11 @@ setup_locale() {
 	sed -i 's/^#en_GB.UTF-8 UTF-8/en_GB.UTF-8 UTF-8/' /etc/locale.gen
 	locale-gen
 	cat <<-EOF >/etc/locale.conf
-	LANG=en_US.UTF-8
-	LC_TIME=en_GB.UTF-8
-	LC_PAPER=en_GB.UTF-8
-	LC_MEASUREMENT=en_GB.UTF-8
-	LC_COLLATE=C.UTF-8
+		LANG=en_US.UTF-8
+		LC_TIME=en_GB.UTF-8
+		LC_PAPER=en_GB.UTF-8
+		LC_MEASUREMENT=en_GB.UTF-8
+		LC_COLLATE=C.UTF-8
 	EOF
 }
 
@@ -146,9 +146,9 @@ setup_packages &
 setup_i3blocks &
 setup_locale &
 
-cat <<EOF >/etc/acpi/events/ac
-event=ac_adapter
-action=pkill -SIGRTMIN+3 i3blocks
+cat <<-EOF >/etc/acpi/events/ac
+	event=ac_adapter
+	action=pkill -SIGRTMIN+3 i3blocks
 EOF
 sed -i 's/^/#/' /etc/acpi/events/anything
 systemctl enable --now acpid
@@ -171,44 +171,44 @@ ufw logging off
 ufw enable
 
 # Wayland env vars
-grep -q SDL_VIDEODRIVER /etc/environment || cat <<EOF >>/etc/environment
-SDL_VIDEODRIVER=wayland
-GDK_BACKEND=wayland
-QT_QPA_PLATFORM=wayland
-QT_WAYLAND_DISABLE_WINDOWDECORATION=1
-XDG_CURRENT_DESKTOP=sway
-XDG_SESSION_TYPE=wayland
-ELECTRON_OZONE_PLATFORM_HINT=auto
-_JAVA_AWT_WM_NONREPARENTING=1
-WINEDEBUG=-all
+grep -q SDL_VIDEODRIVER /etc/environment || cat <<-EOF >>/etc/environment
+	SDL_VIDEODRIVER=wayland
+	GDK_BACKEND=wayland
+	QT_QPA_PLATFORM=wayland
+	QT_WAYLAND_DISABLE_WINDOWDECORATION=1
+	XDG_CURRENT_DESKTOP=sway
+	XDG_SESSION_TYPE=wayland
+	ELECTRON_OZONE_PLATFORM_HINT=auto
+	_JAVA_AWT_WM_NONREPARENTING=1
+	WINEDEBUG=-all
 
-PYTORCH_NO_HIP_MEMORY_CACHING=1
-HSA_DISABLE_FRAGMENT_ALLOCATOR=1
-TORCH_BLAS_PREFER_HIPBLASLT=0
-HSA_OVERRIDE_GFX_VERSION=9.0.0
+	PYTORCH_NO_HIP_MEMORY_CACHING=1
+	HSA_DISABLE_FRAGMENT_ALLOCATOR=1
+	TORCH_BLAS_PREFER_HIPBLASLT=0
+	HSA_OVERRIDE_GFX_VERSION=9.0.0
 
-ANV_VIDEO_DECODE=1
-RADV_PERFTEST=video_decode,video_encode
+	ANV_VIDEO_DECODE=1
+	RADV_PERFTEST=video_decode,video_encode
 EOF
 
 # Edge TPU udev rules
-# cat <<EOF >/usr/lib/udev/rules.d/60-edgetpu.rules
-# SUBSYSTEM=="apex", MODE="0660", GROUP="plugdev"
-# SUBSYSTEM=="usb",ATTRS{idVendor}=="1a6e",GROUP="plugdev"
-# SUBSYSTEM=="usb",ATTRS{idVendor}=="18d1",GROUP="plugdev"
+# cat <<-EOF >/usr/lib/udev/rules.d/60-edgetpu.rules
+# 	SUBSYSTEM=="apex", MODE="0660", GROUP="plugdev"
+# 	SUBSYSTEM=="usb",ATTRS{idVendor}=="1a6e",GROUP="plugdev"
+# 	SUBSYSTEM=="usb",ATTRS{idVendor}=="18d1",GROUP="plugdev"
 # EOF
 
-cat <<EOF >/etc/udev/rules.d/99-leds.rules
-SUBSYSTEM=="leds", KERNEL=="*::capslock", ATTR{brightness}=="*", GROUP="input", MODE="0664"
-ACTION=="add", SUBSYSTEM=="leds", KERNEL=="*::capslock", RUN+="/usr/bin/chown root:input /sys/class/leds/%k/brightness", RUN+="/usr/bin/chmod 0664 /sys/class/leds/%k/brightness"
+cat <<-EOF >/etc/udev/rules.d/99-leds.rules
+	SUBSYSTEM=="leds", KERNEL=="*::capslock", ATTR{brightness}=="*", GROUP="input", MODE="0664"
+	ACTION=="add", SUBSYSTEM=="leds", KERNEL=="*::capslock", RUN+="/usr/bin/chown root:input /sys/class/leds/%k/brightness", RUN+="/usr/bin/chmod 0664 /sys/class/leds/%k/brightness"
 EOF
 
 # DoT CloudFlare DNS
 mkdir -p /etc/systemd/resolved.conf.d/
-cat <<EOF >/etc/systemd/resolved.conf.d/dns_over_tls.conf
-[Resolve]
-DNS=1.1.1.1#cloudflare-dns.com
-DNSOverTLS=yes
+cat <<-EOF >/etc/systemd/resolved.conf.d/dns_over_tls.conf
+	[Resolve]
+	DNS=1.1.1.1#cloudflare-dns.com
+	DNSOverTLS=yes
 EOF
 systemctl restart systemd-resolved.service
 
@@ -217,10 +217,10 @@ systemctl restart systemd-resolved.service
 
 # Autologin (since LUKS already requires auth)
 mkdir -p /etc/systemd/system/getty@tty1.service.d/
-cat <<EOF >/etc/systemd/system/getty@tty1.service.d/override.conf
-[Service]
-ExecStart=
-ExecStart=-/usr/bin/agetty --skip-login --nonewline --noissue --autologin "$SUDO_USER" --noclear %I linux
+cat <<-EOF >/etc/systemd/system/getty@tty1.service.d/override.conf
+	[Service]
+	ExecStart=
+	ExecStart=-/usr/bin/agetty --skip-login --nonewline --noissue --autologin "$SUDO_USER" --noclear %I linux
 EOF
 
 # Enable CUPS
@@ -246,10 +246,10 @@ sed -i 's/ )$/)/' /etc/mkinitcpio.conf
 
 fc-cache -f
 
-cat <<EOF >/etc/iwd/main.conf
-[General]
-AddressRandomization=once
-AddressRandomizationRange=full
+cat <<-EOF >/etc/iwd/main.conf
+	[General]
+	AddressRandomization=once
+	AddressRandomizationRange=full
 EOF
 
 wait
