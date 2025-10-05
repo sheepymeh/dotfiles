@@ -1,12 +1,5 @@
 {
 	// UI
-	"agent": {
-		"default_model": {
-			"provider": "copilot_chat",
-			"model": "o4-mini"
-		},
-		"model_parameters": []
-	},
 	"buffer_font_family": "JetBrainsMono Nerd Font",
 	"ui_font_family": "Inter Display",
 	"ui_font_weight": 500,
@@ -45,6 +38,13 @@
 		}
 	},
 	// AI
+	"agent": {
+		"default_model": {
+			"provider": "copilot_chat",
+			"model": "o4-mini"
+		},
+		"model_parameters": []
+	},
 	"features": {
 		"edit_prediction_provider": "copilot"
 	},
