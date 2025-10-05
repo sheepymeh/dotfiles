@@ -31,7 +31,7 @@ install_wine() {
 }
 
 # Start slow-running jobs
-install_vscode_ext &
+# install_vscode_ext &
 install_wine &
 
 # Prepare /home/user
@@ -54,18 +54,13 @@ rm catppuccin-mocha-mauve-standard+default.zip
 cd ..
 
 # Copy configs
+cp -r home-config/* ~
 cp -r config/* ~/.config
-mkdir -p ~/.config/Code/User
-cp code/* ~/.config/Code/User
-cp bashrc ~/.bashrc
+# mkdir -p ~/.config/Code/User
+# cp code/* ~/.config/Code/User
 if [ ! -d /sys/class/power_supply/BAT* ]; then
 	rm ~/.config/sway/laptop.conf
 fi
-cat >~/.sqliterc <<-EOF
-	.headers on
-	.mode box --wrap 50
-	.changes on
-EOF
 
 # Configure git
 git config --global user.name 'sheepymeh'
@@ -83,7 +78,7 @@ bat cache --build
 wget -qO ~/.config/sway/catppuccin-mocha https://raw.githubusercontent.com/catppuccin/i3/main/themes/catppuccin-mocha
 
 # Configure fcitx5
-mkdir -p ~/.local/share/fcitx5/rime ~/.local/share/fcitx5/themes ~/.config/fcitx5/conf
+mkdir -p ~/.local/share/fcitx5/rime ~/.local/share/fcitx5/themes
 cat <<-EOF >~/.local/share/fcitx5/rime/default.custom.yaml
 	patch:
 	  schema_list:
@@ -93,16 +88,6 @@ EOF
 git clone -q --depth=1 https://github.com/catppuccin/fcitx5.git
 cp -r ./fcitx5/src/catppuccin-mocha-mauve/ ~/.local/share/fcitx5/themes
 rm -rf fcitx5
-
-# systemd services
-mkdir -p ~/.config/systemd/user/
-cat <<-EOF >~/.config/systemd/user/inhibit-idle.service
-	[Unit]
-	Description=Inhibit idle
-
-	[Service]
-	ExecStart=systemd-inhibit --what=idle --who=i3blocks --why='User inhibited idle' sleep infinity
-EOF
 
 systemctl --user enable ssh-agent
 if [ ! -d ~/.ssh ]; then
