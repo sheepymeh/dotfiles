@@ -23,7 +23,7 @@ setup_packages() {
 		libreoffice-fresh hunspell hunspell-en_us hunspell-de gutenprint \
 		fcitx5 fcitx5-rime rime-pinyin-simp fcitx5-mozc \
 		autotiling grim i3blocks mako qt6-wayland slurp sway swaybg swayidle swaylock wf-recorder wl-clipboard wofi xdg-desktop-portal xdg-desktop-portal-wlr xdg-desktop-portal-gtk polkit-gnome wob \
-		android-tools foot impala iwd sqlite \
+		android-tools foot impala iwd sqlite shellcheck \
 		tesseract tesseract-data-eng \
 		texlive-basic texlive-binextra texlive-latex texlive-latexrecommended texlive-latexextra texlive-fontsrecommended texlive-mathscience \
 		python-pip python-virtualenv \
