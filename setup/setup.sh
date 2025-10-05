@@ -26,10 +26,14 @@ setup_packages() {
 		android-tools foot impala iwd sqlite \
 		tesseract tesseract-data-eng \
 		texlive-basic texlive-binextra texlive-latex texlive-latexrecommended texlive-latexextra texlive-fontsrecommended texlive-mathscience \
-		python-beautifulsoup4 python-pip python-numpy python-pytorch-opt python-torchvision python-pillow python-opencv python-scikit-learn python-flask python-aiohttp python-pycryptodome python-tqdm python-pymupdf python-uv python-virtualenv \
+		python-pip python-virtualenv \
+		mypy python-pydantic python-pylint python-pylint-pydantic python-pylint-venv python-uv pyright ruff \
+		python-pytest python-pytest-aiohttp python-pytest-asyncio python-pytest-cov \
+		python-numpy python-pytorch-opt python-torchvision python-pillow python-opencv python-scikit-learn python-tqdm \
+		python-beautifulsoup4 python-flask python-aiohttp python-pycryptodome python-pymupdf \
 		jupyter-notebook python-ipykernel python-ipywidgets jupyterlab-widgets \
 		nodejs npm typescript wrangler \
-		wine wine-gecko wine-mono mangohud
+		wine wine-gecko mangohud
 
 	BT_SYS_PATH="/sys/class/bluetooth"
 	if [ -d "$BT_SYS_PATH" ] && [ -n "$(ls -A "$BT_SYS_PATH")" ]; then
