@@ -15,7 +15,7 @@ setup_packages() {
 	pacman -Sq --noconfirm --needed \
 		bash-completion bat curl dialog gnome-keyring jq brightnessctl man-db nano linux-firmware \
 		firefox imv mpv signal-desktop thunderbird transmission-gtk \
-		fastfetch htop mission-center nvtop \
+		fastfetch htop mission-center nvtop smartmontools \
 		cups-pdf system-config-printer \
 		playerctl pipewire pipewire-pulse pamixer pavucontrol \
 		inter-font noto-fonts-cjk ttf-jetbrains-mono-nerd otf-crimson-pro \
@@ -113,6 +113,10 @@ setup_locale() {
 	EOF
 }
 
+# Packages that are used in the setup process
+pacman -Syyu --noconfirm
+pacman -S --noconfirm --needed acpi acpid acpi_call plymouth wget ufw cups podman git go papirus-icon-theme python-build &
+
 touch /etc/environment
 sed -i '/deny = /c\deny = 6' /etc/security/faillock.conf # increase allowed failed attempt count
 
@@ -124,12 +128,13 @@ sed -i 's$#ParallelDownloads$ParallelDownloads$' /etc/pacman.conf # pacman paral
 mkdir -p /etc/pacman.d/hooks
 cp pacman-hooks/chromium-no-defaults.hook /etc/pacman.d/hooks
 
+# Optimize makepkg.conf - multithreading, disable compression and debug symbols
+sed -i 's/MAKEFLAGS=.*/MAKEFLAGS="-j'$(nproc)'"/g' /etc/makepkg.conf
 sed -i 's/PKGEXT=.*/PKGEXT='.pkg.tar'/g' /etc/makepkg.conf
 sed -i 's/SRCEXT=.*/SRCEXT='.src.tar'/g' /etc/makepkg.conf
 sed -i '/)$/s/ debug/ !debug/' /etc/makepkg.conf
 
-pacman -Syyu --noconfirm
-pacman -S --noconfirm --needed acpi acpid acpi_call plymouth wget ufw cups podman git go papirus-icon-theme python-build
+wait  # Wait for essential packages to be installed
 
 # Install yay-bin
 if ! command -v yay &> /dev/null; then
@@ -141,6 +146,7 @@ if ! command -v yay &> /dev/null; then
 	rm -rf yay-bin
 fi
 
+# Install AUR packages
 sudo -u "$SUDO_USER" yay -Sq --noconfirm --needed --sudoloop \
 	chayang papirus-folders-catppuccin-git python-catppuccin sway-audio-idle-inhibit-git visual-studio-code-bin \
 	dxvk-bin vkd3d-proton-bin
@@ -150,6 +156,7 @@ setup_packages &
 setup_i3blocks &
 setup_locale &
 
+# Configure ACPI to notify i3blocks on AC adapter events
 cat <<-EOF >/etc/acpi/events/ac
 	event=ac_adapter
 	action=pkill -SIGRTMIN+3 i3blocks
@@ -157,22 +164,36 @@ EOF
 sed -i 's/^/#/' /etc/acpi/events/anything
 systemctl enable --now acpid
 
+# Add user to groups
 usermod -aG video "$SUDO_USER"
 usermod -aG input "$SUDO_USER"
 
+# Configure Papirus folders
 papirus-folders -C cat-mocha-mauve --theme Papirus-Dark
 
+# Configure journald
 sed -i 's/^#SystemMaxUse=$/SystemMaxUse=200M/' /etc/systemd/journald.conf
 sed -i 's/^#MaxRetentionSec=0$/MaxRetentionSec=7d/' /etc/systemd/journald.conf
 
-# Configure podman
+# Configure userland podman
 touch /etc/subuid /etc/subgid
 usermod --add-subuids 100000-165535 --add-subgids 100000-165535 "$SUDO_USER"
 grep -q docker.io /etc/containers/registries.conf || echo 'unqualified-search-registries = ["docker.io"]' >>/etc/containers/registries.conf
 
+# Enable UFW
 systemctl enable --now ufw
 ufw logging off
 ufw enable
+
+# Configure smartd
+systemctl enable --now smartd.service
+sed -i 's/^DEVICESCAN$/DEVICESCAN/' /etc/smartd.conf
+cat <<-EOF >/usr/share/smartmontools/smartd_warning.d/smartdnotify
+    #!/bin/sh
+    systemd-run --machine="$SUDO_USER"@.host --user notify-send "S.M.A.R.T Error (\$SMARTD_FAILTYPE)" "\$SMARTD_MESSAGE" --icon=dialog-warning -u critical
+EOF
+chmod a+x /usr/share/smartmontools/smartd_warning.d/smartdnotify
+sed -i 's/^DEVICESCAN$/DEVICESCAN -a -m @smartdnotify -n standby,15,q/' /etc/smartd.conf
 
 # Wayland env vars
 grep -q SDL_VIDEODRIVER /etc/environment || cat <<-EOF >>/etc/environment
@@ -202,6 +223,7 @@ EOF
 # 	SUBSYSTEM=="usb",ATTRS{idVendor}=="18d1",GROUP="plugdev"
 # EOF
 
+# Allow user to write to Caps Lock LEDs
 cat <<-EOF >/etc/udev/rules.d/99-leds.rules
 	SUBSYSTEM=="leds", KERNEL=="*::capslock", ATTR{brightness}=="*", GROUP="input", MODE="0664"
 	ACTION=="add", SUBSYSTEM=="leds", KERNEL=="*::capslock", RUN+="/usr/bin/chown root:input /sys/class/leds/%k/brightness", RUN+="/usr/bin/chmod 0664 /sys/class/leds/%k/brightness"
