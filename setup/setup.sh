@@ -42,7 +42,7 @@ setup_packages() {
 		usermod -aG rfkill "$SUDO_USER"
 	fi
 
-	# Install microcode updates as needed
+	# Install microcode updates
 	if [ "$(grep -m1 vendor_id /proc/cpuinfo | cut -f2 -d':' | cut -c 2-)" == 'AuthenticAMD' ]; then
 		pacman -Sq --noconfirm --needed amd-ucode
 	elif [ "$(grep -m1 vendor_id /proc/cpuinfo | cut -f2 -d':' | cut -c 2-)" == 'GenuineIntel' ]; then
@@ -115,7 +115,7 @@ setup_locale() {
 
 # Packages that are used in the setup process
 pacman -Syyu --noconfirm
-pacman -S --noconfirm --needed acpi acpid acpi_call plymouth wget ufw cups podman git go papirus-icon-theme python-build &
+pacman -S --noconfirm --needed acpi acpi_call acpid cups git go papirus-icon-theme plymouth podman python-build ufw wget &
 
 touch /etc/environment
 sed -i '/deny = /c\deny = 6' /etc/security/faillock.conf # increase allowed failed attempt count
@@ -128,17 +128,18 @@ sed -i 's$#ParallelDownloads$ParallelDownloads$' /etc/pacman.conf # pacman paral
 mkdir -p /etc/pacman.d/hooks
 cp pacman-hooks/chromium-no-defaults.hook /etc/pacman.d/hooks
 
-# Optimize makepkg.conf - multithreading, disable compression and debug symbols
-sed -i 's/MAKEFLAGS=.*/MAKEFLAGS="-j'$(nproc)'"/g' /etc/makepkg.conf
-sed -i 's/PKGEXT=.*/PKGEXT='.pkg.tar'/g' /etc/makepkg.conf
-sed -i 's/SRCEXT=.*/SRCEXT='.src.tar'/g' /etc/makepkg.conf
-sed -i '/)$/s/ debug/ !debug/' /etc/makepkg.conf
+# Optimize makepkg - multithreading, disable compression and debug symbols
+cat <<-EOF >/etc/makepkg.conf.d/flags.conf
+    MAKEFLAGS="-j$(nproc)"
+    PKGEXT='.pkg.tar'
+    SRCEXT='.src.tar'
+    OPTIONS+=(!debug)
+EOF
 
 wait  # Wait for essential packages to be installed
 
 # Install yay-bin
 if ! command -v yay &> /dev/null; then
-	su -c "echo MAKEFLAGS="-j$(nproc)" >/home/"$SUDO_USER"/.makepkg.conf" "$SUDO_USER" # Multithreaded AUR build
 	su -c 'git clone -q --depth=1 https://aur.archlinux.org/yay-bin.git' "$SUDO_USER"
 	cd yay-bin
 	sudo -u "$SUDO_USER" makepkg -si --noconfirm
@@ -190,27 +191,28 @@ systemctl enable --now smartd.service
 sed -i 's/^DEVICESCAN$/DEVICESCAN/' /etc/smartd.conf
 cat <<-EOF >/usr/share/smartmontools/smartd_warning.d/smartdnotify
     #!/bin/sh
-    systemd-run --machine="$SUDO_USER"@.host --user notify-send "S.M.A.R.T Error (\$SMARTD_FAILTYPE)" "\$SMARTD_MESSAGE" --icon=dialog-warning -u critical
+    systemd-run --machine="$SUDO_USER"@.host --user notify-send "S.M.A.R.T Error (\$SMARTD_FAILTYPE)" "\$SMARTD_MESSAGE" --icon=dialog-warning -u critical -t 0
 EOF
 chmod a+x /usr/share/smartmontools/smartd_warning.d/smartdnotify
 sed -i 's/^DEVICESCAN$/DEVICESCAN -a -m @smartdnotify -n standby,15,q/' /etc/smartd.conf
 
 # Wayland env vars
 grep -q SDL_VIDEODRIVER /etc/environment || cat <<-EOF >>/etc/environment
-	SDL_VIDEODRIVER=wayland
 	GDK_BACKEND=wayland
+	SDL_VIDEODRIVER=wayland
 	QT_QPA_PLATFORM=wayland
-	QT_WAYLAND_DISABLE_WINDOWDECORATION=1
-	XDG_CURRENT_DESKTOP=sway
 	XDG_SESSION_TYPE=wayland
-	ELECTRON_OZONE_PLATFORM_HINT=auto
+	XDG_CURRENT_DESKTOP=sway
 	_JAVA_AWT_WM_NONREPARENTING=1
+	ELECTRON_OZONE_PLATFORM_HINT=auto
+	QT_WAYLAND_DISABLE_WINDOWDECORATION=1
+
 	WINEDEBUG=-all
 
-	PYTORCH_NO_HIP_MEMORY_CACHING=1
-	HSA_DISABLE_FRAGMENT_ALLOCATOR=1
 	TORCH_BLAS_PREFER_HIPBLASLT=0
 	HSA_OVERRIDE_GFX_VERSION=9.0.0
+	PYTORCH_NO_HIP_MEMORY_CACHING=1
+	HSA_DISABLE_FRAGMENT_ALLOCATOR=1
 
 	ANV_VIDEO_DECODE=1
 	RADV_PERFTEST=video_decode,video_encode
@@ -254,7 +256,7 @@ systemctl enable --now cups.service
 
 # Quiet boot
 if [ command -v bootctl ]; then
-	sed -i 's$timeout 3$timeout 0$' /boot/loader/loader.conf
+    sed -i '/timeout /c\timeout 0' /boot/loader/loader.conf
 	sed -i '/^options .* quiet/b; /^options / s/$/ quiet splash loglevel=3 rd.systemd.show_status=auto rd.udev.log_level=3/' /boot/loader/entries/*.conf
 	bootctl update --graceful
 	systemctl enable --now systemd-boot-update.service
