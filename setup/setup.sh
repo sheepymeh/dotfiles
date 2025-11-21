@@ -1,5 +1,6 @@
 #!/bin/sh
 set -Eeuo pipefail
+trap 'kill 0' ERR
 
 if [ "$EUID" -ne 0 ]; then
 	echo "Script must be run as root"
@@ -19,7 +20,7 @@ setup_packages() {
 		cups-pdf system-config-printer \
 		playerctl pipewire pipewire-pulse pamixer pavucontrol \
 		inter-font noto-fonts-cjk ttf-jetbrains-mono-nerd otf-crimson-pro \
-		exfat-utils engrampa ffmpegthumbnailer gvfs gvfs-mtp owncloud-client tumbler thunar thunar-archive-plugin unzip xdg-user-dirs 7zip \
+		exfat-utils engrampa ffmpegthumbnailer gvfs gvfs-mtp owncloud-client tumbler thunar thunar-archive-plugin trash-cli unzip xdg-user-dirs 7zip \
 		libreoffice-fresh hunspell hunspell-en_us hunspell-de gutenprint \
 		fcitx5 fcitx5-rime rime-pinyin-simp fcitx5-mozc \
 		autotiling grim i3blocks mako qt6-wayland slurp sway swaybg swayidle swaylock wf-recorder wl-clipboard wofi xdg-desktop-portal xdg-desktop-portal-wlr xdg-desktop-portal-gtk polkit-gnome wob \
@@ -42,10 +43,11 @@ setup_packages() {
 		usermod -aG rfkill "$SUDO_USER"
 	fi
 
-	# Install microcode updates
-	if [ "$(grep -m1 vendor_id /proc/cpuinfo | cut -f2 -d':' | cut -c 2-)" == 'AuthenticAMD' ]; then
+	# Microcode updates
+	CPU_VENDOR="$(grep -m1 vendor_id /proc/cpuinfo | cut -f2 -d':' | cut -c 2-)"
+	if [ "$CPU_VENDOR" == 'AuthenticAMD' ]; then
 		pacman -Sq --noconfirm --needed amd-ucode
-	elif [ "$(grep -m1 vendor_id /proc/cpuinfo | cut -f2 -d':' | cut -c 2-)" == 'GenuineIntel' ]; then
+	elif [ "$CPU_VENDOR" == 'GenuineIntel' ]; then
 		pacman -Sq --noconfirm --needed intel-ucode
 	fi
 
@@ -115,7 +117,7 @@ setup_locale() {
 
 # Packages that are used in the setup process
 pacman -Syyu --noconfirm
-pacman -S --noconfirm --needed acpi acpi_call acpid cups git go papirus-icon-theme plymouth podman python-build ufw wget &
+pacman -S --noconfirm --needed acpi acpi_call acpid cups git go papirus-icon-theme plymouth podman python-build ufw wget
 
 touch /etc/environment
 sed -i '/deny = /c\deny = 6' /etc/security/faillock.conf # increase allowed failed attempt count
@@ -130,13 +132,11 @@ cp pacman-hooks/chromium-no-defaults.hook /etc/pacman.d/hooks
 
 # Optimize makepkg - multithreading, disable compression and debug symbols
 cat <<-EOF >/etc/makepkg.conf.d/flags.conf
-    MAKEFLAGS="-j$(nproc)"
-    PKGEXT='.pkg.tar'
-    SRCEXT='.src.tar'
-    OPTIONS+=(!debug)
+	MAKEFLAGS="-j$(nproc)"
+	PKGEXT='.pkg.tar'
+	SRCEXT='.src.tar'
+	OPTIONS+=(!debug)
 EOF
-
-wait  # Wait for essential packages to be installed
 
 # Install yay-bin
 if ! command -v yay &> /dev/null; then
@@ -173,8 +173,8 @@ usermod -aG input "$SUDO_USER"
 papirus-folders -C cat-mocha-mauve --theme Papirus-Dark
 
 # Configure journald
-sed -i 's/^#SystemMaxUse=$/SystemMaxUse=200M/' /etc/systemd/journald.conf
-sed -i 's/^#MaxRetentionSec=0$/MaxRetentionSec=7d/' /etc/systemd/journald.conf
+sed -i '/SystemMaxUse=/c\SystemMaxUse=200M' /etc/systemd/journald.conf
+sed -i '/MaxRetentionSec=/c\MaxRetentionSec=7d' /etc/systemd/journald.conf
 
 # Configure userland podman
 touch /etc/subuid /etc/subgid
@@ -190,8 +190,8 @@ ufw enable
 systemctl enable --now smartd.service
 sed -i 's/^DEVICESCAN$/DEVICESCAN/' /etc/smartd.conf
 cat <<-EOF >/usr/share/smartmontools/smartd_warning.d/smartdnotify
-    #!/bin/sh
-    systemd-run --machine="$SUDO_USER"@.host --user notify-send "S.M.A.R.T Error (\$SMARTD_FAILTYPE)" "\$SMARTD_MESSAGE" --icon=dialog-warning -u critical -t 0
+	#!/bin/sh
+	systemd-run --machine="$SUDO_USER"@.host --user notify-send "S.M.A.R.T Error (\$SMARTD_FAILTYPE)" "\$SMARTD_MESSAGE" --icon=dialog-warning -u critical -t 0
 EOF
 chmod a+x /usr/share/smartmontools/smartd_warning.d/smartdnotify
 sed -i 's/^DEVICESCAN$/DEVICESCAN -a -m @smartdnotify -n standby,15,q/' /etc/smartd.conf
@@ -255,8 +255,8 @@ EOF
 systemctl enable --now cups.service
 
 # Quiet boot
-if [ command -v bootctl ]; then
-    sed -i '/timeout /c\timeout 0' /boot/loader/loader.conf
+if [ -f /boot/loader/loader.conf ]; then
+	sed -i '/timeout /c\timeout 0' /boot/loader/loader.conf
 	sed -i '/^options .* quiet/b; /^options / s/$/ quiet splash loglevel=3 rd.systemd.show_status=auto rd.udev.log_level=3/' /boot/loader/entries/*.conf
 	bootctl update --graceful
 	systemctl enable --now systemd-boot-update.service
@@ -272,7 +272,9 @@ rm -rf plymouth-theme-arch-agua
 sed -i '/^HOOKS=(/ { /plymouth/! s/encrypt/plymouth encrypt/ }' /etc/mkinitcpio.conf
 sed -i 's/ )$/)/' /etc/mkinitcpio.conf
 
-fc-cache -f
+plymouth-set-default-theme -R arch-agua &
+
+fc-cache -f &
 
 cat <<-EOF >/etc/iwd/main.conf
 	[General]
@@ -281,7 +283,6 @@ cat <<-EOF >/etc/iwd/main.conf
 EOF
 
 wait
-plymouth-set-default-theme -R arch-agua
 
 # Notes:
 # https://bbs.archlinux.org/viewtopic.php?id=257315

@@ -2,10 +2,11 @@
 
 # Adapted from https://github.com/swaywm/sway/blob/master/contrib/autoname-workspaces.py
 
-import i3ipc
 import re
 import signal
 import sys
+
+import i3ipc
 
 WINDOW_ICONS = {
     "alacritty": "",
@@ -49,7 +50,7 @@ WINDOW_ICONS = {
     "signal": "󰭹",
     "system-config-printer": "",
     "thunar": "",
-    "thunderbird": "",
+    "org.mozilla.Thunderbird": "",
     "virt-manager": "󰍺",
     "wine": "",
 }

@@ -1,0 +1,7 @@
+[Unit]
+Description=Clear trash older than 2 weeks
+After=graphical-session.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/trash-empty -f 14

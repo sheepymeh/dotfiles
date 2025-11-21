@@ -1,5 +1,6 @@
 #!/bin/sh
 set -Eeuo pipefail
+trap 'kill 0' ERR
 
 if [ "$EUID" -eq 0 ]; then
 	echo "Script must be run as user"
@@ -22,11 +23,10 @@ install_vscode_ext() {
 }
 
 install_wine() {
-	# Configure Wine
 	if command -v wine &>/dev/null; then
 		wineboot
-		setup_dxvk install
-		setup_vkd3d_proton install
+		setup_dxvk install --symlink
+		setup_vkd3d_proton install --symlink
 	fi
 }
 
@@ -51,16 +51,16 @@ mkdir -p ~/.themes
 unzip -qo catppuccin-mocha-mauve-standard+default.zip -d ~/.themes
 rm catppuccin-mocha-mauve-standard+default.zip
 
-cd ..
-
 # Copy configs
-cp -r home-config/* ~
-cp -r config/* ~/.config
+cd ..
+cp -a home-config/. ~
+cp -a config/. ~/.config
 # mkdir -p ~/.config/Code/User
 # cp code/* ~/.config/Code/User
 if [ ! -d /sys/class/power_supply/BAT* ]; then
 	rm ~/.config/sway/laptop.conf
 fi
+cd -
 
 # Configure git
 git config --global user.name 'sheepymeh'
@@ -89,6 +89,7 @@ git clone -q --depth=1 https://github.com/catppuccin/fcitx5.git
 cp -r ./fcitx5/src/catppuccin-mocha-mauve/ ~/.local/share/fcitx5/themes
 rm -rf fcitx5
 
+systemctl --user enable clear-trash.timer
 systemctl --user enable ssh-agent
 if [ ! -d ~/.ssh ]; then
 	mkdir ~/.ssh

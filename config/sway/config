@@ -18,10 +18,10 @@ exec --no-startup-id {
     autotiling
     foot --server
     dynamic-workspaces.py
-    sway-audio-idle-inhibit
+    sway-audio-idle-inhibit >/dev/null
     /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
     swayidle -w \
-        timeout 200 'brightnessctl -q --save; brightnessctl -q set 10%' \
+        timeout 200 'brightnessctl -q --save && brightnessctl -q set 10%' \
             resume 'brightnessctl -q --restore' \
         timeout 240 '(pgrep -x swaylock >/dev/null || chayang -d 5) && swaymsg "output * dpms off"' \
             resume 'swaymsg "output * dpms on"' \
@@ -36,8 +36,8 @@ for_window [app_id="firefox" title="About Mozilla Firefox"] floating enable
 for_window [app_id="firefox" title="^Developer Tools — "] floating enable
 for_window [app_id="firefox" title="Launch Application"] floating enable
 for_window [app_id="firefox" title="Picture-in-Picture"] floating enable, sticky enable, opacity .9
-for_window [app_id="thunderbird"] floating enable, move position center
-for_window [app_id="thunderbird" title="- Mozilla Thunderbird$"] floating disable
+for_window [app_id="org.mozilla.Thunderbird"] floating enable, move position center
+for_window [app_id="org.mozilla.Thunderbird" title="- Mozilla Thunderbird$"] floating disable
 for_window [app_id="thunar" title="^Rename \\\""] floating enable
 for_window [app_id="thunar" title="File Operation Progress"] floating enable, opacity .9, inhibit_idle open
 for_window [app_id="thunar" title="Confirm to replace files"] floating enable
@@ -82,15 +82,12 @@ font pango:Inter Semibold, JetBrainsMono Nerd Font Propo 9
     bindsym $mod+Shift+r restart
     bindsym $mod+Shift+e exec swaynag -t warning -m 'Do you want to log out?' -b 'Yes, exit sway' 'swaymsg exit'
     bindsym --locked $mod+Shift+s exec --no-startup-id systemctl suspend
+    bindsym --locked XF86Sleep exec --no-startup-id systemctl suspend
     bindsym $mod+e exec thunar ~
     bindsym $mod+b exec firefox
-    bindsym $mod+c exec gtk-launch code
+    bindsym $mod+c exec zeditor
+    # bindsym $mod+c exec gtk-launch code
     bindsym $mod+l exec swaylock
-    set $mutecmd pactl list short sources | awk '/input.*RUNNING/ {system("pactl set-source-mute " $1 " toggle")}'
-    bindsym $mod+m exec --no-startup-id $mutecmd
-    bindsym --inhibited XF86AudioMicMute --no-startup-id exec $mutecmd
-    bindsym XF86TouchpadOff exec --no-startup-id notify-send "Touchpad disabled" "Press touchpad button to enable"
-    bindsym XF86TouchpadOn exec --no-startup-id notify-send "Touchpad enabled" "Press touchpad button to disable"
 
     # Move
     bindsym $mod+Left focus left
@@ -108,11 +105,19 @@ font pango:Inter Semibold, JetBrainsMono Nerd Font Propo 9
     exec mkfifo $SWAYSOCK.wob && tail -f $SWAYSOCK.wob | wob
     bindsym --inhibited --locked XF86AudioRaiseVolume exec --no-startup-id pamixer -u -i 2 && pamixer --get-volume >$SWAYSOCK.wob
     bindsym --inhibited --locked XF86AudioLowerVolume exec --no-startup-id pamixer -u -d 2 && pamixer --get-volume >$SWAYSOCK.wob
-    bindsym --inhibited --locked XF86AudioMute exec --no-startup-id pamixer -t && pamixer --get-mute | grep -q true && echo "0" >$SWAYSOCK.wob || pamixer --get-volume >$SWAYSOCK.wob
+    bindsym --inhibited --locked XF86AudioMute exec --no-startup-id pamixer -t && (pamixer --get-mute | grep -q true && echo 0 || pamixer --get-volume) >$SWAYSOCK.wob
     bindsym --inhibited --locked XF86AudioPlay exec --no-startup-id playerctl play-pause
     bindsym --inhibited --locked XF86AudioNext exec --no-startup-id playerctl next
     bindsym --inhibited --locked XF86AudioPrev exec --no-startup-id playerctl previous
     bindsym --inhibited --locked XF86AudioStop exec --no-startup-id playerctl stop
+
+    set $mictoggle pactl list short sources | awk -v action=$(pactl get-source-mute @DEFAULT_SOURCE@ | grep -q 'Mute: no' && echo 1 || echo 0) '!/\.monitor/ {system("pactl set-source-mute " $1 " " action)}'
+    bindsym $mod+m exec --no-startup-id $mictoggle
+    bindsym --inhibited XF86AudioMicMute --no-startup-id exec $mictoggle
+
+    bindsym XF86TouchpadOff exec --no-startup-id notify-send "Touchpad disabled" "Press touchpad button to enable"
+    bindsym XF86TouchpadOn exec --no-startup-id notify-send "Touchpad enabled" "Press touchpad button to disable"
+
 
     # Screenshots
     bindsym Print exec --no-startup-id grim - | wl-copy
@@ -175,10 +180,10 @@ font pango:Inter Semibold, JetBrainsMono Nerd Font Propo 9
 
     # Resizing containers
     mode "resize" {
-        bindsym Left resize shrink width 30px
-        bindsym Down resize grow height 30px
-        bindsym Up resize shrink height 30px
-        bindsym Right resize grow width 30px
+        bindsym minus resize shrink width 30px
+        bindsym equal resize grow width 30px
+        bindsym Down resize shrink height 30px
+        bindsym Up resize grow height 30px
         bindsym Escape mode "default"
     }
     bindsym $mod+r mode "resize"

@@ -1,82 +1,82 @@
 {
-	// UI
-	"buffer_font_family": "JetBrainsMono Nerd Font",
-	"ui_font_family": "Inter Display",
-	"ui_font_weight": 500,
-	"ui_font_size": 16,
-	"buffer_font_size": 13,
-	"icon_theme": {
-		"mode": "system",
-		"light": "Catppuccin Latte",
-		"dark": "Catppuccin Mocha"
-	},
-	"theme": {
-		"mode": "system",
-		"light": "Catppuccin Latte",
-		"dark": "Catppuccin Mocha"
-	},
-	"buffer_line_height": {
-		"custom": 1.45
-	},
-	"minimap": {
-		"show": "never"
-	},
-	"base_keymap": "VSCode",
-	// Editor behavior
-	"autosave": "on_window_change",
-	"format_on_save": "language_server",
-	"show_whitespaces": "boundary",
-	"hard_tabs": true,
-	"auto_signature_help": true,
-	"inlay_hints": {
-		"enabled": true
-	},
-	"git": {
-		"inline_blame": {
-			"delay_ms": 500,
-			"show_commit_summary": true
-		}
-	},
-	// AI
-	"agent": {
-		"default_model": {
-			"provider": "copilot_chat",
-			"model": "o4-mini"
-		},
-		"model_parameters": []
-	},
-	"features": {
-		"edit_prediction_provider": "copilot"
-	},
-	// Telemetry
-	"auto_update": false,
-	"telemetry": {
-		"diagnostics": false,
-		"metrics": false
-	},
-	// Setup
-	"auto_install_extensions": {
-		"html": true,
-		"toml": true,
-		"java": true,
-		"dockerfile": true,
-		"sql": true,
-		"vue": true,
-		"latex": true,
-		"csv": true,
-		"catppuccin": true,
-		"catppuccin-icons": true
-	},
-	// LaTeX
-	"lsp": {
-		"texlab": {
-			"settings": {
-				"texlab": {
-					"build": {
-						"onSave": true
-					}
-				}
-			}
-		}
-	}
+  // UI
+  "buffer_font_family": "JetBrainsMono Nerd Font",
+  "ui_font_family": "Inter Display",
+  "ui_font_weight": 500,
+  "ui_font_size": 16,
+  "buffer_font_size": 13,
+  "icon_theme": {
+    "mode": "system",
+    "light": "Catppuccin Latte",
+    "dark": "Catppuccin Mocha"
+  },
+  "theme": {
+    "mode": "system",
+    "light": "Catppuccin Latte",
+    "dark": "Catppuccin Mocha"
+  },
+  "buffer_line_height": {
+    "custom": 1.45
+  },
+  "minimap": {
+    "show": "never"
+  },
+  "base_keymap": "VSCode",
+  // Editor behavior
+  "autosave": "on_window_change",
+  "format_on_save": "on",
+  "show_whitespaces": "boundary",
+  "hard_tabs": true,
+  "auto_signature_help": true,
+  "inlay_hints": {
+    "enabled": true
+  },
+  "git": {
+    "inline_blame": {
+      "delay_ms": 500,
+      "show_commit_summary": true
+    }
+  },
+  // AI
+  "agent": {
+    "default_model": {
+      "provider": "copilot_chat",
+      "model": "gpt-5.1-codex"
+    },
+    "model_parameters": []
+  },
+  "features": {
+    "edit_prediction_provider": "copilot"
+  },
+  // Telemetry
+  "auto_update": false,
+  "telemetry": {
+    "diagnostics": false,
+    "metrics": false
+  },
+  // Setup
+  "auto_install_extensions": {
+    "html": true,
+    "toml": true,
+    "java": true,
+    "dockerfile": true,
+    "sql": true,
+    "vue": true,
+    "latex": true,
+    "csv": true,
+    "catppuccin": true,
+    "catppuccin-icons": true
+  },
+  // LaTeX
+  "lsp": {
+    "texlab": {
+      "settings": {
+        "texlab": {
+          "build": {
+            "onSave": true
+          }
+        }
+      }
+    }
+  }
 }

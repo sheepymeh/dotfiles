@@ -1,0 +1,10 @@
+[Unit]
+Description=Clear old trash daily
+Requires=clear-trash.service
+
+[Timer]
+OnCalendar=daily
+Persistent=true
+
+[Install]
+WantedBy=timers.target
