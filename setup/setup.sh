@@ -124,6 +124,17 @@ sed -i '/deny = /c\deny = 6' /etc/security/faillock.conf # increase allowed fail
 
 # Enable TRIM
 cryptsetup --allow-discards --perf-no_read_workqueue --perf-no_write_workqueue --persistent refresh root
+FS_PATH="$(findmnt -no SOURCE /)"
+FS_TYPE="$(findmnt -no FSTYPE /)"
+if [ "$FS_TYPE" = 'ext4' ]; then
+	tune2fs -o discard "$FS_PATH"
+	systemctl disable --now fstrim.timer
+elif [ "$FS_TYPE" = 'btrfs' ]; then
+	# btrfs automatically enables online TRIM
+	systemctl disable --now fstrim.timer
+else
+	systemctl enable --now fstrim.timer
+fi
 
 sed -i 's$#Color$Color\nILoveCandy$' /etc/pacman.conf # pacman color output
 sed -i 's$#ParallelDownloads$ParallelDownloads$' /etc/pacman.conf # pacman parallel downloads
