@@ -151,3 +151,4 @@ user_pref("privacy.sanitize.sanitizeOnShutdown", true);
 user_pref("security.OCSP.enabled", 0);
 user_pref("services.sync.prefs.sync-seen.privacy.sanitize.sanitizeOnShutdown", true);
 user_pref("signon.rememberSignons", false);
+user_pref("network.IDN_show_punycode", true);
