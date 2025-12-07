@@ -16,7 +16,7 @@ setup_packages() {
 	pacman -Sq --noconfirm --needed \
 		bash-completion bat curl dialog gnome-keyring jq brightnessctl man-db nano linux-firmware \
 		firefox imv mpv signal-desktop thunderbird transmission-gtk \
-		fastfetch htop mission-center nvtop smartmontools \
+		fastfetch htop mission-center nvtop \
 		cups-pdf system-config-printer \
 		playerctl pipewire pipewire-pulse pamixer pavucontrol \
 		inter-font noto-fonts-cjk ttf-jetbrains-mono-nerd otf-crimson-pro \
@@ -117,7 +117,7 @@ setup_locale() {
 
 # Packages that are used in the setup process
 pacman -Syyu --noconfirm
-pacman -S --noconfirm --needed acpi acpi_call acpid cups git go papirus-icon-theme plymouth podman python-build ufw wget
+pacman -S --noconfirm --needed acpi acpi_call acpid cups git go papirus-icon-theme plymouth podman python-build smartmontools ufw wget
 
 touch /etc/environment
 sed -i '/deny = /c\deny = 6' /etc/security/faillock.conf # increase allowed failed attempt count
@@ -236,6 +236,13 @@ EOF
 # 	SUBSYSTEM=="usb",ATTRS{idVendor}=="18d1",GROUP="plugdev"
 # EOF
 
+# Enable PCIe power management
+cat <<-EOF >/etc/udev/rules.d/99-pcie-pm.rules
+ACTION=="add", SUBSYSTEM=="pci", ATTR{power/control}="auto"
+ACTION=="add", SUBSYSTEM=="usb", ATTR{power/control}="auto"
+ACTION=="add", SUBSYSTEM=="i2c", ATTR{power/control}="auto"
+EOF
+
 # Allow user to write to Caps Lock LEDs
 cat <<-EOF >/etc/udev/rules.d/99-leds.rules
 	SUBSYSTEM=="leds", KERNEL=="*::capslock", ATTR{brightness}=="*", GROUP="input", MODE="0664"
@@ -250,6 +257,15 @@ cat <<-EOF >/etc/systemd/resolved.conf.d/dns_over_tls.conf
 	DNSOverTLS=yes
 EOF
 systemctl restart systemd-resolved.service
+
+cat <<-EOF >/etc/sysctl.d/99-bbr.conf
+net.core.default_qdisc=fq
+net.ipv4.tcp_congestion_control=bbr
+EOF
+
+cat <<-EOF >/etc/sysctl.d/99-writeback.conf
+vm.dirty_writeback_centisecs=1500
+EOF
 
 # Enable (REI)SUB
 # echo kernel.sysrq = 244 >/etc/sysctl.d/99-sysctl.conf
@@ -266,14 +282,16 @@ EOF
 systemctl enable --now cups.service
 
 # Quiet boot
+CMDLINE_OPTIONS="quiet splash loglevel=3 rd.systemd.show_status=auto rd.udev.log_level=3 nmi_watchdog=0 snd_hda_intel.power_save=1 pcie_aspm.policy=powersupersave"
+# S540-13ARE: add amdgpu.dcfeaturemask=0x8 pcie_aspm=force
 if [ -f /boot/loader/loader.conf ]; then
 	sed -i '/timeout /c\timeout 0' /boot/loader/loader.conf
-	sed -i '/^options .* quiet/b; /^options / s/$/ quiet splash loglevel=3 rd.systemd.show_status=auto rd.udev.log_level=3/' /boot/loader/entries/*.conf
+	sed -i "/^options .* quiet/b; /^options / s/.*/& $CMDLINE_OPTIONS/" /boot/loader/entries/*.conf
 	bootctl update --graceful
 	systemctl enable --now systemd-boot-update.service
 else
 	mkdir -p /etc/cmdline.d
-	echo 'quiet splash loglevel=3 rd.systemd.show_status=auto rd.udev.log_level=3' >/etc/cmdline.d/default.conf
+	echo "$CMDLINE_OPTIONS" >/etc/cmdline.d/default.conf
 fi
 
 # Plymouth boot splash screen
