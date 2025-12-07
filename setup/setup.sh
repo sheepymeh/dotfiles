@@ -16,14 +16,14 @@ setup_packages() {
 	pacman -Sq --noconfirm --needed \
 		bash-completion bat curl dialog gnome-keyring jq brightnessctl man-db nano linux-firmware \
 		firefox imv mpv signal-desktop thunderbird transmission-gtk \
-		fastfetch htop mission-center nvtop \
+		fastfetch htop mission-center \
 		cups-pdf system-config-printer \
 		playerctl pipewire pipewire-pulse pamixer pavucontrol \
 		inter-font noto-fonts-cjk ttf-jetbrains-mono-nerd otf-crimson-pro \
 		exfat-utils engrampa ffmpegthumbnailer gvfs gvfs-mtp owncloud-client tumbler thunar thunar-archive-plugin trash-cli unzip xdg-user-dirs 7zip \
 		libreoffice-fresh hunspell hunspell-en_us hunspell-de gutenprint \
 		fcitx5 fcitx5-rime rime-pinyin-simp fcitx5-mozc \
-		autotiling grim i3blocks mako qt6-wayland slurp sway swaybg swayidle swaylock wf-recorder wl-clipboard wofi xdg-desktop-portal xdg-desktop-portal-wlr xdg-desktop-portal-gtk polkit-gnome wob \
+		autotiling grim i3blocks mako nwg-displays qt6-wayland slurp sway swaybg swayidle swaylock wf-recorder wl-clipboard wofi xdg-desktop-portal xdg-desktop-portal-wlr xdg-desktop-portal-gtk polkit-gnome wob \
 		android-tools foot impala iwd sqlite shellcheck \
 		tesseract tesseract-data-eng \
 		texlive-basic texlive-binextra texlive-latex texlive-latexrecommended texlive-latexextra texlive-fontsrecommended texlive-mathscience \

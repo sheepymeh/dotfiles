@@ -192,7 +192,7 @@ font pango:Inter Semibold, JetBrainsMono Nerd Font Propo 9
 set $bg #000000b0
 bar {
     tray_output none
-    font pango:Inter Semibold, JetBrainsMono Nerd Font Propo 10
+    font pango:Inter Semibold, JetBrainsMono Nerd Font Propo 10 #tnum=1
     position bottom
     status_command i3blocks
     separator_symbol " ॥ "
