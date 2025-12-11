@@ -237,9 +237,10 @@ EOF
 # EOF
 
 # Enable PCIe power management
-cat <<-EOF >/etc/udev/rules.d/99-pcie-pm.rules
-ACTION=="add", SUBSYSTEM=="pci", ATTR{power/control}="auto"
-ACTION=="add", SUBSYSTEM=="usb", ATTR{power/control}="auto"
+cat <<-EOF >/etc/udev/rules.d/99-device-pm.rules
+SUBSYSTEM=="pci", ATTR{power/control}="auto"
+SUBSYSTEM=="ata_port", KERNEL=="ata*", ATTR{device/power/control}="auto"
+ACTION=="add", SUBSYSTEM=="usb", ATTR{product}!="*Mouse", ATTR{product}!="*Keyboard", TEST=="power/control", ATTR{power/control}="auto"
 ACTION=="add", SUBSYSTEM=="i2c", ATTR{power/control}="auto"
 EOF
 
