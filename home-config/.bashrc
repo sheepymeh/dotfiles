@@ -17,7 +17,6 @@ if [[ -z $DISPLAY ]] && [[ "$(tty)" = /dev/tty1 ]]; then
 fi
 
 unset JAVA_TOOL_OPTIONS
-fastfetch
 
 venv() {
 	if [ -z "$1" ]; then

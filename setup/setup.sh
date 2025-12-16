@@ -16,7 +16,7 @@ setup_packages() {
 	pacman -Sq --noconfirm --needed \
 		bash-completion bat curl dialog gnome-keyring jq brightnessctl man-db nano linux-firmware \
 		firefox imv mpv signal-desktop thunderbird transmission-gtk \
-		fastfetch htop mission-center \
+		htop mission-center \
 		cups-pdf system-config-printer \
 		playerctl pipewire pipewire-pulse pamixer pavucontrol \
 		inter-font noto-fonts-cjk ttf-jetbrains-mono-nerd otf-crimson-pro \
