@@ -284,7 +284,8 @@ systemctl enable --now cups.service
 
 # Quiet boot
 CMDLINE_OPTIONS="quiet splash loglevel=3 rd.systemd.show_status=auto rd.udev.log_level=3 nmi_watchdog=0 snd_hda_intel.power_save=1 pcie_aspm.policy=powersupersave"
-# S540-13ARE: add amdgpu.dcfeaturemask=0x8 pcie_aspm=force
+# S540-13ARE: add amdgpu.gpu_recovery=1 amdgpu.dcfeaturemask=0xA pcie_aspm=force
+# https://www.kernel.org/doc/html/latest/gpu/amdgpu/module-parameters.html
 if [ -f /boot/loader/loader.conf ]; then
 	sed -i '/timeout /c\timeout 0' /boot/loader/loader.conf
 	sed -i "/^options .* quiet/b; /^options / s/.*/& $CMDLINE_OPTIONS/" /boot/loader/entries/*.conf
