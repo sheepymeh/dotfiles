@@ -38,9 +38,9 @@ for_window [app_id="firefox" title="Launch Application"] floating enable
 for_window [app_id="firefox" title="Picture-in-Picture"] floating enable, sticky enable, opacity .9
 for_window [app_id="org.mozilla.Thunderbird"] floating enable, move position center
 for_window [app_id="org.mozilla.Thunderbird" title="- Mozilla Thunderbird$"] floating disable
-for_window [app_id="thunar" title="^Rename \\\""] floating enable
-for_window [app_id="thunar" title="File Operation Progress"] floating enable, opacity .9, inhibit_idle open
-for_window [app_id="thunar" title="Confirm to replace files"] floating enable
+for_window [app_id="Thunar" title="^Rename \\\""] floating enable
+for_window [app_id="Thunar" title="File Operation Progress"] floating enable, opacity .9, inhibit_idle open
+for_window [app_id="Thunar" title="Confirm to replace files"] floating enable
 for_window [app_id="engrampa" title="Compress"] floating enable, inhibit_idle open
 for_window [app_id="engrampa" title="Extract"] floating enable, inhibit_idle open
 for_window [app_id="pavucontrol"] floating enable
