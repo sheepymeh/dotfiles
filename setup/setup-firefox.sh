@@ -26,7 +26,6 @@ firefox \
 	https://addons.mozilla.org/en-US/firefox/addon/mal-sync \
 	https://addons.mozilla.org/en-US/firefox/addon/sponsorblock \
 	https://addons.mozilla.org/en-US/firefox/addon/clearurls \
-	https://addons.mozilla.org/en-US/firefox/addon/google-container \
 	https://addons.mozilla.org/en-US/firefox/addon/ublock-origin \
 	https://addons.mozilla.org/en-US/firefox/addon/styl-us \
 	https://addons.mozilla.org/en-US/firefox/addon/zoom-redirector \

@@ -45,12 +45,12 @@ WINDOW_ICONS = {
     "mpv": "",
     "nwg-displays": "",
     "org.gnome.papers": "",
+    "org.mozilla.Thunderbird": "",
     "org.pulseaudio.pavucontrol": "󱡫",
     "pavucontrol": "󱡫",
     "signal": "󰭹",
     "system-config-printer": "",
     "thunar": "",
-    "org.mozilla.Thunderbird": "",
     "virt-manager": "󰍺",
     "wine": "",
 }
