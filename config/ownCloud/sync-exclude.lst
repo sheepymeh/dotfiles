@@ -10,4 +10,5 @@ node_modules
 *.out
 *.synctex(busy)
 *.synctex.gz
+_minted
 _minted-work

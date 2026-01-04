@@ -14,7 +14,7 @@ cd ..
 
 setup_packages() {
 	pacman -Sq --noconfirm --needed \
-		bash-completion bat curl dialog gnome-keyring jq brightnessctl man-db nano linux-firmware \
+		and bash-completion bat curl dialog gnome-keyring jq brightnessctl man-db nano linux-firmware \
 		firefox imv mpv signal-desktop thunderbird transmission-gtk \
 		htop mission-center \
 		cups-pdf system-config-printer \
