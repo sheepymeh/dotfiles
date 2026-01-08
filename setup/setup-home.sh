@@ -55,8 +55,8 @@ rm catppuccin-mocha-mauve-standard+default.zip
 cd ..
 cp -a home-config/. ~
 cp -a config/. ~/.config
-# mkdir -p ~/.config/Code/User
-# cp code/* ~/.config/Code/User
+mkdir -p ~/.config/Code/User
+cp code/* ~/.config/Code/User
 if [ ! -d /sys/class/power_supply/BAT* ]; then
 	rm ~/.config/sway/laptop.conf
 fi
