@@ -45,7 +45,7 @@ WINDOW_ICONS = {
     "mpv": "",
     "nwg-displays": "",
     "org.gnome.papers": "",
-    "org.mozilla.Thunderbird": "",
+    "org.mozilla.thunderbird": "",
     "org.pulseaudio.pavucontrol": "󱡫",
     "pavucontrol": "󱡫",
     "signal": "󰭹",

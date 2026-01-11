@@ -13,13 +13,13 @@ output 'BNQ BenQ RD280U H7R0551701Q' pos 0,0 res 3840x2560@60Hz scale 2
 ### Autostart
 exec firefox
 exec --no-startup-id {
-    fcitx5
-    owncloud
-    autotiling
-    foot --server
-    dynamic-workspaces.py
-    sway-audio-idle-inhibit >/dev/null
     /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
+    autotiling
+    dynamic-workspaces.py
+    fcitx5
+    foot --server
+    owncloud
+    sway-audio-idle-inhibit >/dev/null
     swayidle -w \
         timeout 200 'brightnessctl -q --save && brightnessctl -q set 10%' \
             resume 'brightnessctl -q --restore' \
@@ -44,9 +44,9 @@ for_window [app_id="io.missioncenter.MissionCenter"] floating enable
 for_window [app_id="org.mozilla.Thunderbird"] floating enable, move position center
 for_window [app_id="org.mozilla.Thunderbird" title="- Mozilla Thunderbird$"] floating disable
 for_window [app_id="pavucontrol"] floating enable
-for_window [app_id="thunar" title="^Rename \\\""] floating enable
-for_window [app_id="thunar" title="Confirm to replace files"] floating enable
-for_window [app_id="thunar" title="File Operation Progress"] floating enable, opacity .9, inhibit_idle open
+for_window [app_id="^[tT]hunar$" title="^Rename \\\""] floating enable
+for_window [app_id="^[tT]hunar$" title="Confirm to replace files"] floating enable
+for_window [app_id="^[tT]hunar$" title="File Operation Progress"] floating enable, opacity .9, inhibit_idle open
 for_window [app_id="transmission-gtk" title="Torrent Options"] floating enable
 for_window [app_id="wineboot.exe"] floating enable
 
@@ -87,8 +87,8 @@ font pango:Inter Semibold, JetBrainsMono Nerd Font Propo 9
     bindsym --locked XF86Sleep exec --no-startup-id systemctl suspend
     bindsym $mod+e exec thunar ~
     bindsym $mod+b exec firefox
-    bindsym $mod+c exec zeditor
-    # bindsym $mod+c exec gtk-launch code
+    # bindsym $mod+c exec zeditor
+    bindsym $mod+c exec gtk-launch code
     bindsym $mod+l exec swaylock
 
     # Move
