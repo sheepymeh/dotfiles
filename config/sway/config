@@ -44,6 +44,7 @@ for_window [app_id="firefox" title="Picture-in-Picture"] floating enable, sticky
 for_window [app_id="io.missioncenter.MissionCenter"] floating enable
 for_window [app_id="org.mozilla.Thunderbird"] floating enable, move position center
 for_window [app_id="org.mozilla.Thunderbird" title="- Mozilla Thunderbird$"] floating disable
+for_window [app_id="org.mozilla.Thunderbird" title="Authentication Required - Mozilla Thunderbird$"] floating enable, move position center
 for_window [app_id="pavucontrol"] floating enable
 for_window [app_id="^[tT]hunar$" title="^Rename \\\""] floating enable
 for_window [app_id="^[tT]hunar$" title="Confirm to replace files"] floating enable
