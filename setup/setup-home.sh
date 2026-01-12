@@ -31,7 +31,7 @@ install_wine() {
 }
 
 # Start slow-running jobs
-# install_vscode_ext &
+install_vscode_ext &
 install_wine &
 
 # Prepare /home/user

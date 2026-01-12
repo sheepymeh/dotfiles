@@ -14,7 +14,7 @@ cd ..
 
 setup_packages() {
 	pacman -Sq --noconfirm --needed \
-		and bash-completion bat curl dialog gnome-keyring jq brightnessctl man-db nano linux-firmware \
+		age bash-completion bat curl dialog gnome-keyring jq brightnessctl man-db nano nano-syntax-highlighting linux-firmware \
 		firefox imv mpv signal-desktop thunderbird transmission-gtk \
 		htop mission-center \
 		cups-pdf system-config-printer \
@@ -78,7 +78,7 @@ setup_packages() {
 		sed -i '/^MODULES=(.*i915/b; s/MODULES=(/MODULES=(i915 /' /etc/mkinitcpio.conf
 	fi
 	if lspci -k | grep -A 2 -E '(VGA|3D)' | grep -qi amd; then
-		pacman -Sq --noconfirm --needed libva-mesa-driver mesa-vdpau mesa vulkan-radeon
+		pacman -Sq --noconfirm --needed libva-mesa-driver mesa vulkan-radeon
 		sed -i '/^MODULES=(/ { /amdgpu/! s/MODULES=(/MODULES=(amdgpu / }' /etc/mkinitcpio.conf
 	fi
 
@@ -115,9 +115,14 @@ setup_locale() {
 	EOF
 }
 
+sed -i 's$#Color$Color\nILoveCandy$' /etc/pacman.conf # pacman color output
+sed -i 's$#ParallelDownloads$ParallelDownloads$' /etc/pacman.conf # pacman parallel downloads
+mkdir -p /etc/pacman.d/hooks
+cp pacman-hooks/chromium-no-defaults.hook /etc/pacman.d/hooks
+
 # Packages that are used in the setup process
 pacman -Syyu --noconfirm
-pacman -S --noconfirm --needed acpi acpi_call acpid cups git go papirus-icon-theme plymouth podman python-build smartmontools ufw wget
+pacman -S --noconfirm --needed acpi acpi_call acpid base-devel cups git go papirus-icon-theme plymouth podman python-build smartmontools ufw wget
 
 touch /etc/environment
 sed -i '/deny = /c\deny = 6' /etc/security/faillock.conf # increase allowed failed attempt count
@@ -135,11 +140,6 @@ elif [ "$FS_TYPE" = 'btrfs' ]; then
 else
 	systemctl enable --now fstrim.timer
 fi
-
-sed -i 's$#Color$Color\nILoveCandy$' /etc/pacman.conf # pacman color output
-sed -i 's$#ParallelDownloads$ParallelDownloads$' /etc/pacman.conf # pacman parallel downloads
-mkdir -p /etc/pacman.d/hooks
-cp pacman-hooks/chromium-no-defaults.hook /etc/pacman.d/hooks
 
 # Optimize makepkg - multithreading, disable compression and debug symbols
 cat <<-EOF >/etc/makepkg.conf.d/flags.conf
