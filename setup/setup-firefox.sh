@@ -20,19 +20,17 @@ EOF
 
 wget https://github.com/catppuccin/firefox/releases/download/old/catppuccin_mocha_mauve.xpi
 firefox \
-	https://addons.mozilla.org/en-US/firefox/addon/decentraleyes \
 	https://addons.mozilla.org/en-US/firefox/addon/bitwarden-password-manager \
 	https://addons.mozilla.org/en-US/firefox/addon/history-cleaner \
 	https://addons.mozilla.org/en-US/firefox/addon/mal-sync \
 	https://addons.mozilla.org/en-US/firefox/addon/sponsorblock \
+	https://addons.mozilla.org/en-US/firefox/addon/decentraleyes \
 	https://addons.mozilla.org/en-US/firefox/addon/clearurls \
 	https://addons.mozilla.org/en-US/firefox/addon/ublock-origin \
 	https://addons.mozilla.org/en-US/firefox/addon/styl-us \
 	https://addons.mozilla.org/en-US/firefox/addon/zoom-redirector \
-	https://addons.mozilla.org/en-US/firefox/addon/wallabagger \
 	catppuccin_mocha_mauve.xpi
 rm catppuccin_mocha_mauve.xpi
-# rm bypass_paywalls_clean-latest.xpi
 
 cp ../firefox/* ~/.mozilla/firefox/$FF_PROFILE
 sqlite3 ~/.mozilla/firefox/$FF_PROFILE/permissions.sqlite <<-EOF
