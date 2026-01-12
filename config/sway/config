@@ -38,6 +38,7 @@ for_window [app_id="engrampa" title="Extract"] floating enable, inhibit_idle ope
 for_window [app_id="firefox"] inhibit_idle fullscreen
 for_window [app_id="firefox" title="^Developer Tools — "] floating enable
 for_window [app_id="firefox" title="About Mozilla Firefox"] floating enable
+for_window [app_id="firefox" title="Extension: (Bitwarden Password Manager) - Bitwarden — Mozilla Firefox"] floating enable
 for_window [app_id="firefox" title="Launch Application"] floating enable
 for_window [app_id="firefox" title="Picture-in-Picture"] floating enable, sticky enable, opacity .9
 for_window [app_id="io.missioncenter.MissionCenter"] floating enable

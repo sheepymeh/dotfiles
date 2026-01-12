@@ -19,6 +19,7 @@ WINDOW_ICONS = {
     "codium-url-handler": "󰨞",
     "com.nextcloud.desktopclient.nextcloud": "",
     "desktopclient.owncloud.com.owncloud": "",
+    "owncloud": "",
     "dev.zed.Zed": "",
     "engrampa": "",
     "firefox": "",
