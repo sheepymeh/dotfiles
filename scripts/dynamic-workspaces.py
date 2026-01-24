@@ -12,6 +12,7 @@ WINDOW_ICONS = {
     "alacritty": "",
     "anki": "",
     "blueman-manager": "",
+    "cafe.avery.Delfin": "",
     "chromium": "",
     "code": "󰨞",
     "code-url-handler": "󰨞",

@@ -15,7 +15,7 @@ cd ..
 setup_packages() {
 	pacman -Sq --noconfirm --needed \
 		age bash-completion bat curl dialog gnome-keyring jq brightnessctl man-db nano nano-syntax-highlighting linux-firmware \
-		firefox imv mpv signal-desktop thunderbird transmission-gtk \
+		delfin firefox imv mpv signal-desktop thunderbird transmission-gtk \
 		htop mission-center \
 		cups-pdf system-config-printer \
 		playerctl pipewire pipewire-pulse pamixer pavucontrol \
