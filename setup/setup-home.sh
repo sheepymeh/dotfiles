@@ -6,10 +6,7 @@ if [ "$EUID" -eq 0 ]; then
 	echo "Script must be run as user"
 	exit
 fi
-if [[ $(basename "$PWD") != "setup" ]]; then
-	echo "Script must be run from /setup"
-	exit
-fi
+cd "$(dirname -- "$0")"
 
 install_vscode_ext() {
 	code --install-extension Catppuccin.catppuccin-vsc

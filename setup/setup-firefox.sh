@@ -5,8 +5,13 @@ if [ "$EUID" -eq 0 ]; then
 	echo "Script must be run as user"
 	exit
 fi
+cd "$(dirname -- "$0")"
 
-sqlite3 ~/.config/mozilla/firefox/$FF_PROFILE/permissions.sqlite <<-EOF
+ls ~/.config/mozilla/firefox/*.default-release
+
+cp ../firefox/user.js ~/.config/mozilla/firefox/*.default-release/user.js
+
+sqlite3 ~/.config/mozilla/firefox/*.default-release/permissions.sqlite <<-EOF
 	INSERT INTO moz_perms (origin, type, permission, expireType, expireTime, modificationTime) VALUES
 	('https://accounts.google.com', 'cookie', '1', '0', '0', '1600000000000'),
 	('https://amazon.co.uk', 'cookie', '1', '0', '0', '1600000000000'),

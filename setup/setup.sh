@@ -6,11 +6,7 @@ if [ "$EUID" -ne 0 ]; then
 	echo "Script must be run as root"
 	exit
 fi
-if [[ $(basename "$PWD") != 'setup' ]]; then
-	echo 'Script must be run from /setup'
-	exit
-fi
-cd ..
+cd "$(dirname -- "$0")/.."
 
 setup_packages() {
 	pacman -Sq --noconfirm --needed \
