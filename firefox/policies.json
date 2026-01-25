@@ -1,0 +1,312 @@
+{
+  "policies": {
+    "CaptivePortal": false,
+    "DisableFeedbackCommands": true,
+    "DisableFirefoxAccounts": true,
+    "DisableFirefoxStudies": true,
+    "DisableFormHistory": true,
+    "DisablePocket": true,
+    "DisableSetDesktopBackground": true,
+    "DisableSystemAddonUpdate": true,
+    "DisableTelemetry": true,
+    "DontCheckDefaultBrowser": true,
+    "NetworkPrediction": false,
+    "NewTabPage": false,
+    "NoDefaultBookmarks": true,
+    "OfferToSaveLogins": false,
+    "OverridePostUpdatePage": "",
+    "PasswordManagerEnabled": false,
+    "SearchSuggestEnabled": false,
+    "ShowHomeButton": false,
+    "SkipTermsOfUse": true,
+    "VisualSearchEnabled": true,
+
+    "3rdparty": {
+      "Extensions": {
+        "uBlock0@raymondhill.net": {
+          "adminSettings": {
+            "userSettings": {
+              "uiAccentCustom": true,
+              "showIconBadge": false
+            },
+            "selectedFilterLists": [
+              "user-filters",
+              "ublock-filters",
+              "ublock-badware",
+              "ublock-privacy",
+              "ublock-quick-fixes",
+              "ublock-unbreak",
+              "easylist",
+              "adguard-generic",
+              "adguard-mobile",
+              "easyprivacy",
+              "adguard-spyware-url",
+              "block-lan",
+              "urlhaus-1",
+              "curben-phishing",
+              "plowe-0",
+              "dpollock-0",
+              "fanboy-cookiemonster",
+              "ublock-cookies-easylist",
+              "adguard-cookies",
+              "ublock-cookies-adguard",
+              "fanboy-social",
+              "adguard-social",
+              "fanboy-thirdparty_social",
+              "fanboy-ai-suggestions",
+              "easylist-chat",
+              "easylist-newsletters",
+              "easylist-notifications",
+              "easylist-annoyances",
+              "adguard-mobile-app-banners",
+              "adguard-other-annoyances",
+              "adguard-popup-overlays",
+              "adguard-widgets",
+              "ublock-annoyances",
+              "CHN-0",
+              "DEU-0",
+              "JPN-1"
+            ]
+          }
+        }
+      }
+    },
+
+    "Cookies": {
+      "Behavior": "reject-foreign"
+    },
+
+    "EnableTrackingProtection": {
+      "Value": true,
+      "Category": "strict",
+      "BaselineExceptions": true,
+      "ConvenienceExceptions": true,
+      "Cryptomining": true,
+      "EmailTracking": true,
+      "Fingerprinting": true,
+      "SuspectedFingerprinting": true
+    },
+
+    "EncryptedMediaExtensions": { "Enabled": false },
+
+    "ExtensionSettings": {
+      "CanvasBlocker@kkapsner.de": {
+        "install_url": "https://addons.mozilla.org/firefox/downloads/latest/canvasblocker/latest.xpi",
+        "installation_mode": "normal_installed"
+      },
+      "sponsorBlocker@ajay.app": {
+        "install_url": "https://addons.mozilla.org/firefox/downloads/latest/sponsorblock/latest.xpi",
+        "installation_mode": "normal_installed"
+      },
+      "uBlock0@raymondhill.net": {
+        "install_url": "https://addons.mozilla.org/firefox/downloads/latest/ublock-origin/latest.xpi",
+        "installation_mode": "normal_installed"
+      },
+      "jid1-BoFifL9Vbdl2zQ@jetpack": {
+        "install_url": "https://addons.mozilla.org/firefox/downloads/latest/decentraleyes/latest.xpi",
+        "installation_mode": "normal_installed"
+      },
+      "{2d0a18e8-6b0a-4c8c-9256-6e00c01f07fe}": {
+        "install_url": "https://addons.mozilla.org/firefox/downloads/latest/zoom-redirector/latest.xpi",
+        "installation_mode": "normal_installed"
+      },
+      "{446900e4-71c2-419f-a6a7-df9c091e268b}": {
+        "install_url": "https://addons.mozilla.org/firefox/downloads/latest/bitwarden-password-manager/latest.xpi",
+        "installation_mode": "normal_installed"
+      },
+      "{74145f27-f039-47ce-a470-a662b129930a}": {
+        "install_url": "https://addons.mozilla.org/firefox/downloads/latest/clearurls/latest.xpi",
+        "installation_mode": "normal_installed"
+      },
+      "{76aabc99-c1a8-4c1e-832b-d4f2941d5a7a}": {
+        "install_url": "https://github.com/catppuccin/firefox/releases/download/old/catppuccin_mocha_mauve.xpi",
+        "installation_mode": "normal_installed"
+      },
+      "{7a7a4a92-a2a0-41d1-9fd7-1e92480d612d}": {
+        "install_url": "https://addons.mozilla.org/firefox/downloads/latest/styl-us/latest.xpi",
+        "installation_mode": "normal_installed"
+      },
+      "{c84d89d9-a826-4015-957b-affebd9eb603}": {
+        "install_url": "https://addons.mozilla.org/firefox/downloads/latest/mal-sync/latest.xpi",
+        "installation_mode": "normal_installed"
+      }
+    },
+
+    "FirefoxHome": {
+      "Search": true,
+      "TopSites": false,
+      "SponsoredTopSites": false,
+      "Highlights": false,
+      "Pocket": false,
+      "Stories": false,
+      "SponsoredPocket": false,
+      "SponsoredStories": false,
+      "Snippets": false
+    },
+
+    "FirefoxSuggest": {
+      "ImproveSuggest": false,
+      "SponsoredSuggestions": false,
+      "WebSuggestions": false
+    },
+
+    "GenerativeAI": { "Enabled": false },
+
+    "SanitizeOnShutdown": {
+      "Cache": false,
+      "Cookies": true,
+      "Downloads": true,
+      "FormData": true,
+      "History": false,
+      "Sessions": true,
+      "OfflineApps": false
+    },
+
+    "SearchEngines": {
+      "Default": "DuckDuckGo",
+      "Remove": ["Bing", "eBay", "Google", "Wikipedia (en)", "Perplexity"]
+    },
+
+    "UserMessaging": {
+      "ExtensionRecommendations": false,
+      "FeatureRecommendations": false,
+      "FirefoxLabs": false,
+      "MoreFromMozilla": false,
+      "SkipOnboarding": true,
+      "WhatsNew": false
+    },
+
+    "Permissions": {
+      "Autoplay": { "Default": "block-audio-video" },
+      "Camera": {
+        "Allow": [
+          "https://discord.com",
+          "https://meet.google.com",
+          "https://meet.jit.si",
+          "https://teams.microsoft.com",
+          "https://web.whatsapp.com",
+          "https://webex.com",
+          "https://zoom.us"
+        ]
+      },
+      "Microphone": {
+        "Allow": [
+          "https://discord.com",
+          "https://meet.google.com",
+          "https://meet.jit.si",
+          "https://teams.microsoft.com",
+          "https://web.whatsapp.com",
+          "https://webex.com",
+          "https://zoom.us"
+        ]
+      },
+      "Notifications": {
+        "Allow": [
+          "https://web.whatsapp.com",
+          "https://web.telegram.org",
+          "https://app.tuta.com"
+        ]
+      },
+      "ScreenShare": {
+        "Allow": [
+          "https://discord.com",
+          "https://meet.google.com",
+          "https://meet.jit.si",
+          "https://teams.microsoft.com",
+          "https://web.whatsapp.com",
+          "https://webex.com",
+          "https://zoom.us"
+        ]
+      }
+    },
+
+    "Preferences": {
+      "app.normandy.api_url": { "Value": "" },
+      "app.normandy.enabled": { "Value": false },
+      "beacon.enabled": { "Value": false },
+      "breakpad.reportURL": { "Value": "" },
+      "browser.aboutConfig.showWarning": { "Value": false },
+      "browser.compactmode.show": { "Value": true },
+      "browser.crashReports.unsubmittedCheck.autoSubmit": { "Value": false },
+      "browser.crashReports.unsubmittedCheck.autoSubmit2": { "Value": false },
+      "browser.crashReports.unsubmittedCheck.enabled": { "Value": false },
+      "browser.fixup.alternate.enabled": { "Value": false },
+      "browser.helperApps.deleteTempFileOnExit": { "Value": true },
+      "browser.messaging-system.whatsNewPanel.enabled": { "Value": false },
+      "browser.pagethumbnails.capturing_disabled": { "Value": true },
+      "browser.privatebrowsing.forceMediaMemoryCache": { "Value": true },
+      "browser.selfsupport.url": { "Value": "" },
+      "browser.send_pings": { "Value": false },
+      "browser.sessionstore.privacy_level": { "Value": 2 },
+      "browser.startup.homepage_override.mstone": { "Value": "ignore" },
+      "browser.tabs.crashReporting.sendReport": { "Value": false },
+      "browser.tabs.firefox-view-next": { "Value": false },
+      "browser.tabs.firefox-view": { "Value": false },
+      "browser.tabs.groups.enabled": { "Value": false },
+      "browser.tabs.inTitlebar": { "Value": 0 },
+      "browser.tabs.unloadOnLowMemory": { "Value": true },
+      "browser.toolbars.bookmarks.visibility": { "Value": "never" },
+      "browser.topsites.contile.enabled": { "Value": false },
+      "browser.uiCustomization.state": {
+        "Value": "{\"placements\":{\"widget-overflow-fixed-list\":[],\"unified-extensions-area\":[],\"nav-bar\":[\"back-button\",\"forward-button\",\"stop-reload-button\",\"customizableui-special-spring1\",\"urlbar-container\",\"customizableui-special-spring2\",\"personal-bookmarks\",\"downloads-button\",\"ublock0_raymondhill_net-browser-action\",\"_c84d89d9-a826-4015-957b-affebd9eb603_-browser-action\",\"_446900e4-71c2-419f-a6a7-df9c091e268b_-browser-action\",\"unified-extensions-button\"],\"toolbar-menubar\":[\"menubar-items\"],\"TabsToolbar\":[\"tabbrowser-tabs\",\"new-tab-button\"]},\"currentVersion\":23,\"newElementCount\":2}"
+      },
+      "browser.uidensity": { "Value": 1 },
+      "browser.uitour.enabled": { "Value": false },
+      "browser.urlbar.dnsResolveSingleWordsAfterSearch": { "Value": 0 },
+      "browser.urlbar.groupLabels.enabled": { "Value": false },
+      "browser.urlbar.speculativeConnect.enabled": { "Value": false },
+      "captivedetect.canonicalURL": { "Value": "" },
+      "datareporting.healthreport.service.enabled": { "Value": false },
+      "datareporting.healthreport.uploadEnabled": { "Value": false },
+      "datareporting.policy.dataSubmissionEnabled": { "Value": false },
+      "device.sensors.enabled": { "Value": false },
+      "device.sensors.ambientLight.enabled": { "Value": false },
+      "device.sensors.motion.enabled": { "Value": false },
+      "device.sensors.orientation.enabled": { "Value": false },
+      "device.sensors.proximity.enabled": { "Value": false },
+      "dom.battery.enabled": { "Value": false },
+      "dom.private-attribution.submission.enabled": { "Value": false },
+      "experiments.activeExperiment": { "Value": false },
+      "experiments.enabled": { "Value": false },
+      "experiments.manifest.uri": { "Value": "" },
+      "experiments.supported": { "Value": false },
+      "extensions.blocklist.enabled": { "Value": true },
+      "extensions.getAddons.cache.enabled": { "Value": false },
+      "extensions.getAddons.showPane": { "Value": false },
+      "extensions.shield-recipe-client.api_url": { "Value": "" },
+      "extensions.shield-recipe-client.enabled": { "Value": false },
+      "extensions.webservice.discoverURL": { "Value": "" },
+      "findbar.highlightAll": { "Value": true },
+      "font.default.x-western": { "Value": "sans-serif" },
+      "font.name.monospace.x-western": { "Value": "JetBrainsMono Nerd Font Mono" },
+      "font.name.sans-serif.x-western": { "Value": "Inter" },
+      "font.name.serif.x-western": { "Value": "Crimson Pro" },
+      "media.av1.enabled": { "Value": false },
+      "media.ffmpeg.vaapi.enabled": { "Value": true },
+      "media.video_stats.enabled": { "Value": false },
+      "media.webspeech.synth.dont_notify_on_error": { "Value": true },
+      "network.allow-experiments": { "Value": false },
+      "network.connectivity-service.enabled": { "Value": false },
+      "network.http.referer.spoofSource": { "Value": true },
+      "network.http.referer.XOriginPolicy": { "Value": 2 },
+      "network.http.referer.XOriginTrimmingPolicy": { "Value": 2 },
+      "network.http.speculative-parallel-limit": { "Value": 0 },
+      "network.IDN_show_punycode": { "Value": true },
+      "network.prefetch-next": { "Value": false },
+      "privacy.query_stripping": { "Value": true },
+      "privacy.usercontext.about_newtab_segregation.enabled": { "Value": true },
+      "security.OCSP.enabled": { "Value": 0 },
+      "security.ssl.disable_session_identifiers": { "Value": true },
+      "security.ssl.errorReporting.enabled": { "Value": false },
+      "security.insecure_connection_text.enabled": { "Value": true },
+      "toolkit.coverage.endpoint.base": { "Value": "" },
+      "toolkit.coverage.opt-out": { "Value": true },
+      "toolkit.telemetry.archive.enabled": { "Value": false },
+      "toolkit.telemetry.coverage.opt-out": { "Value": true },
+      "toolkit.telemetry.server": { "Value": "" },
+      "toolkit.telemetry.unified": { "Value": false },
+      "webgl.renderer-string-override": { "Value": " " },
+      "webgl.vendor-string-override": { "Value": " " }
+    }
+  }
+}

@@ -180,6 +180,10 @@ systemctl enable --now acpid
 usermod -aG video "$SUDO_USER"
 usermod -aG input "$SUDO_USER"
 
+# Configure Firefox
+mkdir -p /etc/firefox/policies
+cp firefox/policies.json /etc/firefox/policies
+
 # Configure Papirus folders
 papirus-folders -C cat-mocha-mauve --theme Papirus-Dark
 
