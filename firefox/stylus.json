@@ -36,240 +36,192 @@
     "name": "Discord Catppuccin",
     "enabled": true,
     "updateUrl": "https://raw.githubusercontent.com/catppuccin/discord/main/discord.user.css",
-    "usercssData": {
-      "name": "Discord Catppuccin",
-      "updateUrl": "https://raw.githubusercontent.com/catppuccin/discord/main/discord.user.css"
-    },
+    "sourceCode": "",
+    "usercssData": { "version": "0" },
     "sections": [{ "code": "" }]
   },
   {
     "name": "Youtube Music Catppuccin",
     "enabled": true,
     "updateUrl": "https://raw.githubusercontent.com/catppuccin/youtubemusic/main/src/youtubemusic.user.css",
-    "usercssData": {
-      "name": "Youtube Music Catppuccin",
-      "updateUrl": "https://raw.githubusercontent.com/catppuccin/youtubemusic/main/src/youtubemusic.user.css"
-    },
+    "sourceCode": "",
+    "usercssData": { "version": "0" },
     "sections": [{ "code": "" }]
   },
   {
     "name": "Dark Docs",
     "enabled": true,
     "updateUrl": "https://userstyles.world/api/style/2597.user.css",
-    "usercssData": {
-      "name": "Dark Docs",
-      "updateUrl": "https://userstyles.world/api/style/2597.user.css"
-    },
+    "sourceCode": "",
+    "usercssData": { "version": "0" },
     "sections": [{ "code": "" }]
   },
   {
     "name": "Notion Catppuccin",
     "enabled": true,
     "updateUrl": "https://userstyles.world/api/style/3838.user.css",
-    "usercssData": {
-      "name": "Notion Catppuccin",
-      "updateUrl": "https://userstyles.world/api/style/3838.user.css"
-    },
+    "sourceCode": "",
+    "usercssData": { "version": "0" },
     "sections": [{ "code": "" }]
   },
   {
     "name": "Stack Overflow Catppuccin",
     "enabled": true,
     "updateUrl": "https://github.com/catppuccin/userstyles/raw/main/styles/stack-overflow/catppuccin.user.less",
-    "usercssData": {
-      "name": "Stack Overflow Catppuccin",
-      "updateUrl": "https://github.com/catppuccin/userstyles/raw/main/styles/stack-overflow/catppuccin.user.less"
-    },
+    "sourceCode": "",
+    "usercssData": { "version": "0" },
     "sections": [{ "code": "" }]
   },
   {
     "name": "Stylus Catppuccin",
     "enabled": true,
     "updateUrl": "https://github.com/catppuccin/userstyles/raw/main/styles/stylus/catppuccin.user.less",
-    "usercssData": {
-      "name": "Stylus Catppuccin",
-      "updateUrl": "https://github.com/catppuccin/userstyles/raw/main/styles/stylus/catppuccin.user.less"
-    },
+    "sourceCode": "",
+    "usercssData": { "version": "0" },
     "sections": [{ "code": "" }]
   },
   {
     "name": "MDN Catppuccin",
     "enabled": true,
     "updateUrl": "https://github.com/catppuccin/userstyles/raw/main/styles/mdn/catppuccin.user.less",
-    "usercssData": {
-      "name": "MDN Catppuccin",
-      "updateUrl": "https://github.com/catppuccin/userstyles/raw/main/styles/mdn/catppuccin.user.less"
-    },
+    "sourceCode": "",
+    "usercssData": { "version": "0" },
     "sections": [{ "code": "" }]
   },
   {
     "name": "LinkedIn Catppuccin",
     "enabled": true,
     "updateUrl": "https://github.com/catppuccin/userstyles/raw/main/styles/linkedin/catppuccin.user.less",
-    "usercssData": {
-      "name": "LinkedIn Catppuccin",
-      "updateUrl": "https://github.com/catppuccin/userstyles/raw/main/styles/linkedin/catppuccin.user.less"
-    },
+    "sourceCode": "",
+    "usercssData": { "version": "0" },
     "sections": [{ "code": "" }]
   },
   {
     "name": "Google Gemini Catppuccin",
     "enabled": true,
     "updateUrl": "https://github.com/catppuccin/userstyles/raw/main/styles/google-gemini/catppuccin.user.less",
-    "usercssData": {
-      "name": "Google Gemini Catppuccin",
-      "updateUrl": "https://github.com/catppuccin/userstyles/raw/main/styles/google-gemini/catppuccin.user.less"
-    },
+    "sourceCode": "",
+    "usercssData": { "version": "0" },
     "sections": [{ "code": "" }]
   },
   {
     "name": "Google Drive Catppuccin",
     "enabled": true,
     "updateUrl": "https://github.com/catppuccin/userstyles/raw/main/styles/google-drive/catppuccin.user.less",
-    "usercssData": {
-      "name": "Google Drive Catppuccin",
-      "updateUrl": "https://github.com/catppuccin/userstyles/raw/main/styles/google-drive/catppuccin.user.less"
-    },
+    "sourceCode": "",
+    "usercssData": { "version": "0" },
     "sections": [{ "code": "" }]
   },
   {
     "name": "Google Catppuccin",
     "enabled": true,
     "updateUrl": "https://github.com/catppuccin/userstyles/raw/main/styles/google/catppuccin.user.less",
-    "usercssData": {
-      "name": "Google Catppuccin",
-      "updateUrl": "https://github.com/catppuccin/userstyles/raw/main/styles/google/catppuccin.user.less"
-    },
+    "sourceCode": "",
+    "usercssData": { "version": "0" },
     "sections": [{ "code": "" }]
   },
   {
     "name": "AniList/AniChart Catppuccin",
     "enabled": true,
     "updateUrl": "https://github.com/catppuccin/userstyles/raw/main/styles/anilist/catppuccin.user.less",
-    "usercssData": {
-      "name": "AniList/AniChart Catppuccin",
-      "updateUrl": "https://github.com/catppuccin/userstyles/raw/main/styles/anilist/catppuccin.user.less"
-    },
+    "sourceCode": "",
+    "usercssData": { "version": "0" },
     "sections": [{ "code": "" }]
   },
   {
     "name": "GitHub Catppuccin",
     "enabled": true,
     "updateUrl": "https://github.com/catppuccin/userstyles/raw/main/styles/github/catppuccin.user.less",
-    "usercssData": {
-      "name": "GitHub Catppuccin",
-      "updateUrl": "https://github.com/catppuccin/userstyles/raw/main/styles/github/catppuccin.user.less"
-    },
+    "sourceCode": "",
+    "usercssData": { "version": "0" },
     "sections": [{ "code": "" }]
   },
   {
     "name": "PyPI Catppuccin",
     "enabled": true,
     "updateUrl": "https://github.com/catppuccin/userstyles/raw/main/styles/pypi/catppuccin.user.less",
-    "usercssData": {
-      "name": "PyPI Catppuccin",
-      "updateUrl": "https://github.com/catppuccin/userstyles/raw/main/styles/pypi/catppuccin.user.less"
-    },
+    "sourceCode": "",
+    "usercssData": { "version": "0" },
     "sections": [{ "code": "" }]
   },
   {
     "name": "Tuta Catppuccin",
     "enabled": true,
     "updateUrl": "https://github.com/catppuccin/userstyles/raw/main/styles/tuta/catppuccin.user.less",
-    "usercssData": {
-      "name": "Tuta Catppuccin",
-      "updateUrl": "https://github.com/catppuccin/userstyles/raw/main/styles/tuta/catppuccin.user.less"
-    },
+    "sourceCode": "",
+    "usercssData": { "version": "0" },
     "sections": [{ "code": "" }]
   },
   {
     "name": "WhatsApp Web Catppuccin",
     "enabled": true,
     "updateUrl": "https://github.com/catppuccin/userstyles/raw/main/styles/whatsapp-web/catppuccin.user.less",
-    "usercssData": {
-      "name": "WhatsApp Web Catppuccin",
-      "updateUrl": "https://github.com/catppuccin/userstyles/raw/main/styles/whatsapp-web/catppuccin.user.less"
-    },
+    "sourceCode": "",
+    "usercssData": { "version": "0" },
     "sections": [{ "code": "" }]
   },
   {
     "name": "YouTube Catppuccin",
     "enabled": true,
     "updateUrl": "https://github.com/catppuccin/userstyles/raw/main/styles/youtube/catppuccin.user.less",
-    "usercssData": {
-      "name": "YouTube Catppuccin",
-      "updateUrl": "https://github.com/catppuccin/userstyles/raw/main/styles/youtube/catppuccin.user.less"
-    },
+    "sourceCode": "",
+    "usercssData": { "version": "0" },
     "sections": [{ "code": "" }]
   },
   {
     "name": "Wikipedia Catppuccin",
     "enabled": true,
     "updateUrl": "https://github.com/catppuccin/userstyles/raw/main/styles/wikipedia/catppuccin.user.less",
-    "usercssData": {
-      "name": "Wikipedia Catppuccin",
-      "updateUrl": "https://github.com/catppuccin/userstyles/raw/main/styles/wikipedia/catppuccin.user.less"
-    },
+    "sourceCode": "",
+    "usercssData": { "version": "0" },
     "sections": [{ "code": "" }]
   },
   {
     "name": "npm Catppuccin",
     "enabled": true,
     "updateUrl": "https://github.com/catppuccin/userstyles/raw/main/styles/npm/catppuccin.user.less",
-    "usercssData": {
-      "name": "npm Catppuccin",
-      "updateUrl": "https://github.com/catppuccin/userstyles/raw/main/styles/npm/catppuccin.user.less"
-    },
+    "sourceCode": "",
+    "usercssData": { "version": "0" },
     "sections": [{ "code": "" }]
   },
   {
     "name": "Proton Catppuccin",
     "enabled": true,
     "updateUrl": "https://github.com/catppuccin/userstyles/raw/main/styles/proton/catppuccin.user.less",
-    "usercssData": {
-      "name": "Proton Catppuccin",
-      "updateUrl": "https://github.com/catppuccin/userstyles/raw/main/styles/proton/catppuccin.user.less"
-    },
+    "sourceCode": "",
+    "usercssData": { "version": "0" },
     "sections": [{ "code": "" }]
   },
   {
     "name": "DuckDuckGo Catppuccin",
     "enabled": true,
     "updateUrl": "https://github.com/catppuccin/userstyles/raw/main/styles/duckduckgo/catppuccin.user.less",
-    "usercssData": {
-      "name": "DuckDuckGo Catppuccin",
-      "updateUrl": "https://github.com/catppuccin/userstyles/raw/main/styles/duckduckgo/catppuccin.user.less"
-    },
+    "sourceCode": "",
+    "usercssData": { "version": "0" },
     "sections": [{ "code": "" }]
   },
   {
     "name": "Arch Wiki Catppuccin",
     "enabled": true,
     "updateUrl": "https://github.com/catppuccin/userstyles/raw/main/styles/arch-wiki/catppuccin.user.less",
-    "usercssData": {
-      "name": "Arch Wiki Catppuccin",
-      "updateUrl": "https://github.com/catppuccin/userstyles/raw/main/styles/arch-wiki/catppuccin.user.less"
-    },
+    "sourceCode": "",
+    "usercssData": { "version": "0" },
     "sections": [{ "code": "" }]
   },
   {
     "name": "ChatGPT Catppuccin",
     "enabled": true,
     "updateUrl": "https://github.com/catppuccin/userstyles/raw/main/styles/chatgpt/catppuccin.user.less",
-    "usercssData": {
-      "name": "ChatGPT Catppuccin",
-      "updateUrl": "https://github.com/catppuccin/userstyles/raw/main/styles/chatgpt/catppuccin.user.less"
-    },
+    "sourceCode": "",
+    "usercssData": { "version": "0" },
     "sections": [{ "code": "" }]
   },
   {
     "name": "Startpage Catppuccin",
     "enabled": true,
     "updateUrl": "https://github.com/catppuccin/userstyles/raw/main/styles/startpage/catppuccin.user.less",
-    "usercssData": {
-      "name": "Startpage Catppuccin",
-      "updateUrl": "https://github.com/catppuccin/userstyles/raw/main/styles/startpage/catppuccin.user.less"
-    },
+    "sourceCode": "",
+    "usercssData": { "version": "0" },
     "sections": [{ "code": "" }]
   }
 ]
