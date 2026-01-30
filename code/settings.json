@@ -1,6 +1,8 @@
 {
-	"debug.onTaskErrors": "debugAnyway",
+	"window.titleBarStyle": "native",
 	"editor.fontFamily": "'JetBrainsMono Nerd Font Mono', 'Roboto Mono', monospace",
+
+	"debug.onTaskErrors": "debugAnyway",
 	"editor.fontLigatures": true,
 	"editor.fontSize": 13,
 	"editor.insertSpaces": false,
@@ -27,7 +29,6 @@
 	"update.mode": "none",
 	"window.customTitleBarVisibility": "never",
 	"window.menuBarVisibility": "toggle",
-	"window.titleBarStyle": "native",
 	"window.zoomLevel": 0,
 	"workbench.colorTheme": "Catppuccin Mocha",
 	"workbench.iconTheme": "catppuccin-mocha",

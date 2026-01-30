@@ -170,7 +170,6 @@
     "UserMessaging": {
       "ExtensionRecommendations": false,
       "FeatureRecommendations": false,
-      "FirefoxLabs": false,
       "MoreFromMozilla": false,
       "SkipOnboarding": true,
       "WhatsNew": false
@@ -221,6 +220,9 @@
     },
 
     "Preferences": {
+      "browser.tabs.inTitlebar": { "Value": 0 },
+      "browser.taskbarTabs.enabled": { "Value": 0 },
+
       "browser.aboutConfig.showWarning": { "Value": false },
       "browser.compactmode.show": { "Value": true },
       "browser.crashReports.unsubmittedCheck.autoSubmit": { "Value": false },
@@ -239,7 +241,6 @@
       "browser.tabs.firefox-view-next": { "Value": false },
       "browser.tabs.firefox-view": { "Value": false },
       "browser.tabs.groups.enabled": { "Value": false },
-      "browser.tabs.inTitlebar": { "Value": 0 },
       "browser.tabs.unloadOnLowMemory": { "Value": true },
       "browser.toolbars.bookmarks.visibility": { "Value": "never" },
       "browser.topsites.contile.enabled": { "Value": false },
@@ -274,7 +275,7 @@
       "network.prefetch-next": { "Value": false },
       "security.OCSP.enabled": { "Value": 0 },
       "security.ssl.errorReporting.enabled": { "Value": false },
-      "security.insecure_connection_text.enabled": { "Value": true },
+      "security.insecure_connection_text.enabled": { "Value": true }
     }
   }
 }

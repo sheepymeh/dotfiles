@@ -28,5 +28,5 @@ sqlite3 ~/.config/mozilla/firefox/*.default-release/permissions.sqlite <<-EOF
 	('https://web.telegram.org', 'cookie', '1', '0', '0', '1600000000000'),
 	('https://web.whatsapp.com', 'cookie', '1', '0', '0', '1600000000000'),
 	('https://wikipedia.org', 'cookie', '1', '0', '0', '1600000000000'),
-	('https://www.notion.so', 'cookie', '1', '0', '0', '1600000000000'),
+	('https://notion.so', 'cookie', '1', '0', '0', '1600000000000'),
 EOF
