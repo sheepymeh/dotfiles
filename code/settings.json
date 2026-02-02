@@ -1,6 +1,7 @@
 {
 	"window.titleBarStyle": "native",
 	"editor.fontFamily": "'JetBrainsMono Nerd Font Mono', 'Roboto Mono', monospace",
+	"update.mode": "none",
 
 	"debug.onTaskErrors": "debugAnyway",
 	"editor.fontLigatures": true,
@@ -26,7 +27,7 @@
 	"security.workspace.trust.enabled": false,
 	"security.workspace.trust.startupPrompt": "never",
 	"telemetry.telemetryLevel": "off",
-	"update.mode": "none",
+	"update.showReleaseNotes": false,
 	"window.customTitleBarVisibility": "never",
 	"window.menuBarVisibility": "toggle",
 	"window.zoomLevel": 0,
