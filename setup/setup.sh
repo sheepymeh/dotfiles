@@ -19,7 +19,7 @@ setup_packages() {
 		exfat-utils engrampa ffmpegthumbnailer gvfs gvfs-mtp owncloud-client tumbler thunar thunar-archive-plugin trash-cli unzip xdg-user-dirs 7zip \
 		libreoffice-fresh hunspell hunspell-en_us hunspell-de gutenprint \
 		fcitx5 fcitx5-rime rime-pinyin-simp fcitx5-mozc \
-		autotiling grim i3blocks mako nwg-displays qt6-wayland slurp sway swaybg swayidle swaylock wf-recorder wl-clipboard wofi xdg-desktop-portal xdg-desktop-portal-wlr xdg-desktop-portal-gtk polkit-gnome wob \
+		autotiling grim i3blocks mako qt6-wayland slurp sway swaybg swayidle swaylock wf-recorder wl-clipboard wofi xdg-desktop-portal xdg-desktop-portal-wlr xdg-desktop-portal-gtk polkit-gnome wdisplays wob \
 		android-tools foot impala iwd sqlite shellcheck \
 		tesseract tesseract-data-eng \
 		texlive-basic texlive-binextra texlive-latex texlive-latexrecommended texlive-latexextra texlive-fontsrecommended texlive-mathscience \
