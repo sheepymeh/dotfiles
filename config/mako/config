@@ -14,8 +14,8 @@ border-color=#cba6f7
 progress-color=over #313244
 
 [actionable]
-border-color=#fab387
-format=<b>%s</b> <i>[actions]</i>\n%b
+# border-color=#fab387
+# format=<b>%s</b> <i>[actions]</i>\n%b
 on-button-left=exec makoctl menu -n "$id" -- wofi -dp 'Choose Action: '
 
 [urgency=high]

@@ -24,7 +24,7 @@ setup_packages() {
 		tesseract tesseract-data-eng \
 		texlive-basic texlive-binextra texlive-latex texlive-latexrecommended texlive-latexextra texlive-fontsrecommended texlive-mathscience \
 		python-pip python-virtualenv \
-		mypy python-pydantic python-pylint python-pylint-pydantic python-pylint-venv python-uv pyright ruff \
+		mypy python-pydantic python-pylint python-pylint-pydantic python-pylint-venv python-tqdm python-uv pyright ruff \
 		python-pytest python-pytest-aiohttp python-pytest-asyncio python-pytest-cov \
 		python-numpy python-pytorch-opt python-torchvision python-pillow python-opencv python-scikit-learn python-tqdm \
 		python-beautifulsoup4 python-flask python-aiohttp python-pycryptodome python-pymupdf \
@@ -116,10 +116,6 @@ sed -i 's$#ParallelDownloads$ParallelDownloads$' /etc/pacman.conf # pacman paral
 mkdir -p /etc/pacman.d/hooks
 cp pacman-hooks/chromium-no-defaults.hook /etc/pacman.d/hooks
 
-# Packages that are used in the setup process
-pacman -Syyu --noconfirm
-pacman -S --noconfirm --needed acpi acpi_call acpid base-devel cups git go papirus-icon-theme plymouth podman python-build smartmontools ufw wget
-
 touch /etc/environment
 sed -i '/deny = /c\deny = 6' /etc/security/faillock.conf # increase allowed failed attempt count
 
@@ -158,6 +154,10 @@ fi
 sudo -u "$SUDO_USER" yay -Sq --noconfirm --needed --sudoloop \
 	chayang papirus-folders-catppuccin-git python-catppuccin sway-audio-idle-inhibit-git visual-studio-code-bin \
 	dxvk-bin vkd3d-proton-bin
+
+# Packages that are used in the setup process
+pacman -Syyu --noconfirm
+pacman -S --noconfirm --needed acpi acpi_call acpid base-devel cups git go papirus-icon-theme plymouth podman python-build smartmontools ufw wget
 
 # Start slow-running jobs
 setup_packages &
@@ -241,6 +241,7 @@ cat <<-EOF >/etc/udev/rules.d/99-device-pm.rules
 SUBSYSTEM=="pci", ATTR{power/control}="auto"
 SUBSYSTEM=="ata_port", KERNEL=="ata*", ATTR{device/power/control}="auto"
 ACTION=="add", SUBSYSTEM=="usb", ATTR{product}!="*Mouse", ATTR{product}!="*Keyboard", TEST=="power/control", ATTR{power/control}="auto"
+ACTION=="add", SUBSYSTEM=="usb", ATTR{idVendor}=="046d", ATTR{power/control}="on"
 ACTION=="add", SUBSYSTEM=="i2c", ATTR{power/control}="auto"
 EOF
 

@@ -7,11 +7,11 @@ if [ "$EUID" -eq 0 ]; then
 fi
 cd "$(dirname -- "$0")"
 
-ls ~/.config/mozilla/firefox/*.default-release
+FF_PROFILE="$(ls ~/.config/mozilla/firefox/ | grep '.default-release')"
 
-cp ../firefox/user.js ~/.config/mozilla/firefox/*.default-release/user.js
+cp ../firefox/user.js ~/.config/mozilla/firefox/$FF_PROFILE/user.js
 
-sqlite3 ~/.config/mozilla/firefox/*.default-release/permissions.sqlite <<-EOF
+sqlite3 ~/.config/mozilla/firefox/$FF_PROFILE/permissions.sqlite <<-EOF
 	INSERT INTO moz_perms (origin, type, permission, expireType, expireTime, modificationTime) VALUES
 	('https://accounts.google.com', 'cookie', '1', '0', '0', '1600000000000'),
 	('https://amazon.co.uk', 'cookie', '1', '0', '0', '1600000000000'),
@@ -23,10 +23,10 @@ sqlite3 ~/.config/mozilla/firefox/*.default-release/permissions.sqlite <<-EOF
 	('https://discord.com', 'cookie', '1', '0', '0', '1600000000000'),
 	('https://github.com', 'cookie', '1', '0', '0', '1600000000000'),
 	('https://login.microsoftonline.com', 'cookie', '1', '0', '0', '1600000000000'),
-	('https://music.youtube.com', 'cookie', '1', '0', '0', '1600000000000');
+	('https://music.youtube.com', 'cookie', '1', '0', '0', '1600000000000'),
 	('https://sheepymeh.net', 'cookie', '1', '0', '0', '1600000000000'),
 	('https://web.telegram.org', 'cookie', '1', '0', '0', '1600000000000'),
 	('https://web.whatsapp.com', 'cookie', '1', '0', '0', '1600000000000'),
 	('https://wikipedia.org', 'cookie', '1', '0', '0', '1600000000000'),
-	('https://notion.so', 'cookie', '1', '0', '0', '1600000000000'),
+	('https://notion.so', 'cookie', '1', '0', '0', '1600000000000');
 EOF

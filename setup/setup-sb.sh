@@ -14,11 +14,15 @@ sbctl create-keys
 sbctl enroll-keys --yes-this-might-brick-my-machine
 sbctl verify
 
+set +e
 sbctl sign -s /boot/vmlinuz-linux
 sbctl sign -s /boot/EFI/BOOT/BOOTX64.EFI
 sbctl sign -s /boot/EFI/systemd/systemd-bootx64.efi
 sbctl sign -s /boot/EFI/Linux/arch-linux.efi
 sbctl sign -s -o /usr/lib/systemd/boot/efi/systemd-bootx64.efi.signed /usr/lib/systemd/boot/efi/systemd-bootx64.efi
+set -e
 
 sbctl status
 sbctl verify
+
+mkinitcpio -P

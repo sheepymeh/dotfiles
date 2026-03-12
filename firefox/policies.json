@@ -152,6 +152,8 @@
 
     "GenerativeAI": { "Enabled": false },
 
+    "Homepage": { "StartPage": "previous-session" },
+
     "SanitizeOnShutdown": {
       "Cache": false,
       "Cookies": true,
@@ -245,7 +247,7 @@
       "browser.toolbars.bookmarks.visibility": { "Value": "never" },
       "browser.topsites.contile.enabled": { "Value": false },
       "browser.uiCustomization.state": {
-        "Value": "{\"placements\":{\"widget-overflow-fixed-list\":[],\"unified-extensions-area\":[],\"nav-bar\":[\"back-button\",\"forward-button\",\"stop-reload-button\",\"customizableui-special-spring1\",\"urlbar-container\",\"customizableui-special-spring2\",\"personal-bookmarks\",\"downloads-button\",\"ublock0_raymondhill_net-browser-action\",\"_c84d89d9-a826-4015-957b-affebd9eb603_-browser-action\",\"_446900e4-71c2-419f-a6a7-df9c091e268b_-browser-action\",\"unified-extensions-button\"],\"toolbar-menubar\":[\"menubar-items\"],\"TabsToolbar\":[\"tabbrowser-tabs\",\"new-tab-button\"]},\"currentVersion\":23,\"newElementCount\":2}"
+        "Value": "{\"placements\":{\"widget-overflow-fixed-list\":[],\"unified-extensions-area\":[],\"nav-bar\":[\"back-button\",\"forward-button\",\"stop-reload-button\",\"customizableui-special-spring1\",\"urlbar-container\",\"customizableui-special-spring2\",\"personal-bookmarks\",\"customizableui-special-spring3\",\"downloads-button\",\"ublock0_raymondhill_net-browser-action\",\"_c84d89d9-a826-4015-957b-affebd9eb603_-browser-action\",\"_446900e4-71c2-419f-a6a7-df9c091e268b_-browser-action\",\"unified-extensions-button\"],\"toolbar-menubar\":[\"menubar-items\"],\"TabsToolbar\":[\"tabbrowser-tabs\",\"new-tab-button\"]},\"currentVersion\":23,\"newElementCount\":2}"
       },
       "browser.uidensity": { "Value": 1 },
       "browser.uitour.enabled": { "Value": false },
