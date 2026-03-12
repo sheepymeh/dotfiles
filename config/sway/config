@@ -46,6 +46,7 @@ for_window [app_id="org.mozilla.Thunderbird"] floating enable, move position cen
 for_window [app_id="org.mozilla.Thunderbird" title="- Mozilla Thunderbird$"] floating disable
 for_window [app_id="org.mozilla.Thunderbird" title="Authentication Required - Mozilla Thunderbird$"] floating enable, move position center
 for_window [app_id="pavucontrol"] floating enable
+for_window [app_id="signal"] floating enable, resize set width 850 height 700
 for_window [app_id="^[tT]hunar$" title="^Rename \\\""] floating enable
 for_window [app_id="^[tT]hunar$" title="Confirm to replace files"] floating enable
 for_window [app_id="^[tT]hunar$" title="File Operation Progress"] floating enable, opacity .9, inhibit_idle open
