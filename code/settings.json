@@ -6,6 +6,7 @@
 	"debug.onTaskErrors": "debugAnyway",
 	"editor.fontLigatures": true,
 	"editor.fontSize": 13,
+	"editor.formatOnPaste": true,
 	"editor.insertSpaces": false,
 	"editor.minimap.enabled": false,
 	"editor.renderWhitespace": "boundary",
@@ -14,6 +15,8 @@
 	"explorer.confirmDelete": false,
 	"explorer.confirmDragAndDrop": false,
 	"files.autoSave": "onWindowChange",
+	"editor.formatOnSave": true,
+	"editor.formatOnSaveMode": "modificationsIfAvailable",
 	"files.eol": "\n",
 	"files.insertFinalNewline": true,
 	"files.trimTrailingWhitespace": true,
@@ -27,6 +30,7 @@
 	"security.workspace.trust.enabled": false,
 	"security.workspace.trust.startupPrompt": "never",
 	"telemetry.telemetryLevel": "off",
+	"terminal.integrated.scrollback": 10000,
 	"update.showReleaseNotes": false,
 	"window.customTitleBarVisibility": "never",
 	"window.menuBarVisibility": "toggle",
@@ -34,9 +38,11 @@
 	"workbench.colorTheme": "Catppuccin Mocha",
 	"workbench.iconTheme": "catppuccin-mocha",
 	"workbench.welcomePage.walkthroughs.openOnInstall": false,
+
 	"workbench.editorAssociations": {
 		"*.pdf": "latex-workshop-pdf-hook"
 	},
+	"latex-workshop.formatting.latex": "latexindent",
 	"latex-workshop.latex.tools": [
 		{
 			"name": "latexmk",

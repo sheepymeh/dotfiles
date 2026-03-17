@@ -22,7 +22,7 @@ setup_packages() {
 		autotiling grim i3blocks mako qt6-wayland slurp sway swaybg swayidle swaylock wf-recorder wl-clipboard wofi xdg-desktop-portal xdg-desktop-portal-wlr xdg-desktop-portal-gtk polkit-gnome wdisplays wob \
 		android-tools foot impala iwd sqlite shellcheck \
 		tesseract tesseract-data-eng \
-		texlive-basic texlive-binextra texlive-latex texlive-latexrecommended texlive-latexextra texlive-fontsrecommended texlive-mathscience \
+		texlive-basic texlive-binextra texlive-latex texlive-latexrecommended texlive-latexextra texlive-fontsrecommended texlive-mathscience perl-file-homedir perl-yaml-tiny \
 		python-pip python-virtualenv \
 		mypy python-pydantic python-pylint python-pylint-pydantic python-pylint-venv python-tqdm python-uv pyright ruff \
 		python-pytest python-pytest-aiohttp python-pytest-asyncio python-pytest-cov \
