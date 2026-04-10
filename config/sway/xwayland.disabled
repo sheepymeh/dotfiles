@@ -1,2 +1,0 @@
-xwayland enable
-for_window [shell="xwayland"] border pixel 4

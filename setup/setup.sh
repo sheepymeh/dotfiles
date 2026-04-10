@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 set -Eeuo pipefail
 trap 'kill 0' ERR
 
@@ -8,28 +8,31 @@ if [ "$EUID" -ne 0 ]; then
 fi
 cd "$(dirname -- "$0")/.."
 
+HAS_BATTERY=false
+ls /sys/class/power_supply/ | grep -q ^BAT && HAS_BATTERY=true
+
 setup_packages() {
 	pacman -Sq --noconfirm --needed \
 		age bash-completion bat curl dialog gnome-keyring jq brightnessctl man-db nano nano-syntax-highlighting linux-firmware \
 		delfin firefox imv mpv signal-desktop thunderbird transmission-gtk \
-		htop mission-center \
-		cups-pdf system-config-printer \
-		playerctl pipewire pipewire-pulse pamixer pavucontrol \
+		htop mission-center s-tui \
+		cups cups-pdf gutenprint system-config-printer \
+		playerctl pipewire pipewire-pulse pavucontrol \
 		inter-font noto-fonts-cjk ttf-jetbrains-mono-nerd otf-crimson-pro \
 		exfat-utils engrampa ffmpegthumbnailer gvfs gvfs-mtp owncloud-client tumbler thunar thunar-archive-plugin trash-cli unzip xdg-user-dirs 7zip \
-		libreoffice-fresh hunspell hunspell-en_us hunspell-de gutenprint \
+		libreoffice-fresh hunspell hunspell-en_us hunspell-de \
 		fcitx5 fcitx5-rime rime-pinyin-simp fcitx5-mozc \
 		autotiling grim i3blocks mako qt6-wayland slurp sway swaybg swayidle swaylock wf-recorder wl-clipboard wofi xdg-desktop-portal xdg-desktop-portal-wlr xdg-desktop-portal-gtk polkit-gnome wdisplays wob \
 		android-tools foot impala iwd sqlite shellcheck \
 		tesseract tesseract-data-eng \
 		texlive-basic texlive-binextra texlive-latex texlive-latexrecommended texlive-latexextra texlive-fontsrecommended texlive-mathscience perl-file-homedir perl-yaml-tiny \
 		python-pip python-virtualenv \
-		mypy python-pydantic python-pylint python-pylint-pydantic python-pylint-venv python-tqdm python-uv pyright ruff \
+		mypy python-pydantic python-pylint python-tqdm python-uv pyright ruff ty \
 		python-pytest python-pytest-aiohttp python-pytest-asyncio python-pytest-cov \
 		python-numpy python-pytorch-opt python-torchvision python-pillow python-opencv python-scikit-learn python-tqdm \
 		python-beautifulsoup4 python-flask python-aiohttp python-pycryptodome python-pymupdf \
-		jupyter-notebook python-ipykernel python-ipywidgets jupyterlab-widgets \
-		nodejs npm typescript wrangler \
+		jupyter-notebook jupyterlab-widgets python-ipykernel python-ipywidgets \
+		nodejs npm pnpm typescript wrangler \
 		wine wine-gecko mangohud
 
 	BT_SYS_PATH="/sys/class/bluetooth"
@@ -62,7 +65,7 @@ setup_packages() {
 		EOF
 
 		# Nvidia Optimus for battery operated devices
-		if [ -d /proc/acpi/battery/BAT* ]; then
+		if $HAS_BATTERY; then
 			usermod -aG bumblebee "$SUDO_USER"
 			systemctl enable --now bumblebeed.service
 			echo 'options bbswitch load_state=0 unload_state=1' >/etc/modprobe.d/bbswitch.conf
@@ -82,7 +85,7 @@ setup_packages() {
 }
 
 setup_i3blocks() {
-	if [ -d /sys/class/power_supply/BAT* ]; then
+	if $HAS_BATTERY; then
 		go build scripts/battery.go
 		chmod u+s battery
 		mv battery /usr/local/bin
@@ -116,7 +119,6 @@ sed -i 's$#ParallelDownloads$ParallelDownloads$' /etc/pacman.conf # pacman paral
 mkdir -p /etc/pacman.d/hooks
 cp pacman-hooks/chromium-no-defaults.hook /etc/pacman.d/hooks
 
-touch /etc/environment
 sed -i '/deny = /c\deny = 6' /etc/security/faillock.conf # increase allowed failed attempt count
 
 # Enable TRIM
@@ -209,14 +211,14 @@ sed -i 's/^DEVICESCAN$/DEVICESCAN -a -m @smartdnotify -n standby,15,q/' /etc/sma
 
 # Wayland env vars
 grep -q SDL_VIDEODRIVER /etc/environment || cat <<-EOF >>/etc/environment
-	GDK_BACKEND=wayland
-	SDL_VIDEODRIVER=wayland
-	QT_QPA_PLATFORM=wayland
-	XDG_SESSION_TYPE=wayland
-	XDG_CURRENT_DESKTOP=sway
-	_JAVA_AWT_WM_NONREPARENTING=1
 	ELECTRON_OZONE_PLATFORM_HINT=auto
+	GDK_BACKEND=wayland
+	QT_QPA_PLATFORM=wayland
 	QT_WAYLAND_DISABLE_WINDOWDECORATION=1
+	SDL_VIDEODRIVER=wayland
+	XDG_CURRENT_DESKTOP=sway
+	XDG_SESSION_TYPE=wayland
+	_JAVA_AWT_WM_NONREPARENTING=1
 
 	WINEDEBUG=-all
 
@@ -292,7 +294,7 @@ if [ -f /boot/loader/loader.conf ]; then
 	sed -i "/^options .* quiet/b; /^options / s/.*/& $CMDLINE_OPTIONS/" /boot/loader/entries/*.conf
 	bootctl update --graceful
 	systemctl enable --now systemd-boot-update.service
-else
+else  # efistub
 	mkdir -p /etc/cmdline.d
 	echo "$CMDLINE_OPTIONS" >/etc/cmdline.d/default.conf
 fi

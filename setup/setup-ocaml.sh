@@ -1,5 +1,5 @@
-#!/bin/sh
-set -euo pipefail
+#!/bin/bash
+set -Eeuo pipefail
 
 if [ "$EUID" -eq 0 ]; then
 	echo "Script must be run as user"
@@ -9,7 +9,7 @@ fi
 sudo pacman -S ocaml opam dune
 
 opam init --auto-setup
-eval $(opam env --switch=default)
+eval "$(opam env --switch=default)"
 opam install -y ocamlformat jupyter ocaml-lsp-server
 code --install-extension ocamllabs.ocaml-platform
 

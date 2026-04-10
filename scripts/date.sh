@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 enable sleep
 print_datetime() {
 	echo " $(date '+%A %d.%m %H:%M')"

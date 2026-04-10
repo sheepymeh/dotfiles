@@ -3,9 +3,9 @@
 show() {
 	if MIC="$(pactl list short sources | awk '$2 !~ /monitor/ && /RUNNING$/ { r = 1; print $2 } END { exit !r }')"; then
 		if [ "$(pactl get-source-mute "$MIC")" = 'Mute: yes' ]; then
-			echo -e '{"full_text": ""}'
+			echo '{"full_text": ""}'
 		else
-			echo -e '{"full_text": "", "color": "#f38ba8"}'
+			echo '{"full_text": "", "color": "#f38ba8"}'
 		fi
 	else
 		echo

@@ -15,6 +15,7 @@ WINDOW_ICONS = {
     "cafe.avery.Delfin": "",
     "chromium": "",
     "code": "󰨞",
+    "code-oss": "󰨞",
     "code-url-handler": "󰨞",
     "codium": "󰨞",
     "codium-url-handler": "󰨞",

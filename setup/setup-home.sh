@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 set -Eeuo pipefail
 trap 'kill 0' ERR
 
@@ -11,12 +11,29 @@ cd "$(dirname -- "$0")"
 install_vscode_ext() {
 	code --install-extension Catppuccin.catppuccin-vsc
 	code --install-extension Catppuccin.catppuccin-vsc-icons
+
 	code --install-extension Vue.volar
+	code --install-extension dbaeumer.vscode-eslint
+	code --install-extension esbenp.prettier-vscode
+
 	code --install-extension eamodio.gitlens
+	code --install-extension github.vscode-pull-request-github
+	code --install-extension github.vscode-github-actions
+
 	code --install-extension GitHub.copilot
+	code --install-extension ms-azuretools.vscode-docker
+
 	code --install-extension ms-python.python
-	code --install-extension james-yu.latex-workshop
 	code --install-extension ms-toolsai.jupyter
+	code --install-extension ms-python.mypy-type-checker
+	code --install-extension kv9898.basedpyright
+	code --install-extension charliermarsh.ruff
+	code --install-extension astral-sh.ty
+
+	code --install-extension james-yu.latex-workshop
+	code --install-extension davidanson.vscode-markdownlint
+
+	code --install-extension timonwong.shellcheck
 }
 
 install_wine() {
@@ -54,8 +71,8 @@ cp -a home-config/. ~
 cp -a config/. ~/.config
 mkdir -p ~/.config/Code/User
 cp code/* ~/.config/Code/User
-if [ ! -d /sys/class/power_supply/BAT* ]; then
-	rm ~/.config/sway/laptop.conf
+if swaymsg -t get_outputs | jq -e 'any(.name == "eDP-1")' >/dev/null; then
+	rm ~/.config/sway/config.d/laptop.conf
 fi
 cd -
 

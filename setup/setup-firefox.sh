@@ -1,5 +1,5 @@
-#!/bin/sh
-set -euo pipefail
+#!/bin/bash
+set -Eeuo pipefail
 
 if [ "$EUID" -eq 0 ]; then
 	echo "Script must be run as user"
@@ -9,9 +9,9 @@ cd "$(dirname -- "$0")"
 
 FF_PROFILE="$(ls ~/.config/mozilla/firefox/ | grep '.default-release')"
 
-cp ../firefox/user.js ~/.config/mozilla/firefox/$FF_PROFILE/user.js
+cp ../firefox/user.js ~/.config/mozilla/firefox/"$FF_PROFILE"/user.js
 
-sqlite3 ~/.config/mozilla/firefox/$FF_PROFILE/permissions.sqlite <<-EOF
+sqlite3 ~/.config/mozilla/firefox/"$FF_PROFILE"/permissions.sqlite <<-EOF
 	INSERT INTO moz_perms (origin, type, permission, expireType, expireTime, modificationTime) VALUES
 	('https://accounts.google.com', 'cookie', '1', '0', '0', '1600000000000'),
 	('https://amazon.co.uk', 'cookie', '1', '0', '0', '1600000000000'),

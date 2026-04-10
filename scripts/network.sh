@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 if network=(`networkctl | grep -m 1 routable`); then
 	if [ "${network[2]}" = 'wlan' ]; then
