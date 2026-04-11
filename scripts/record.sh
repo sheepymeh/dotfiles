@@ -24,7 +24,7 @@ else
 		elif [ -e /dev/dri/renderD128 ]; then CODEC="-c ${CODEC}_vaapi -d /dev/dri/renderD128"
 		else CODEC=""
 		fi
-		wf-recorder -f "$HOME/Videos/Screen Recording $(date +'%m.%d.%y %T').mp4" "$LOC" "$CODEC" -a"$(pactl info | grep 'Default Sink' | cut -d':' -f2 | xargs).monitor" 2>/dev/null &
+		wf-recorder -f "$HOME/Videos/Screen Recording $(date +'%m.%d.%y %T').mp4" "$LOC" "$CODEC" --audio 2>/dev/null &
 	fi
 	sleep .2
 	pkill -SIGRTMIN+2 i3blocks
