@@ -2,7 +2,9 @@
 set -Eeuo pipefail
 trap 'kill 0' ERR
 
-# TODO: check for $DISPLAY
+if [ -z "$WAYLAND_DISPLAY" ]; then
+	echo '$WAYLAND_DISPLAY not initialized'
+fi
 
 if [ "$EUID" -eq 0 ]; then
 	echo "Script must be run as user"
@@ -94,9 +96,9 @@ rm catppuccin-mocha-mauve-standard+default.zip
 cd ..
 cp -a home-config/. ~
 cp -a config/. ~/.config
-mkdir -p "$VSCODE_CONFIG_DIR/User"
-cp code/* "$VSCODE_CONFIG_DIR/User"
-if swaymsg -t get_outputs | jq -e 'any(.name == "eDP-1")' >/dev/null; then
+mkdir -p "$VSCODE_CONFIG_DIR"
+cp code/* "$VSCODE_CONFIG_DIR"
+if ! swaymsg -t get_outputs | jq -e 'any(.name == "eDP-1")' >/dev/null; then
 	rm ~/.config/sway/config.d/laptop.conf
 fi
 cd -

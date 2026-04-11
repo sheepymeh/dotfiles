@@ -33,7 +33,7 @@ setup_packages() {
 		python-beautifulsoup4 python-flask python-aiohttp python-pycryptodome python-pymupdf \
 		jupyter-notebook jupyterlab-widgets python-ipykernel python-ipywidgets \
 		code \
-		nodejs npm pnpm typescript wrangler \
+		eslint eslint-language-server nodejs npm pnpm prettier typescript wrangler \
 		wine wine-gecko mangohud
 
 	BT_SYS_PATH="/sys/class/bluetooth"
@@ -144,6 +144,10 @@ cat <<-EOF >/etc/makepkg.conf.d/flags.conf
 	OPTIONS+=(!debug)
 EOF
 
+# Packages that are used in the setup process
+pacman -Syyu --noconfirm
+pacman -S --noconfirm --needed acpi acpi_call acpid base-devel cups git go papirus-icon-theme plymouth podman podman-compose python-build smartmontools ufw wget
+
 # Install yay-bin
 if ! command -v yay &> /dev/null; then
 	su -c 'git clone -q --depth=1 https://aur.archlinux.org/yay-bin.git' "$SUDO_USER"
@@ -157,10 +161,6 @@ fi
 sudo -u "$SUDO_USER" yay -Sq --noconfirm --needed --sudoloop \
 	chayang papirus-folders-catppuccin-git python-catppuccin sway-audio-idle-inhibit-git \
 	dxvk-bin vkd3d-proton-bin
-
-# Packages that are used in the setup process
-pacman -Syyu --noconfirm
-pacman -S --noconfirm --needed acpi acpi_call acpid base-devel cups git go papirus-icon-theme plymouth podman podman-compose python-build smartmontools ufw wget
 
 # Start slow-running jobs
 setup_packages &
