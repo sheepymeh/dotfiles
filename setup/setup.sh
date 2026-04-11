@@ -271,6 +271,10 @@ cat <<-EOF >/etc/sysctl.d/99-writeback.conf
 vm.dirty_writeback_centisecs=1500
 EOF
 
+cat <<-EOF >/etc/sysctl.d/20-quiet-printk.conf
+kernel.printk = 3 3 3 3
+EOF
+
 # Enable (REI)SUB
 # echo kernel.sysrq = 244 >/etc/sysctl.d/99-sysctl.conf
 
@@ -286,7 +290,7 @@ EOF
 systemctl enable --now cups.service
 
 # Quiet boot
-CMDLINE_OPTIONS="quiet splash loglevel=3 rd.systemd.show_status=auto rd.udev.log_level=3 nmi_watchdog=0 snd_hda_intel.power_save=1 pcie_aspm.policy=powersupersave"
+CMDLINE_OPTIONS="quiet splash loglevel=3 rd.systemd.show_status=auto rd.udev.log_level=3 vt.global_cursor_default=0 nmi_watchdog=0 snd_hda_intel.power_save=1 pcie_aspm.policy=powersupersave"
 # S540-13ARE: add amdgpu.gpu_recovery=1 amdgpu.dcfeaturemask=0xA pcie_aspm=force
 # https://www.kernel.org/doc/html/latest/gpu/amdgpu/module-parameters.html
 if [ -f /boot/loader/loader.conf ]; then
@@ -299,16 +303,15 @@ else  # efistub
 	echo "$CMDLINE_OPTIONS" >/etc/cmdline.d/default.conf
 fi
 
-# Plymouth boot splash screen
-git clone -q --depth=1 https://github.com/sheepymeh/plymouth-theme-arch-agua
-cp -r plymouth-theme-arch-agua /usr/share/plymouth/themes/arch-agua
-rm -rf plymouth-theme-arch-agua
-sed -i '/^HOOKS=(/ { /plymouth/! s/encrypt/plymouth encrypt/ }' /etc/mkinitcpio.conf
-sed -i 's/ )$/)/' /etc/mkinitcpio.conf
-
-plymouth-set-default-theme -R arch-agua &
-
 fc-cache -f &
+
+# Plymouth boot splash screen
+# TODO: secure boot disabled warning
+# git clone -q --depth=1 https://github.com/sheepymeh/plymouth-theme-arch-agua
+# cp -r plymouth-theme-arch-agua /usr/share/plymouth/themes/arch-agua
+# rm -rf plymouth-theme-arch-agua
+sed -i '/^HOOKS=(/ { /plymouth/! s/kms/kms plymouth/ }' /etc/mkinitcpio.conf
+sed -i '/^[^#].*--splash/s/^/#/' /etc/mkinitcpio.d/*.preset
 
 cat <<-EOF >/etc/iwd/main.conf
 	[General]
@@ -317,6 +320,9 @@ cat <<-EOF >/etc/iwd/main.conf
 EOF
 
 wait
+
+sed -i 's/ )$/)/' /etc/mkinitcpio.conf
+plymouth-set-default-theme -R spinner
 
 # Notes:
 # https://bbs.archlinux.org/viewtopic.php?id=257315
