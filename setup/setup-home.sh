@@ -8,32 +8,48 @@ if [ "$EUID" -eq 0 ]; then
 fi
 cd "$(dirname -- "$0")"
 
+VSCODE_CONFIG_DIR="$HOME/.config/Code - OSS/User"
+VSCODE_EXTENSIONS=(
+	# Themes
+	Catppuccin.catppuccin-vsc
+	Catppuccin.catppuccin-vsc-icons
+
+	# Git
+	eamodio.gitlens
+	github.vscode-pull-request-github
+	github.vscode-github-actions
+
+	# Utilities
+	GitHub.copilot
+	ms-azuretools.vscode-docker
+
+	# Text
+	james-yu.latex-workshop
+	davidanson.vscode-markdownlint
+
+	# Python
+	ms-python.python
+	ms-toolsai.jupyter
+	ms-python.mypy-type-checker
+	kv9898.basedpyright
+	charliermarsh.ruff
+	astral-sh.ty
+
+	# Web
+	Vue.volar
+	dbaeumer.vscode-eslint
+	esbenp.prettier-vscode
+
+	# Shell
+	timonwong.shellcheck
+)
+
 install_vscode_ext() {
-	code --install-extension Catppuccin.catppuccin-vsc
-	code --install-extension Catppuccin.catppuccin-vsc-icons
+	for ext in "${VSCODE_EXTENSIONS[@]}"; do
+		code --install-extension "$ext"
+	done
 
-	code --install-extension Vue.volar
-	code --install-extension dbaeumer.vscode-eslint
-	code --install-extension esbenp.prettier-vscode
-
-	code --install-extension eamodio.gitlens
-	code --install-extension github.vscode-pull-request-github
-	code --install-extension github.vscode-github-actions
-
-	code --install-extension GitHub.copilot
-	code --install-extension ms-azuretools.vscode-docker
-
-	code --install-extension ms-python.python
-	code --install-extension ms-toolsai.jupyter
-	code --install-extension ms-python.mypy-type-checker
-	code --install-extension kv9898.basedpyright
-	code --install-extension charliermarsh.ruff
-	code --install-extension astral-sh.ty
-
-	code --install-extension james-yu.latex-workshop
-	code --install-extension davidanson.vscode-markdownlint
-
-	code --install-extension timonwong.shellcheck
+	# manual install https://github.com/microsoft/vscode-copilot-chat/releases
 }
 
 install_wine() {
@@ -47,6 +63,13 @@ install_wine() {
 # Start slow-running jobs
 install_vscode_ext &
 install_wine &
+
+# Configure git
+git config --global user.name 'sheepymeh'
+git config --global user.email 'sheepymeh@users.noreply.github.com'
+git config --global credential.helper store
+git config --global pull.rebase false
+git config --global init.defaultBranch main
 
 # Prepare /home/user
 xdg-user-dirs-update
@@ -69,19 +92,12 @@ rm catppuccin-mocha-mauve-standard+default.zip
 cd ..
 cp -a home-config/. ~
 cp -a config/. ~/.config
-mkdir -p ~/.config/Code/User
-cp code/* ~/.config/Code/User
+mkdir -p "$VSCODE_CONFIG_DIR/User"
+cp code/* "$VSCODE_CONFIG_DIR/User"
 if swaymsg -t get_outputs | jq -e 'any(.name == "eDP-1")' >/dev/null; then
 	rm ~/.config/sway/config.d/laptop.conf
 fi
 cd -
-
-# Configure git
-git config --global user.name 'sheepymeh'
-git config --global user.email 'sheepymeh@users.noreply.github.com'
-git config --global credential.helper store
-git config --global pull.rebase false
-git config --global init.defaultBranch main
 
 # Configure bat
 mkdir -p "$(bat --config-dir)/themes"

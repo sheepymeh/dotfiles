@@ -27,11 +27,12 @@ setup_packages() {
 		tesseract tesseract-data-eng \
 		texlive-basic texlive-binextra texlive-latex texlive-latexrecommended texlive-latexextra texlive-fontsrecommended texlive-mathscience perl-file-homedir perl-yaml-tiny \
 		python-pip python-virtualenv \
-		mypy python-pydantic python-pylint python-tqdm python-uv pyright ruff ty \
+		mypy python-pydantic python-pylint python-tqdm python-uv pyright ruff ty uv \
 		python-pytest python-pytest-aiohttp python-pytest-asyncio python-pytest-cov \
 		python-numpy python-pytorch-opt python-torchvision python-pillow python-opencv python-scikit-learn python-tqdm \
 		python-beautifulsoup4 python-flask python-aiohttp python-pycryptodome python-pymupdf \
 		jupyter-notebook jupyterlab-widgets python-ipykernel python-ipywidgets \
+		code \
 		nodejs npm pnpm typescript wrangler \
 		wine wine-gecko mangohud
 
@@ -159,7 +160,7 @@ sudo -u "$SUDO_USER" yay -Sq --noconfirm --needed --sudoloop \
 
 # Packages that are used in the setup process
 pacman -Syyu --noconfirm
-pacman -S --noconfirm --needed acpi acpi_call acpid base-devel cups git go papirus-icon-theme plymouth podman python-build smartmontools ufw wget
+pacman -S --noconfirm --needed acpi acpi_call acpid base-devel cups git go papirus-icon-theme plymouth podman podman-compose python-build smartmontools ufw wget
 
 # Start slow-running jobs
 setup_packages &
@@ -238,12 +239,11 @@ EOF
 # 	SUBSYSTEM=="usb",ATTRS{idVendor}=="18d1",GROUP="plugdev"
 # EOF
 
-# Enable PCIe power management
+# Enable power management
 cat <<-EOF >/etc/udev/rules.d/99-device-pm.rules
 SUBSYSTEM=="pci", ATTR{power/control}="auto"
 SUBSYSTEM=="ata_port", KERNEL=="ata*", ATTR{device/power/control}="auto"
-ACTION=="add", SUBSYSTEM=="usb", ATTR{product}!="*Mouse", ATTR{product}!="*Keyboard", TEST=="power/control", ATTR{power/control}="auto"
-ACTION=="add", SUBSYSTEM=="usb", ATTR{idVendor}=="046d", ATTR{power/control}="on"
+ACTION=="add", SUBSYSTEM=="usb", ATTR{product}!="*Mouse", ATTR{product}!="*Keyboard", ATTR{idVendor}!="046d", TEST=="power/control", ATTR{power/control}="auto"
 ACTION=="add", SUBSYSTEM=="i2c", ATTR{power/control}="auto"
 EOF
 
