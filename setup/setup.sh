@@ -155,7 +155,7 @@ fi
 
 # Install AUR packages
 sudo -u "$SUDO_USER" yay -Sq --noconfirm --needed --sudoloop \
-	chayang papirus-folders-catppuccin-git python-catppuccin sway-audio-idle-inhibit-git visual-studio-code-bin \
+	chayang papirus-folders-catppuccin-git python-catppuccin sway-audio-idle-inhibit-git \
 	dxvk-bin vkd3d-proton-bin
 
 # Packages that are used in the setup process

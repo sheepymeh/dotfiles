@@ -2,6 +2,8 @@
 set -Eeuo pipefail
 trap 'kill 0' ERR
 
+# TODO: check for $DISPLAY
+
 if [ "$EUID" -eq 0 ]; then
 	echo "Script must be run as user"
 	exit
@@ -20,7 +22,7 @@ VSCODE_EXTENSIONS=(
 	github.vscode-github-actions
 
 	# Utilities
-	GitHub.copilot
+#	GitHub.copilot
 	ms-azuretools.vscode-docker
 
 	# Text
