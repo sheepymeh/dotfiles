@@ -1,7 +1,9 @@
+.SeedVaultAndroidBackup
 .git
 venv
 .venv
 __pycache__
+*.egg_info
 .npm
 node_modules
 *.aux
