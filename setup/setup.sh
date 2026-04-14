@@ -11,6 +11,7 @@ cd "$(dirname -- "$0")/.."
 HAS_BATTERY=false
 ls /sys/class/power_supply/ | grep -q ^BAT && HAS_BATTERY=true
 
+
 setup_packages() {
 	pacman -Sq --noconfirm --needed \
 		age bash-completion bat curl dialog gnome-keyring jq brightnessctl man-db nano nano-syntax-highlighting linux-firmware \
@@ -85,6 +86,7 @@ setup_packages() {
 	yay -Scc --noconfirm
 }
 
+
 setup_i3blocks() {
 	if $HAS_BATTERY; then
 		go build scripts/battery.go
@@ -102,6 +104,7 @@ setup_i3blocks() {
 	done
 }
 
+
 setup_locale() {
 	sed -i 's/^#en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen
 	sed -i 's/^#en_GB.UTF-8 UTF-8/en_GB.UTF-8 UTF-8/' /etc/locale.gen
@@ -115,12 +118,14 @@ setup_locale() {
 	EOF
 }
 
+
 sed -i 's$#Color$Color\nILoveCandy$' /etc/pacman.conf # pacman color output
 sed -i 's$#ParallelDownloads$ParallelDownloads$' /etc/pacman.conf # pacman parallel downloads
 mkdir -p /etc/pacman.d/hooks
 cp pacman-hooks/chromium-no-defaults.hook /etc/pacman.d/hooks
 
 sed -i '/deny = /c\deny = 6' /etc/security/faillock.conf # increase allowed failed attempt count
+
 
 # Enable TRIM
 cryptsetup --allow-discards --perf-no_read_workqueue --perf-no_write_workqueue --persistent refresh root
@@ -136,6 +141,10 @@ else
 	systemctl enable --now fstrim.timer
 fi
 
+
+pacman -Syyu --noconfirm
+pacman -S --noconfirm --needed base-devel
+
 # Optimize makepkg - multithreading, disable compression and debug symbols
 cat <<-EOF >/etc/makepkg.conf.d/flags.conf
 	MAKEFLAGS="-j$(nproc)"
@@ -143,10 +152,6 @@ cat <<-EOF >/etc/makepkg.conf.d/flags.conf
 	SRCEXT='.src.tar'
 	OPTIONS+=(!debug)
 EOF
-
-# Packages that are used in the setup process
-pacman -Syyu --noconfirm
-pacman -S --noconfirm --needed acpi acpi_call acpid base-devel cups git go papirus-icon-theme plymouth podman podman-compose python-build smartmontools ufw wget
 
 # Install yay-bin
 if ! command -v yay &> /dev/null; then
@@ -162,10 +167,14 @@ sudo -u "$SUDO_USER" yay -Sq --noconfirm --needed --sudoloop \
 	chayang papirus-folders-catppuccin-git python-catppuccin sway-audio-idle-inhibit-git \
 	dxvk-bin vkd3d-proton-bin
 
+# Packages that are used in the setup process
+pacman -S --noconfirm --needed acpi acpi_call acpid cups git go papirus-icon-theme plymouth podman podman-compose python-build smartmontools ufw wget
+
 # Start slow-running jobs
 setup_packages &
 setup_i3blocks &
 setup_locale &
+
 
 # Configure ACPI to notify i3blocks on AC adapter events
 cat <<-EOF >/etc/acpi/events/ac
@@ -175,35 +184,59 @@ EOF
 sed -i 's/^/#/' /etc/acpi/events/anything
 systemctl enable --now acpid
 
+
 # Add user to groups
 usermod -aG video "$SUDO_USER"
 usermod -aG input "$SUDO_USER"
+
 
 # Configure Firefox
 mkdir -p /etc/firefox/policies
 cp firefox/policies.json /etc/firefox/policies
 
+
 # Configure Papirus folders
 papirus-folders -C cat-mocha-mauve --theme Papirus-Dark
+
 
 # Configure journald
 sed -i '/SystemMaxUse=/c\SystemMaxUse=200M' /etc/systemd/journald.conf
 sed -i '/MaxRetentionSec=/c\MaxRetentionSec=7d' /etc/systemd/journald.conf
+
 
 # Configure userland podman
 touch /etc/subuid /etc/subgid
 usermod --add-subuids 100000-165535 --add-subgids 100000-165535 "$SUDO_USER"
 grep -q docker.io /etc/containers/registries.conf || echo 'unqualified-search-registries = ["docker.io"]' >>/etc/containers/registries.conf
 
-# Enable UFW
+
+# Networking
 systemctl enable --now ufw
 ufw logging off
 ufw enable
 
+mkdir -p /etc/systemd/networkd.conf.d/
 cat <<-EOF >/etc/systemd/networkd.conf.d/10-ipv6-privacy.conf
 	[Network]
 	IPv6PrivacyExtensions=yes
 EOF
+
+cat <<-EOF >/etc/iwd/main.conf
+	[General]
+	AddressRandomization=network
+	AddressRandomizationRange=full
+EOF
+
+# DoT CloudFlare DNS
+mkdir -p /etc/systemd/resolved.conf.d/
+cat <<-EOF >/etc/systemd/resolved.conf.d/dns_over_tls.conf
+	[Resolve]
+	DNS=1.1.1.1#cloudflare-dns.com 2606:4700:4700::1111#cloudflare-dns.com
+	DNSOverTLS=yes
+	DNSSEC=yes
+EOF
+systemctl restart systemd-resolved.service
+
 
 # Configure smartd
 systemctl enable --now smartd.service
@@ -214,6 +247,7 @@ cat <<-EOF >/usr/share/smartmontools/smartd_warning.d/smartdnotify
 EOF
 chmod a+x /usr/share/smartmontools/smartd_warning.d/smartdnotify
 sed -i 's/^DEVICESCAN$/DEVICESCAN -a -m @smartdnotify -n standby,15,q/' /etc/smartd.conf
+
 
 # Wayland env vars
 grep -q SDL_VIDEODRIVER /etc/environment || cat <<-EOF >>/etc/environment
@@ -237,12 +271,14 @@ grep -q SDL_VIDEODRIVER /etc/environment || cat <<-EOF >>/etc/environment
 	RADV_PERFTEST=video_decode,video_encode
 EOF
 
+
 # Edge TPU udev rules
 # cat <<-EOF >/usr/lib/udev/rules.d/60-edgetpu.rules
 # 	SUBSYSTEM=="apex", MODE="0660", GROUP="plugdev"
 # 	SUBSYSTEM=="usb",ATTRS{idVendor}=="1a6e",GROUP="plugdev"
 # 	SUBSYSTEM=="usb",ATTRS{idVendor}=="18d1",GROUP="plugdev"
 # EOF
+
 
 # Enable power management
 cat <<-EOF >/etc/udev/rules.d/99-device-pm.rules
@@ -252,22 +288,15 @@ cat <<-EOF >/etc/udev/rules.d/99-device-pm.rules
 	ACTION=="add", SUBSYSTEM=="i2c", ATTR{power/control}="auto"
 EOF
 
+
 # Allow user to write to Caps Lock LEDs
 cat <<-EOF >/etc/udev/rules.d/99-leds.rules
 	SUBSYSTEM=="leds", KERNEL=="*::capslock", ATTR{brightness}=="*", GROUP="input", MODE="0664"
 	ACTION=="add", SUBSYSTEM=="leds", KERNEL=="*::capslock", RUN+="/usr/bin/chown root:input /sys/class/leds/%k/brightness", RUN+="/usr/bin/chmod 0664 /sys/class/leds/%k/brightness"
 EOF
 
-# DoT CloudFlare DNS
-mkdir -p /etc/systemd/resolved.conf.d/
-cat <<-EOF >/etc/systemd/resolved.conf.d/dns_over_tls.conf
-	[Resolve]
-	DNS=1.1.1.1#cloudflare-dns.com 2606:4700:4700::1111#cloudflare-dns.com
-	DNSOverTLS=yes
-	DNSSEC=yes
-EOF
-systemctl restart systemd-resolved.service
 
+# sysctl
 cat <<-EOF >/etc/sysctl.d/99-bbr.conf
 	net.core.default_qdisc=fq
 	net.ipv4.tcp_congestion_control=bbr
@@ -284,6 +313,7 @@ EOF
 # Enable (REI)SUB
 # echo kernel.sysrq = 244 >/etc/sysctl.d/99-sysctl.conf
 
+
 # Autologin (since LUKS already requires auth)
 mkdir -p /etc/systemd/system/getty@tty1.service.d/
 cat <<-EOF >/etc/systemd/system/getty@tty1.service.d/override.conf
@@ -292,8 +322,10 @@ cat <<-EOF >/etc/systemd/system/getty@tty1.service.d/override.conf
 	ExecStart=-/usr/bin/agetty --skip-login --nonewline --noissue --autologin "$SUDO_USER" --noclear %I linux
 EOF
 
+
 # Enable CUPS
 systemctl enable --now cups.service
+
 
 # Quiet boot
 CMDLINE_OPTIONS="quiet splash loglevel=3 rd.systemd.show_status=auto rd.udev.log_level=3 vt.global_cursor_default=0 nmi_watchdog=0 snd_hda_intel.power_save=1 pcie_aspm.policy=powersupersave"
@@ -309,7 +341,9 @@ else  # efistub
 	echo "$CMDLINE_OPTIONS" >/etc/cmdline.d/default.conf
 fi
 
+
 fc-cache -f &
+
 
 # Plymouth boot splash screen
 # TODO: secure boot disabled warning
@@ -318,12 +352,6 @@ fc-cache -f &
 # rm -rf plymouth-theme-arch-agua
 sed -i '/^HOOKS=(/ { /plymouth/! s/kms/kms plymouth/ }' /etc/mkinitcpio.conf
 sed -i '/^[^#].*--splash/s/^/#/' /etc/mkinitcpio.d/*.preset
-
-cat <<-EOF >/etc/iwd/main.conf
-	[General]
-	AddressRandomization=network
-	AddressRandomizationRange=full
-EOF
 
 wait
 
