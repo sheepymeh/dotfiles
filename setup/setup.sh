@@ -59,10 +59,10 @@ setup_packages() {
 		sed -i '/^options/ s/$/ nvidia_drm.modeset=1/' /boot/loader/entries/*.conf
 		sed -i '/^MODULES=(.*nvidia nvidia_modeset nvidia_uvm nvidia_drm/b; s/MODULES=(/MODULES=(nvidia nvidia_modeset nvidia_uvm nvidia_drm /' /etc/mkinitcpio.conf
 		grep -q GBM_BACKEND /etc/environment || cat <<-EOF >>/etc/environment
-		GBM_BACKEND=nvidia-drm
-		WLR_NO_HARDWARE_CURSORS=1
-		__GLX_VENDOR_LIBRARY_NAME=nvidia
-		__GL_ExperimentalPerfStrategy=1
+			GBM_BACKEND=nvidia-drm
+			WLR_NO_HARDWARE_CURSORS=1
+			__GLX_VENDOR_LIBRARY_NAME=nvidia
+			__GL_ExperimentalPerfStrategy=1
 		EOF
 
 		# Nvidia Optimus for battery operated devices
@@ -200,6 +200,11 @@ systemctl enable --now ufw
 ufw logging off
 ufw enable
 
+cat <<-EOF >/etc/systemd/networkd.conf.d/10-ipv6-privacy.conf
+	[Network]
+	IPv6PrivacyExtensions=yes
+EOF
+
 # Configure smartd
 systemctl enable --now smartd.service
 sed -i 's/^DEVICESCAN$/DEVICESCAN/' /etc/smartd.conf
@@ -241,10 +246,10 @@ EOF
 
 # Enable power management
 cat <<-EOF >/etc/udev/rules.d/99-device-pm.rules
-SUBSYSTEM=="pci", ATTR{power/control}="auto"
-SUBSYSTEM=="ata_port", KERNEL=="ata*", ATTR{device/power/control}="auto"
-ACTION=="add", SUBSYSTEM=="usb", ATTR{product}!="*Mouse", ATTR{product}!="*Keyboard", ATTR{idVendor}!="046d", TEST=="power/control", ATTR{power/control}="auto"
-ACTION=="add", SUBSYSTEM=="i2c", ATTR{power/control}="auto"
+	SUBSYSTEM=="pci", ATTR{power/control}="auto"
+	SUBSYSTEM=="ata_port", KERNEL=="ata*", ATTR{device/power/control}="auto"
+	ACTION=="add", SUBSYSTEM=="usb", ATTR{product}!="*Mouse", ATTR{product}!="*Keyboard", ATTR{idVendor}!="046d", TEST=="power/control", ATTR{power/control}="auto"
+	ACTION=="add", SUBSYSTEM=="i2c", ATTR{power/control}="auto"
 EOF
 
 # Allow user to write to Caps Lock LEDs
@@ -257,22 +262,23 @@ EOF
 mkdir -p /etc/systemd/resolved.conf.d/
 cat <<-EOF >/etc/systemd/resolved.conf.d/dns_over_tls.conf
 	[Resolve]
-	DNS=1.1.1.1#cloudflare-dns.com
+	DNS=1.1.1.1#cloudflare-dns.com 2606:4700:4700::1111#cloudflare-dns.com
 	DNSOverTLS=yes
+	DNSSEC=yes
 EOF
 systemctl restart systemd-resolved.service
 
 cat <<-EOF >/etc/sysctl.d/99-bbr.conf
-net.core.default_qdisc=fq
-net.ipv4.tcp_congestion_control=bbr
+	net.core.default_qdisc=fq
+	net.ipv4.tcp_congestion_control=bbr
 EOF
 
 cat <<-EOF >/etc/sysctl.d/99-writeback.conf
-vm.dirty_writeback_centisecs=1500
+	vm.dirty_writeback_centisecs=1500
 EOF
 
 cat <<-EOF >/etc/sysctl.d/20-quiet-printk.conf
-kernel.printk = 3 3 3 3
+	kernel.printk = 3 3 3 3
 EOF
 
 # Enable (REI)SUB
@@ -315,7 +321,7 @@ sed -i '/^[^#].*--splash/s/^/#/' /etc/mkinitcpio.d/*.preset
 
 cat <<-EOF >/etc/iwd/main.conf
 	[General]
-	AddressRandomization=once
+	AddressRandomization=network
 	AddressRandomizationRange=full
 EOF
 

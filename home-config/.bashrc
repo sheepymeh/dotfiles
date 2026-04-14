@@ -13,7 +13,6 @@ if [[ -z $DISPLAY ]] && [[ "$(tty)" = /dev/tty1 ]]; then
 	export JAVA_TOOL_OPTIONS="-Dawt.toolkit.name=WLToolkit"
 	export PATH="$PATH:$HOME/.local/bin"
 	export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
-	systemd-inhibit --what=handle-lid-switch sleep .5 &
 	exec systemd-cat --identifier=sway sway
 fi
 
