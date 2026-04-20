@@ -28,6 +28,52 @@
 		"key": "Enter",
 		"ctrl": true
 	},
+	"barTypes": {
+		"sponsor": {
+			"color": "#a6e3a1",
+			"opacity": "0.7"
+		},
+		"selfpromo": {
+			"color": "#f9e2af",
+			"opacity": "0.7"
+		},
+		"exclusive_access": {
+			"color": "#40a02b",
+			"opacity": "0.7"
+		},
+		"interaction": {
+			"color": "#cba6f7",
+			"opacity": "0.7"
+		},
+		"intro": {
+			"color": "#94e2d5",
+			"opacity": "0.7"
+		},
+		"outro": {
+			"color": "#1e66f5",
+			"opacity": "0.7"
+		},
+		"preview": {
+			"color": "#89b4fa",
+			"opacity": "0.7"
+		},
+		"hook": {
+			"color": "#b4befe",
+			"opacity": "0.8"
+		},
+		"music_offtopic": {
+			"color": "#fab387",
+			"opacity": "0.7"
+		},
+		"poi_highlight": {
+			"color": "#f5c2e7",
+			"opacity": "0.7"
+		},
+		"filler": {
+			"color": "#8839ef",
+			"opacity": "0.9"
+		}
+	},
 	"categorySelections": [
 		{
 			"name": "sponsor",
