@@ -53,7 +53,9 @@ install_vscode_ext() {
 		code --install-extension "$ext"
 	done
 
-	# manual install https://github.com/microsoft/vscode-copilot-chat/releases
+	wget -qO GitHub.copilot-chat.vsix https://github.gallery.vsassets.io/_apis/public/gallery/publisher/github/extension/copilot-chat/latest/assetbyname/Microsoft.VisualStudio.Services.VSIXPackage
+	code --install-extension GitHub.copilot-chat.vsix
+	rm GitHub.copilot-chat.vsix
 }
 
 install_wine() {
