@@ -20,29 +20,30 @@ VSCODE_EXTENSIONS=(
 
 	# Git
 	eamodio.gitlens
-	github.vscode-pull-request-github
 	github.vscode-github-actions
+	github.vscode-pull-request-github
 
 	# Utilities
 #	GitHub.copilot
 	ms-azuretools.vscode-docker
 
 	# Text
-	james-yu.latex-workshop
 	davidanson.vscode-markdownlint
+	james-yu.latex-workshop
 
 	# Python
+	astral-sh.ty
+	charliermarsh.ruff
+	detachhead.basedpyright
+	meta.pyrefly
+	ms-python.mypy-type-checker
 	ms-python.python
 	ms-toolsai.jupyter
-	ms-python.mypy-type-checker
-	kv9898.basedpyright
-	charliermarsh.ruff
-	astral-sh.ty
 
 	# Web
-	Vue.volar
 	dbaeumer.vscode-eslint
 	esbenp.prettier-vscode
+	Vue.volar
 
 	# Shell
 	timonwong.shellcheck
