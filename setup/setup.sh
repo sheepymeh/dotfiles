@@ -9,7 +9,7 @@ fi
 cd "$(dirname -- "$0")/.."
 
 HAS_BATTERY=false
-ls /sys/class/power_supply/ | grep -q ^BAT && HAS_BATTERY=true
+ls /sys/class/power_supply | grep -q ^BAT && HAS_BATTERY=true
 
 
 setup_packages() {
@@ -20,7 +20,7 @@ setup_packages() {
 		cups cups-pdf gutenprint system-config-printer \
 		playerctl pipewire pipewire-pulse pavucontrol \
 		inter-font noto-fonts-cjk ttf-jetbrains-mono-nerd otf-crimson-pro \
-		exfat-utils engrampa ffmpegthumbnailer gvfs gvfs-mtp owncloud-client tumbler thunar thunar-archive-plugin trash-cli unzip xdg-user-dirs 7zip \
+		exfat-utils engrampa ffmpegthumbnailer gvfs gvfs-mtp owncloud-client tumbler thunar thunar-archive-plugin thunar-media-tags-plugin thunar-volman trash-cli unzip xdg-user-dirs 7zip \
 		libreoffice-fresh hunspell hunspell-en_us hunspell-de \
 		fcitx5 fcitx5-rime rime-pinyin-simp fcitx5-mozc \
 		autotiling grim i3blocks mako qt6-wayland slurp sway swaybg swayidle swaylock wf-recorder wl-clipboard wofi xdg-desktop-portal xdg-desktop-portal-wlr xdg-desktop-portal-gtk polkit-gnome wdisplays wob \
@@ -57,8 +57,10 @@ setup_packages() {
 		pacman -Sq --noconfirm --needed nvidia nvidia-utils
 		systemctl enable nvidia-{suspend,hibernate}
 		echo options nvidia NVreg_PreserveVideoMemoryAllocations=1 NVreg_TemporaryFilePath=/var/tmp >/etc/modprobe.d/nvidia-power-management.conf
-		sed -i '/^options/ s/$/ nvidia_drm.modeset=1/' /boot/loader/entries/*.conf
-		sed -i '/^MODULES=(.*nvidia nvidia_modeset nvidia_uvm nvidia_drm/b; s/MODULES=(/MODULES=(nvidia nvidia_modeset nvidia_uvm nvidia_drm /' /etc/mkinitcpio.conf
+		echo 'nvidia_drm.modeset=1' >/etc/cmdline.d/20-nvidia.conf
+		cat <<-EOF >/etc/mkinitcpio.conf.d/20-nvidia.conf
+			MODULES+=(nvidia nvidia_modeset nvidia_uvm nvidia_drm)
+		EOF
 		grep -q GBM_BACKEND /etc/environment || cat <<-EOF >>/etc/environment
 			GBM_BACKEND=nvidia-drm
 			WLR_NO_HARDWARE_CURSORS=1
@@ -76,11 +78,15 @@ setup_packages() {
 	if lspci -k | grep -A 2 -E '(VGA|3D)' | grep -qi intel; then
 		pacman -Sq --noconfirm --needed intel-media-driver libva-intel-driver vulkan-intel
 		# sudo -u "$SUDO_USER" yay -Sq --noconfirm --needed intel-hybrid-codec-driver
-		sed -i '/^MODULES=(.*i915/b; s/MODULES=(/MODULES=(i915 /' /etc/mkinitcpio.conf
+		cat <<-EOF >/etc/mkinitcpio.conf.d/20-intel.conf
+			MODULES+=(i915)
+		EOF
 	fi
 	if lspci -k | grep -A 2 -E '(VGA|3D)' | grep -qi amd; then
 		pacman -Sq --noconfirm --needed libva-mesa-driver mesa vulkan-radeon
-		sed -i '/^MODULES=(/ { /amdgpu/! s/MODULES=(/MODULES=(amdgpu / }' /etc/mkinitcpio.conf
+		cat <<-EOF >/etc/mkinitcpio.conf.d/20-amd.conf
+			MODULES+=(amdgpu)
+		EOF
 	fi
 
 	yay -Scc --noconfirm
@@ -119,12 +125,24 @@ setup_locale() {
 }
 
 
-sed -i 's$#Color$Color\nILoveCandy$' /etc/pacman.conf # pacman color output
-sed -i 's$#ParallelDownloads$ParallelDownloads$' /etc/pacman.conf # pacman parallel downloads
+mkdir -p /etc/pacman.conf.d
+grep -q "Include = /etc/pacman.conf.d/\*.conf" /etc/pacman.conf || sed -i '/^\[options\]/a Include = /etc/pacman.conf.d/*.conf' /etc/pacman.conf
+cat <<-EOF >/etc/pacman.conf.d/custom_options.conf
+	[options]
+	ParallelDownloads = 5
+	Color
+	ILoveCandy
+EOF
+
 mkdir -p /etc/pacman.d/hooks
 cp pacman-hooks/chromium-no-defaults.hook /etc/pacman.d/hooks
 
+
 sed -i '/deny = /c\deny = 6' /etc/security/faillock.conf # increase allowed failed attempt count
+
+
+mkdir -p /etc/mkinitcpio.conf.d
+mkdir -p /etc/cmdline.d
 
 
 # Enable TRIM
@@ -181,7 +199,7 @@ cat <<-EOF >/etc/acpi/events/ac
 	event=ac_adapter
 	action=pkill -SIGRTMIN+3 i3blocks
 EOF
-sed -i 's/^/#/' /etc/acpi/events/anything
+rm /etc/acpi/events/anything
 systemctl enable --now acpid
 
 
@@ -199,43 +217,54 @@ cp firefox/policies.json /etc/firefox/policies
 papirus-folders -C cat-mocha-mauve --theme Papirus-Dark
 
 
-# Configure journald
-sed -i '/SystemMaxUse=/c\SystemMaxUse=200M' /etc/systemd/journald.conf
-sed -i '/MaxRetentionSec=/c\MaxRetentionSec=7d' /etc/systemd/journald.conf
-
-
 # Configure userland podman
 touch /etc/subuid /etc/subgid
 usermod --add-subuids 100000-165535 --add-subgids 100000-165535 "$SUDO_USER"
-grep -q docker.io /etc/containers/registries.conf || echo 'unqualified-search-registries = ["docker.io"]' >>/etc/containers/registries.conf
+mkdir -p /etc/containers/registries.conf.d
+echo 'unqualified-search-registries = ["docker.io"]' >/etc/containers/registries.conf.d/10-docker-hub.conf
+
+
+# Configure journald
+mkdir -p /etc/systemd/journald.conf.d
+cat <<-EOF >/etc/systemd/journald.conf.d/10-retention.conf
+	[Journal]
+	SystemMaxUse=200M
+	MaxRetentionSec=7d
+EOF
+
+mkdir -p /etc/systemd/coredump.conf.d
+cat <<-EOF >/etc/systemd/coredump.conf.d/10-limit.conf
+	[Coredump]
+	Storage=none
+	ProcessSizeMax=0
+	ExternalSizeMax=0
+EOF
 
 
 # Networking
-systemctl enable --now ufw
-ufw logging off
-ufw enable
-
-mkdir -p /etc/systemd/networkd.conf.d/
+mkdir -p /etc/systemd/networkd.conf.d
 cat <<-EOF >/etc/systemd/networkd.conf.d/10-ipv6-privacy.conf
 	[Network]
 	IPv6PrivacyExtensions=yes
 EOF
 
-cat <<-EOF >/etc/iwd/main.conf
-	[General]
-	AddressRandomization=network
-	AddressRandomizationRange=full
-EOF
-
-# DoT CloudFlare DNS
-mkdir -p /etc/systemd/resolved.conf.d/
+mkdir -p /etc/systemd/resolved.conf.d
 cat <<-EOF >/etc/systemd/resolved.conf.d/dns_over_tls.conf
 	[Resolve]
 	DNS=1.1.1.1#cloudflare-dns.com 2606:4700:4700::1111#cloudflare-dns.com
 	DNSOverTLS=yes
 	DNSSEC=yes
 EOF
-systemctl restart systemd-resolved.service
+
+systemctl enable --now ufw
+ufw logging off
+ufw enable
+
+cat <<-EOF >/etc/iwd/main.conf
+	[General]
+	AddressRandomization=network
+	AddressRandomizationRange=full
+EOF
 
 
 # Configure smartd
@@ -284,8 +313,23 @@ EOF
 cat <<-EOF >/etc/udev/rules.d/99-device-pm.rules
 	SUBSYSTEM=="pci", ATTR{power/control}="auto"
 	SUBSYSTEM=="ata_port", KERNEL=="ata*", ATTR{device/power/control}="auto"
-	ACTION=="add", SUBSYSTEM=="usb", ATTR{product}!="*Mouse", ATTR{product}!="*Keyboard", ATTR{idVendor}!="046d", TEST=="power/control", ATTR{power/control}="auto"
 	ACTION=="add", SUBSYSTEM=="i2c", ATTR{power/control}="auto"
+EOF
+cat <<-EOF >/etc/udev/rules.d/99-usb-pm.rules
+	# 01: Audio | 02: Comm | 03: HID | 0a: CDC-Data | 0e: Video
+	ACTION=="add", SUBSYSTEM=="usb", ATTR{bDeviceClass}=="01|02|03|0a|0e", GOTO="usb_pm_end"
+
+	# Network: Realtek|ASIX|DisplayLink|Microchip|Aquantia
+	ACTION=="add", SUBSYSTEM=="usb", ATTR{idVendor}=="0bda|0b95|17e9|0424|1c04|2eca", GOTO="usb_pm_end"
+
+	# Input devices
+	ACTION=="add", SUBSYSTEM=="usb", ATTR{product}=="*Mouse*|*Keyboard*|*Joystick*|*Controller*|*Gamepad*|*Gigabit*|*Ethernet*", GOTO="usb_pm_end"
+	# Logitech
+	ACTION=="add", SUBSYSTEM=="usb", ATTR{idVendor}=="046d", GOTO="usb_pm_end"
+
+	ACTION=="add", SUBSYSTEM=="usb", TEST=="power/control", ATTR{power/control}="auto"
+
+	LABEL="usb_pm_end"
 EOF
 
 
@@ -315,7 +359,7 @@ EOF
 
 
 # Autologin (since LUKS already requires auth)
-mkdir -p /etc/systemd/system/getty@tty1.service.d/
+mkdir -p /etc/systemd/system/getty@tty1.service.d
 cat <<-EOF >/etc/systemd/system/getty@tty1.service.d/override.conf
 	[Service]
 	ExecStart=
@@ -329,17 +373,9 @@ systemctl enable --now cups.service
 
 # Quiet boot
 CMDLINE_OPTIONS="quiet splash loglevel=3 rd.systemd.show_status=auto rd.udev.log_level=3 vt.global_cursor_default=0 nmi_watchdog=0 snd_hda_intel.power_save=1 pcie_aspm.policy=powersupersave"
-# S540-13ARE: add amdgpu.gpu_recovery=1 amdgpu.dcfeaturemask=0xA pcie_aspm=force
+# S540-13ARE: echo 'amdgpu.gpu_recovery=1 pcie_aspm=force' >/etc/cmdline.d/20-s540.conf
 # https://www.kernel.org/doc/html/latest/gpu/amdgpu/module-parameters.html
-if [ -f /boot/loader/loader.conf ]; then
-	sed -i '/timeout /c\timeout 0' /boot/loader/loader.conf
-	sed -i "/^options .* quiet/b; /^options / s/.*/& $CMDLINE_OPTIONS/" /boot/loader/entries/*.conf
-	bootctl update --graceful
-	systemctl enable --now systemd-boot-update.service
-else  # efistub
-	mkdir -p /etc/cmdline.d
-	echo "$CMDLINE_OPTIONS" >/etc/cmdline.d/default.conf
-fi
+echo "$CMDLINE_OPTIONS" >/etc/cmdline.d/default.conf
 
 
 fc-cache -f &
@@ -350,12 +386,13 @@ fc-cache -f &
 # git clone -q --depth=1 https://github.com/sheepymeh/plymouth-theme-arch-agua
 # cp -r plymouth-theme-arch-agua /usr/share/plymouth/themes/arch-agua
 # rm -rf plymouth-theme-arch-agua
-sed -i '/^HOOKS=(/ { /plymouth/! s/kms/kms plymouth/ }' /etc/mkinitcpio.conf
+cat <<-EOF >/etc/mkinitcpio.conf.d/10-hooks.conf
+	HOOKS=(base udev autodetect microcode modconf kms plymouth keyboard keymap consolefont block encrypt filesystems fsck)
+EOF
 sed -i '/^[^#].*--splash/s/^/#/' /etc/mkinitcpio.d/*.preset
 
 wait
 
-sed -i 's/ )$/)/' /etc/mkinitcpio.conf
 plymouth-set-default-theme -R spinner
 
 # Notes:
