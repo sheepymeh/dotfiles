@@ -1,12 +1,19 @@
 #!/bin/bash
 set -Eeuo pipefail
-trap 'kill 0' ERR
 
-if [ "$EUID" -ne 0 ]; then
-	echo "Script must be run as root"
-	exit
+if [ -z "$SUDO_USER" ]; then
+	echo "This script must be run with sudo"
+	exit 1
 fi
+
 cd "$(dirname -- "$0")/.."
+
+cleanup() {
+	trap - EXIT INT TERM ERR
+	rm -f "/etc/sudoers.d/temp-setup"
+	kill 0
+}
+trap cleanup EXIT INT TERM ERR
 
 HAS_BATTERY=false
 ls /sys/class/power_supply | grep -q ^BAT && HAS_BATTERY=true
@@ -77,7 +84,7 @@ setup_packages() {
 	fi
 	if lspci -k | grep -A 2 -E '(VGA|3D)' | grep -qi intel; then
 		pacman -Sq --noconfirm --needed intel-media-driver libva-intel-driver vulkan-intel
-		# sudo -u "$SUDO_USER" yay -Sq --noconfirm --needed intel-hybrid-codec-driver
+		# runuser -u "$SUDO_USER" -- yay -Sq --noconfirm --needed intel-hybrid-codec-driver
 		cat <<-EOF >/etc/mkinitcpio.conf.d/20-intel.conf
 			MODULES+=(i915)
 		EOF
@@ -175,13 +182,13 @@ EOF
 if ! command -v yay &> /dev/null; then
 	su -c 'git clone -q --depth=1 https://aur.archlinux.org/yay-bin.git' "$SUDO_USER"
 	cd yay-bin
-	sudo -u "$SUDO_USER" makepkg -si --noconfirm
+	runuser -u "$SUDO_USER" -- makepkg -si --noconfirm
 	cd ..
 	rm -rf yay-bin
 fi
 
 # Install AUR packages
-sudo -u "$SUDO_USER" yay -Sq --noconfirm --needed --sudoloop \
+runuser -u "$SUDO_USER" -- yay -Sq --noconfirm --needed --sudoloop \
 	chayang papirus-folders-catppuccin-git python-catppuccin sway-audio-idle-inhibit-git \
 	dxvk-bin vkd3d-proton-bin
 
@@ -269,7 +276,6 @@ EOF
 
 # Configure smartd
 systemctl enable --now smartd.service
-sed -i 's/^DEVICESCAN$/DEVICESCAN/' /etc/smartd.conf
 cat <<-EOF >/usr/share/smartmontools/smartd_warning.d/smartdnotify
 	#!/bin/sh
 	systemd-run --machine="$SUDO_USER"@.host --user notify-send "S.M.A.R.T Error (\$SMARTD_FAILTYPE)" "\$SMARTD_MESSAGE" --icon=dialog-warning -u critical -t 0
