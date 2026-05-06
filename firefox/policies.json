@@ -106,6 +106,10 @@
         "install_url": "https://addons.mozilla.org/firefox/downloads/latest/decentraleyes/latest.xpi",
         "installation_mode": "normal_installed"
       },
+      "{0d7cafdd-501c-49ca-8ebb-e3341caaa55e}": {
+        "install_url": "https://addons.mozilla.org/firefox/downloads/latest/youtube-nonstop/latest.xpi",
+        "installation_mode": "normal_installed"
+      },
       "{2d0a18e8-6b0a-4c8c-9256-6e00c01f07fe}": {
         "install_url": "https://addons.mozilla.org/firefox/downloads/latest/zoom-redirector/latest.xpi",
         "installation_mode": "normal_installed"
