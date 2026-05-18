@@ -16,7 +16,7 @@ cleanup() {
 trap cleanup EXIT INT TERM ERR
 
 HAS_BATTERY=false
-ls /sys/class/power_supply | grep -q ^BAT && HAS_BATTERY=true
+compgen -G '/sys/class/power_supply/BAT*' > /dev/null && HAS_BATTERY=true
 
 
 setup_packages() {
@@ -142,7 +142,7 @@ cat <<-EOF >/etc/pacman.conf.d/custom_options.conf
 EOF
 
 mkdir -p /etc/pacman.d/hooks
-cp pacman-hooks/chromium-no-defaults.hook /etc/pacman.d/hooks
+cp pacman-hooks/* /etc/pacman.d/hooks
 
 
 sed -i '/deny = /c\deny = 6' /etc/security/faillock.conf # increase allowed failed attempt count
