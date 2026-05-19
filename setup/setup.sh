@@ -190,7 +190,7 @@ fi
 
 # Install AUR packages
 runuser -u "$SUDO_USER" -- yay -Sq --noconfirm --needed --sudoloop \
-	chayang papirus-folders-catppuccin-git python-catppuccin sway-audio-idle-inhibit-git \
+	chayang papirus-folders-catppuccin-git python-catppuccin wayland-pipewire-idle-inhibit \
 	dxvk-bin vkd3d-proton-bin
 
 # Packages that are used in the setup process

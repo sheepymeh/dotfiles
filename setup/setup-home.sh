@@ -126,6 +126,7 @@ git clone -q --depth=1 https://github.com/catppuccin/fcitx5.git
 cp -r ./fcitx5/src/catppuccin-mocha-mauve/ ~/.local/share/fcitx5/themes
 rm -rf fcitx5
 
+systemctl --user enable wayland-pipewire-idle-inhibit.service
 systemctl --user enable clear-trash.timer
 systemctl --user enable ssh-agent
 if [ ! -d ~/.ssh ]; then
