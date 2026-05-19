@@ -100,7 +100,7 @@ setup_packages() {
 }
 
 
-setup_i3blocks() {
+setup_scripts() {
 	if $HAS_BATTERY; then
 		go build scripts/battery.go
 		chmod u+s battery
@@ -111,9 +111,8 @@ setup_i3blocks() {
 		chmod u+s perf
 		mv perf /usr/local/bin
 	fi
-	for script in record.sh mic.sh date.sh blink-leds.sh dynamic-workspaces.py; do
-		cp "scripts/$script" /usr/local/bin
-		chmod a+x "/usr/local/bin/$script"
+	for script in record.sh mic.sh date.sh blink-leds.sh notify-user.sh coredump-journal-watch.sh dynamic-workspaces.py; do
+		install -m 755 "scripts/$script" /usr/local/bin
 	done
 }
 
@@ -197,7 +196,7 @@ pacman -S --noconfirm --needed acpi acpi_call acpid cups git go papirus-icon-the
 
 # Start slow-running jobs
 setup_packages &
-setup_i3blocks &
+setup_scripts &
 setup_locale &
 
 
@@ -231,20 +230,69 @@ mkdir -p /etc/containers/registries.conf.d
 echo 'unqualified-search-registries = ["docker.io"]' >/etc/containers/registries.conf.d/10-docker-hub.conf
 
 
-# Configure journald
-mkdir -p /etc/systemd/journald.conf.d
-cat <<-EOF >/etc/systemd/journald.conf.d/10-retention.conf
-	[Journal]
-	SystemMaxUse=200M
-	MaxRetentionSec=7d
-EOF
-
+# Core dump notifications
 mkdir -p /etc/systemd/coredump.conf.d
 cat <<-EOF >/etc/systemd/coredump.conf.d/10-limit.conf
 	[Coredump]
 	Storage=none
 	ProcessSizeMax=0
 	ExternalSizeMax=0
+EOF
+
+cat <<-EOF >/etc/systemd/system/coredump-journal-watch.service
+[Unit]
+Description=Watch journal for coredump events and notify user
+After=systemd-journald.service systemd-user-sessions.service
+Wants=systemd-user-sessions.service
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/coredump-journal-watch.sh
+Restart=on-failure
+RestartSec=5s
+
+CapabilityBoundingSet=CAP_SYSLOG
+DeviceAllow=
+IPAddressDeny=any
+LockPersonality=yes
+MemoryDenyWriteExecute=yes
+NoNewPrivileges=yes
+PrivateDevices=yes
+PrivateNetwork=yes
+PrivateTmp=yes
+PrivateUsers=yes
+ProtectClock=yes
+ProtectControlGroups=yes
+ProtectHome=yes
+ProtectHostname=yes
+ProtectKernelLogs=yes
+ProtectKernelModules=yes
+ProtectKernelTunables=yes
+ProtectProc=invisible
+ProtectSystem=strict
+RestrictAddressFamilies=AF_UNIX
+RestrictNamespaces=yes
+RestrictRealtime=yes
+RestrictSUIDSGID=yes
+SystemCallArchitectures=native
+SystemCallFilter=@system-service
+SystemCallFilter=~@resources @privileged
+UMask=0077
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+systemctl daemon-reload
+systemctl enable coredump-journal-watch.service
+
+
+# Configure journald
+mkdir -p /etc/systemd/journald.conf.d
+cat <<-EOF >/etc/systemd/journald.conf.d/10-retention.conf
+	[Journal]
+	SystemMaxUse=200M
+	MaxRetentionSec=7d
 EOF
 
 
@@ -278,7 +326,7 @@ EOF
 systemctl enable --now smartd.service
 cat <<-EOF >/usr/share/smartmontools/smartd_warning.d/smartdnotify
 	#!/bin/sh
-	systemd-run --machine="$SUDO_USER"@.host --user notify-send "S.M.A.R.T Error (\$SMARTD_FAILTYPE)" "\$SMARTD_MESSAGE" --icon=dialog-warning -u critical -t 0
+	/usr/local/bin/notify-user.sh logged-in "S.M.A.R.T Error (\$SMARTD_FAILTYPE)" "\$SMARTD_MESSAGE" dialog-warning
 EOF
 chmod a+x /usr/share/smartmontools/smartd_warning.d/smartdnotify
 sed -i 's/^DEVICESCAN$/DEVICESCAN -a -m @smartdnotify -n standby,15,q/' /etc/smartd.conf
