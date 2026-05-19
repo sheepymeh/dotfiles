@@ -145,6 +145,8 @@ cp pacman-hooks/* /etc/pacman.d/hooks
 
 
 sed -i '/deny = /c\deny = 6' /etc/security/faillock.conf # increase allowed failed attempt count
+sed -Ei '/[[:space:]]\/boot[[:space:]]+vfat[[:space:]]/ s/=0022/=0077/g' /etc/fstab  # restrict /boot permissions
+chmod -R 700 /boot || true
 
 
 mkdir -p /etc/mkinitcpio.conf.d
@@ -365,9 +367,9 @@ EOF
 
 # Enable power management
 cat <<-EOF >/etc/udev/rules.d/99-device-pm.rules
-	SUBSYSTEM=="pci", ATTR{power/control}="auto"
-	SUBSYSTEM=="ata_port", KERNEL=="ata*", ATTR{device/power/control}="auto"
-	ACTION=="add", SUBSYSTEM=="i2c", ATTR{power/control}="auto"
+	SUBSYSTEM=="pci", TEST=="power/control", ATTR{power/control}="auto"
+	SUBSYSTEM=="ata_port", KERNEL=="ata*", TEST=="device/power/control", ATTR{device/power/control}="auto"
+	ACTION=="add", SUBSYSTEM=="i2c", TEST=="power/control", ATTR{power/control}="auto"
 EOF
 cat <<-EOF >/etc/udev/rules.d/99-usb-pm.rules
 	# 01: Audio | 02: Comm | 03: HID | 0a: CDC-Data | 0e: Video

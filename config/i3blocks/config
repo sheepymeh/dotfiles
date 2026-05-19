@@ -18,10 +18,6 @@ full_text= CPU
 command=awk 'FNR == 2 {printf " %.1fGB / %d%\n", $3 / 1000, $3 / $2 * 100}' <(free -m --si)
 interval=2
 
-[network]
-command=[[ -z $button ]] || $HOME/.local/bin/iwd-wofi; networkctl status --json=short | jq -r '[.Interfaces[] | select(.Type != "loopback") | if .Type == "ether" then if .OperationalState == "routable" then "󰈁" else "" end elif .Type == "wlan" then if .OperationalState == "routable" then if .AdministrativeState == "configured" then "" else "" end elif .OperationalState == "no-carrier" then "" elif .OperationalState == "off" then "󰤭" else "" end else "" end | select (. != "") ] | join("  ")'
-interval=2
-
 [performance]
 align=right
 full_text=󰾅
