@@ -228,6 +228,9 @@
     "Preferences": {
       "browser.tabs.inTitlebar": { "Value": 0 },
       "browser.taskbarTabs.enabled": { "Value": 0 },
+      "browser.tabs.dragDrop.createGroup.enabled": {
+        "Value": false
+      },
 
       "browser.aboutConfig.showWarning": { "Value": false },
       "browser.compactmode.show": { "Value": true },
