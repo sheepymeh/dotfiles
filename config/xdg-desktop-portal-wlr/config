@@ -3,3 +3,5 @@ exec_before=makoctl mode -a screencast >/dev/null; pkill -SIGRTMIN+4 i3blocks; p
 exec_after=grep webrtc-consume-stream <(pw-dump) || (makoctl mode -r screencast >/dev/null; pkill -SIGRTMIN+4 i3blocks; pkill -SIGRTMIN+1 i3blocks)
 chooser_type=dmenu
 chooser_cmd=wofi --show dmenu --prompt 'Select screen share output'
+# https://man.archlinux.org/man/xdg-desktop-portal-wlr.5
+# slurp -r
