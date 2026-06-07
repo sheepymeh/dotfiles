@@ -57,5 +57,5 @@ command=date.sh
 interval=persist
 
 [power]
-full_text="󰐥 "
-command=cmd=$(printf '󰤄  Suspend\n󰐥  Power Off\n  Restart' | wofi --show dmenu) && systemctl "$(printf "$cmd" | tr -cd '[:alpha:]' | tr '[:upper:]' '[:lower:]')"
+full_text=" "
+command=cmd=$(printf '󰤄  Suspend\n󰐥  Power Off\n  Reboot' | wofi --show dmenu) && systemctl "$(printf "$cmd" | tr -cd '[:alpha:]' | tr '[:upper:]' '[:lower:]')"
