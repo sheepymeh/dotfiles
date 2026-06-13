@@ -21,7 +21,7 @@ compgen -G '/sys/class/power_supply/BAT*' > /dev/null && HAS_BATTERY=true
 
 setup_packages() {
 	pacman -Sq --noconfirm --needed \
-		age bash-completion bat curl dialog gnome-keyring jq brightnessctl man-db nano nano-syntax-highlighting linux-firmware \
+		age bash-completion bat brightnessctl curl dialog gnome-keyring jq kernel-modules-hook linux-firmware man-db nano nano-syntax-highlighting \
 		delfin firefox imv mpv signal-desktop thunderbird transmission-gtk \
 		htop mission-center s-tui \
 		cups cups-pdf gutenprint system-config-printer \
@@ -433,6 +433,7 @@ CMDLINE_OPTIONS="quiet splash loglevel=3 rd.systemd.show_status=auto rd.udev.log
 # https://www.kernel.org/doc/html/latest/gpu/amdgpu/module-parameters.html
 echo "$CMDLINE_OPTIONS" >/etc/cmdline.d/default.conf
 
+sudo systemctl enable linux-modules-cleanup.service
 
 fc-cache -f &
 
