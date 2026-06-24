@@ -207,9 +207,9 @@
       },
       "Notifications": {
         "Allow": [
+          "https://app.tuta.com""https://web.telegram.org",
           "https://web.whatsapp.com",
-          "https://web.telegram.org",
-          "https://app.tuta.com"
+          "https://web.whatsapp.com"
         ]
       },
       "ScreenShare": {
