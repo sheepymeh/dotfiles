@@ -221,6 +221,56 @@ mkdir -p /etc/firefox/policies
 cp firefox/policies.json /etc/firefox/policies
 
 
+# Configure Chromium
+cat <<-EOF >/etc/chromium/policies/managed/custom_policy.json
+	{
+		"HighEfficiencyModeEnabled": true,
+		"BackgroundModeEnabled": false
+	}
+EOF
+cat <<-EOF >/etc/chromium/policies/managed/disable_policy.json
+	{
+		"autofill": {
+			"credit_card_enabled": false,
+			"profile_enabled": false
+		},
+		"browser": {
+			"custom_chrome_frame": false
+		},
+		"credentials_enable_service": false,
+		"extensions": {
+			"theme": { "system_theme": 1 }
+		},
+		"net": {
+			"network_prediction_options": 2
+		},
+		"payments": {
+			"can_make_payment_enabled": false
+		},
+		"privacy_sandbox": {
+			"m1": {
+				"ad_measurement_enabled": false,
+				"fledge_enabled": false,
+				"topics_enabled": false
+			}
+		},
+		"profile": {
+			"cookie_controls_mode": 1,
+			"password_manager_enabled": false
+		},
+		"webkit": {
+			"webprefs": {
+				"fonts": {
+					"sansserif": { "Zyyy": "Sans" },
+					"serif": { "Zyyy": "Serif" },
+					"standard": { "Zyyy": "Sans" }
+				}
+			}
+		}
+	}
+EOF
+
+
 # Configure Papirus folders
 papirus-folders -C cat-mocha-mauve --theme Papirus-Dark
 
