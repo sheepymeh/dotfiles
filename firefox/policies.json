@@ -207,7 +207,8 @@
       },
       "Notifications": {
         "Allow": [
-          "https://app.tuta.com""https://web.telegram.org",
+          "https://app.tuta.com",
+          "https://web.telegram.org",
           "https://web.whatsapp.com",
           "https://web.whatsapp.com"
         ]
@@ -276,8 +277,12 @@
       "media.webspeech.synth.dont_notify_on_error": { "Value": true },
       "network.allow-experiments": { "Value": false },
       "network.connectivity-service.enabled": { "Value": false },
-      "network.http.referer.spoofSource": { "Value": true },
-      "network.http.referer.XOriginPolicy": { "Value": 2 },
+      "network.http.referer.spoofSource": {
+        "Value": false
+      },
+      "network.http.referer.XOriginPolicy": {
+        "Value": 0
+      },
       "network.http.referer.XOriginTrimmingPolicy": { "Value": 2 },
       "network.http.speculative-parallel-limit": { "Value": 0 },
       "network.IDN_show_punycode": { "Value": true },
