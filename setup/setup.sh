@@ -404,7 +404,7 @@ grep -q SDL_VIDEODRIVER /etc/environment || cat <<-EOF >>/etc/environment
 	HSA_DISABLE_FRAGMENT_ALLOCATOR=1
 
 	ANV_VIDEO_DECODE=1
-	RADV_PERFTEST=video_decode,video_encode
+	RADV_EXPERIMENTAL=video_decode,video_encode
 EOF
 
 
