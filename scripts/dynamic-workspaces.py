@@ -8,7 +8,7 @@
 # Add your icons to WINDOW_ICONS.
 # Based on https://github.com/OctopusET/sway-contrib/blob/master/autoname-workspaces.py
 
-from typing import ClassVar, Final
+from typing import ClassVar, Final, override
 import re
 from dataclasses import dataclass
 
@@ -89,6 +89,7 @@ class WorkspaceNameParts:
     shortname: str | None
     icons: str | None
 
+    @override
     def __str__(self) -> str:
         new_name = self.num
         if self.shortname or (self.icons and self.icons != " "):

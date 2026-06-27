@@ -24,7 +24,6 @@ VSCODE_EXTENSIONS=(
 	github.vscode-pull-request-github
 
 	# Utilities
-#	GitHub.copilot
 	ms-azuretools.vscode-docker
 
 	# Text
@@ -39,6 +38,7 @@ VSCODE_EXTENSIONS=(
 	ms-python.mypy-type-checker
 	ms-python.python
 	ms-toolsai.jupyter
+	zuban.zubanls
 
 	# Web
 	dbaeumer.vscode-eslint
@@ -53,10 +53,6 @@ install_vscode_ext() {
 	for ext in "${VSCODE_EXTENSIONS[@]}"; do
 		code --install-extension "$ext"
 	done
-
-	wget -qO GitHub.copilot-chat.vsix https://github.gallery.vsassets.io/_apis/public/gallery/publisher/github/extension/copilot-chat/latest/assetbyname/Microsoft.VisualStudio.Services.VSIXPackage
-	code --install-extension GitHub.copilot-chat.vsix
-	rm GitHub.copilot-chat.vsix
 }
 
 install_wine() {
@@ -99,11 +95,13 @@ rm catppuccin-mocha-mauve-standard+default.zip
 cd ..
 cp -a home-config/. ~
 cp -a config/. ~/.config
-mkdir -p "$VSCODE_CONFIG_DIR"
-cp code/* "$VSCODE_CONFIG_DIR"
 if ! swaymsg -t get_outputs | jq -e 'any(.name == "eDP-1")' >/dev/null; then
 	rm ~/.config/sway/config.d/laptop.conf
 fi
+
+mkdir -p "$VSCODE_CONFIG_DIR"
+cp code/* "$VSCODE_CONFIG_DIR"
+
 cd -
 
 # Configure bat

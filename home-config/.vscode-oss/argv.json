@@ -1,0 +1,12 @@
+{
+	"enable-proposed-api": [
+		"GitHub.vscode-pull-request-github",
+		"ms-python.debugpy",
+		"ms-python.python",
+		"ms-python.vscode-python-envs",
+		"ms-toolsai.jupyter-renderers",
+		"ms-toolsai.jupyter",
+	],
+	"enable-crash-reporter": false,
+	"password-store": "basic",
+}
