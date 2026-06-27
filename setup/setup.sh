@@ -42,7 +42,8 @@ setup_packages() {
 		jupyter-notebook jupyterlab-widgets python-ipykernel python-ipywidgets \
 		code \
 		eslint eslint-language-server nodejs npm pnpm prettier typescript wrangler \
-		wine wine-gecko mangohud
+		wine wine-gecko mangohud \
+		verilator
 
 	BT_SYS_PATH="/sys/class/bluetooth"
 	if [ -d "$BT_SYS_PATH" ] && [ -n "$(ls -A "$BT_SYS_PATH")" ]; then

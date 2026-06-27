@@ -47,6 +47,10 @@ VSCODE_EXTENSIONS=(
 
 	# Shell
 	timonwong.shellcheck
+
+	# Verilog
+	hudson-river-trading.vscode-slang
+	mshr-h.veriloghdl
 )
 
 install_vscode_ext() {

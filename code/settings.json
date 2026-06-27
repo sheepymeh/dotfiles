@@ -39,6 +39,9 @@
 	"workbench.iconTheme": "catppuccin-mocha",
 	"workbench.welcomePage.walkthroughs.openOnInstall": false,
 
+	"verilog.project.enabled": true,
+	"verilog.linting.linter": "verilator",
+
 	"workbench.editorAssociations": {
 		"*.pdf": "latex-workshop-pdf-hook"
 	},
