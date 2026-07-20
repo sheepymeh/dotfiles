@@ -1,6 +1,9 @@
 #!/bin/sh
-
-set -e
+set -eu
+if [ -z "$SUDO_USER" ]; then
+	echo "This script must be run with sudo"
+	exit 1
+fi
 
 # innoextract f0cn41ww.exe
 

@@ -1,11 +1,9 @@
 #!/bin/bash
 set -Eeuo pipefail
-
 if [ -z "$SUDO_USER" ]; then
 	echo "This script must be run with sudo"
 	exit 1
 fi
-
 cd "$(dirname -- "$0")/.."
 
 cleanup() {
@@ -18,10 +16,14 @@ trap cleanup EXIT INT TERM ERR
 HAS_BATTERY=false
 compgen -G '/sys/class/power_supply/BAT*' > /dev/null && HAS_BATTERY=true
 
+alias pi=pacman -Sq --noconfirm --needed
 
+
+# shellcheck disable=SC2120
 setup_packages() {
-	pacman -Sq --noconfirm --needed \
+	pi \
 		age bash-completion bat brightnessctl curl dialog gnome-keyring jq kernel-modules-hook linux-firmware man-db nano nano-syntax-highlighting \
+		autotiling grim i3blocks mako qt6-wayland slurp sway swaybg swayidle swaylock wf-recorder wl-clipboard wl-mirror wofi xdg-desktop-portal xdg-desktop-portal-wlr xdg-desktop-portal-gtk polkit-gnome wdisplays wob \
 		delfin firefox imv mpv signal-desktop thunderbird transmission-gtk \
 		htop mission-center s-tui \
 		cups cups-pdf gutenprint system-config-printer \
@@ -29,40 +31,59 @@ setup_packages() {
 		inter-font noto-fonts-cjk ttf-jetbrains-mono-nerd otf-crimson-pro \
 		exfat-utils engrampa ffmpegthumbnailer gvfs gvfs-mtp owncloud-client tumbler thunar thunar-archive-plugin thunar-media-tags-plugin thunar-volman trash-cli unzip xdg-user-dirs 7zip \
 		libreoffice-fresh hunspell hunspell-en_us hunspell-de \
+		python-pip python-virtualenv jupyter-notebook jupyterlab-widgets python-ipykernel python-ipywidgets python-tqdm \
 		fcitx5 fcitx5-rime rime-pinyin-simp fcitx5-mozc \
-		autotiling grim i3blocks mako qt6-wayland slurp sway swaybg swayidle swaylock wf-recorder wl-clipboard wl-mirror wofi xdg-desktop-portal xdg-desktop-portal-wlr xdg-desktop-portal-gtk polkit-gnome wdisplays wob \
 		android-tools foot impala iwd sqlite shellcheck \
-		tesseract tesseract-data-eng \
-		texlive-basic texlive-binextra texlive-latex texlive-latexrecommended texlive-latexextra texlive-fontsrecommended texlive-mathscience perl-file-homedir perl-yaml-tiny \
-		python-pip python-virtualenv \
-		mypy python-pydantic python-pylint python-tqdm python-uv pyright ruff ty uv \
-		python-pytest python-pytest-aiohttp python-pytest-asyncio python-pytest-cov \
-		python-numpy python-pytorch-opt python-torchvision python-pillow python-opencv python-scikit-learn python-tqdm \
-		python-beautifulsoup4 python-flask python-aiohttp python-pycryptodome python-pymupdf \
-		jupyter-notebook jupyterlab-widgets python-ipykernel python-ipywidgets \
-		code \
-		eslint eslint-language-server nodejs npm pnpm prettier typescript wrangler \
-		wine wine-gecko mangohud \
-		verilator
+		code verilator
+
+	while [[ $# -gt 0 ]]; do
+		case "$1" in
+			--torch) pi python-numpy python-pytorch-opt python-torchvision python-pillow python-opencv python-scikit-learn ;;
+			--tesseract) pi tesseract tesseract-data-eng ;;
+			--tex) pi texlive-basic texlive-binextra texlive-latex texlive-latexrecommended texlive-latexextra texlive-fontsrecommended texlive-mathscience perl-file-homedir perl-yaml-tiny ;;
+			--cloudflare) pi wrangler ;;
+			--web) pi eslint eslint-language-server nodejs npm pnpm prettier typescript ;;
+			--wine) pi wine wine-gecko mangohud ;;  # dxvk-bin vkd3d-proton-bin
+			--python) pi mypy python-pytest python-pytest-aiohttp python-pytest-asyncio python-beautifulsoup4 python-flask python-aiohttp python-pycryptodome python-pymupdf python-pytest-cov python-pydantic python-pylint python-tqdm python-uv pyright ruff ty uv ;;
+			--smart)
+				pi smartmontools
+				systemctl enable --now smartd.service
+				cat <<-EOF >/usr/share/smartmontools/smartd_warning.d/smartdnotify
+					#!/bin/sh
+					/usr/local/bin/notify-user.sh logged-in "S.M.A.R.T Error (\$SMARTD_FAILTYPE)" "\$SMARTD_MESSAGE" dialog-warning
+				EOF
+				chmod a+x /usr/share/smartmontools/smartd_warning.d/smartdnotify
+				sed -i 's/^DEVICESCAN$/DEVICESCAN -a -m @smartdnotify -n standby,15,q/' /etc/smartd.conf
+			;;
+			--podman)
+				pi podman podman-compose
+				# Configure userland podman
+				touch /etc/subuid /etc/subgid
+				usermod --add-subuids 100000-165535 --add-subgids 100000-165535 "$SUDO_USER"
+				mkdir -p /etc/containers/registries.conf.d
+				echo 'unqualified-search-registries = ["docker.io"]' >/etc/containers/registries.conf.d/10-docker-hub.conf
+			;;
+		esac
+		shift
+	done
 
 	BT_SYS_PATH="/sys/class/bluetooth"
-	if [ -d "$BT_SYS_PATH" ] && [ -n "$(ls -A "$BT_SYS_PATH")" ]; then
-		pacman -Sq --noconfirm --needed blueman bluez-utils
+	if [ -d "$BT_SYS_PATH" ] && [ -n "$(compgen -G "$BT_SYS_PATH/*")" ]; then
+		pi blueman bluez-utils
 		systemctl --quiet enable --now bluetooth
 		usermod -aG rfkill "$SUDO_USER"
 	fi
 
 	# Microcode updates
 	CPU_VENDOR="$(grep -m1 vendor_id /proc/cpuinfo | cut -f2 -d':' | cut -c 2-)"
-	if [ "$CPU_VENDOR" == 'AuthenticAMD' ]; then
-		pacman -Sq --noconfirm --needed amd-ucode
-	elif [ "$CPU_VENDOR" == 'GenuineIntel' ]; then
-		pacman -Sq --noconfirm --needed intel-ucode
-	fi
+	case "$CPU_VENDOR" in
+		AuthenticAMD) pi amd-ucode ;;
+		GenuineIntel) pi intel-ucode ;;
+	esac
 
 	# Video drivers
-	if lspci -k | grep -A 2 -E '(VGA|3D)' | grep -qi nvidia; then
-		pacman -Sq --noconfirm --needed nvidia nvidia-utils
+	if lspci -k | grep -A 2 -E '(VGA|3D|Graphics)' | grep -qi nvidia; then
+		pi nvidia nvidia-utils
 		systemctl enable nvidia-{suspend,hibernate}
 		echo options nvidia NVreg_PreserveVideoMemoryAllocations=1 NVreg_TemporaryFilePath=/var/tmp >/etc/modprobe.d/nvidia-power-management.conf
 		echo 'nvidia_drm.modeset=1' >/etc/cmdline.d/20-nvidia.conf
@@ -83,15 +104,15 @@ setup_packages() {
 			echo 'options bbswitch load_state=0 unload_state=1' >/etc/modprobe.d/bbswitch.conf
 		fi
 	fi
-	if lspci -k | grep -A 2 -E '(VGA|3D)' | grep -qi intel; then
-		pacman -Sq --noconfirm --needed intel-media-driver libva-intel-driver vulkan-intel
+	if lspci -k | grep -A 2 -E '(VGA|3D|Graphics)' | grep -qi intel; then
+		pi intel-media-driver vulkan-intel  # libva-intel-driver
 		# runuser -u "$SUDO_USER" -- yay -Sq --noconfirm --needed intel-hybrid-codec-driver
 		cat <<-EOF >/etc/mkinitcpio.conf.d/20-intel.conf
 			MODULES+=(i915)
 		EOF
 	fi
-	if lspci -k | grep -A 2 -E '(VGA|3D)' | grep -qi amd; then
-		pacman -Sq --noconfirm --needed libva-mesa-driver mesa vulkan-radeon
+	if lspci -k | grep -A 2 -E '(VGA|3D|Graphics)' | grep -qi amd; then
+		pi libva-mesa-driver mesa vulkan-radeon
 		cat <<-EOF >/etc/mkinitcpio.conf.d/20-amd.conf
 			MODULES+=(amdgpu)
 		EOF
@@ -145,7 +166,7 @@ mkdir -p /etc/pacman.d/hooks
 cp pacman-hooks/* /etc/pacman.d/hooks
 
 
-sed -i '/deny = /c\deny = 6' /etc/security/faillock.conf # increase allowed failed attempt count
+sed -i '/deny = /c\deny = 6' /etc/security/faillock.conf  # increase allowed failed attempt count
 sed -Ei '/[[:space:]]\/boot[[:space:]]+vfat[[:space:]]/ s/=0022/=0077/g' /etc/fstab  # restrict /boot permissions
 chmod -R 700 /boot || true
 
@@ -170,7 +191,7 @@ fi
 
 
 pacman -Syyu --noconfirm
-pacman -S --noconfirm --needed base-devel
+pi base-devel
 
 # Optimize makepkg - multithreading, disable compression and debug symbols
 cat <<-EOF >/etc/makepkg.conf.d/flags.conf
@@ -178,6 +199,7 @@ cat <<-EOF >/etc/makepkg.conf.d/flags.conf
 	PKGEXT='.pkg.tar'
 	SRCEXT='.src.tar'
 	OPTIONS+=(!debug)
+	# BUILDDIR='/tmp/makepkg'
 EOF
 
 # Install yay-bin
@@ -191,14 +213,14 @@ fi
 
 # Install AUR packages
 runuser -u "$SUDO_USER" -- yay -Sq --noconfirm --needed --sudoloop \
-	chayang papirus-folders-catppuccin-git python-catppuccin wayland-pipewire-idle-inhibit \
-	dxvk-bin vkd3d-proton-bin
+	chayang papirus-folders-catppuccin-git # python-catppuccin wayland-pipewire-idle-inhibit
 
 # Packages that are used in the setup process
-pacman -S --noconfirm --needed acpi acpi_call acpid cups git go papirus-icon-theme plymouth podman podman-compose python-build smartmontools ufw wget
+pi acpi acpi_call acpid cups git go papirus-icon-theme plymouth python-build ufw wget
+
 
 # Start slow-running jobs
-setup_packages &
+setup_packages "$@" &
 setup_scripts &
 setup_locale &
 
@@ -208,7 +230,7 @@ cat <<-EOF >/etc/acpi/events/ac
 	event=ac_adapter
 	action=pkill -SIGRTMIN+3 i3blocks
 EOF
-rm /etc/acpi/events/anything
+rm -f /etc/acpi/events/anything
 systemctl enable --now acpid
 
 
@@ -223,6 +245,7 @@ cp firefox/policies.json /etc/firefox/policies
 
 
 # Configure Chromium
+mkdir -p /etc/chromium/policies/managed
 cat <<-EOF >/etc/chromium/policies/managed/custom_policy.json
 	{
 		"HighEfficiencyModeEnabled": true,
@@ -276,13 +299,6 @@ EOF
 papirus-folders -C cat-mocha-mauve --theme Papirus-Dark
 
 
-# Configure userland podman
-touch /etc/subuid /etc/subgid
-usermod --add-subuids 100000-165535 --add-subgids 100000-165535 "$SUDO_USER"
-mkdir -p /etc/containers/registries.conf.d
-echo 'unqualified-search-registries = ["docker.io"]' >/etc/containers/registries.conf.d/10-docker-hub.conf
-
-
 # Core dump notifications
 mkdir -p /etc/systemd/coredump.conf.d
 cat <<-EOF >/etc/systemd/coredump.conf.d/10-limit.conf
@@ -293,51 +309,54 @@ cat <<-EOF >/etc/systemd/coredump.conf.d/10-limit.conf
 EOF
 
 cat <<-EOF >/etc/systemd/system/coredump-journal-watch.service
-[Unit]
-Description=Watch journal for coredump events and notify user
-After=systemd-journald.service systemd-user-sessions.service
-Wants=systemd-user-sessions.service
+	[Unit]
+	Description=Watch journal for coredump events and notify user
+	After=systemd-journald.service systemd-user-sessions.service
+	Wants=systemd-user-sessions.service
 
-[Service]
-Type=simple
-ExecStart=/usr/local/bin/coredump-journal-watch.sh
-Restart=on-failure
-RestartSec=5s
+	[Service]
+	Type=simple
+	ExecStart=/usr/local/bin/coredump-journal-watch.sh
+	Restart=on-failure
+	RestartSec=5s
 
-CapabilityBoundingSet=CAP_SYSLOG
-DeviceAllow=
-IPAddressDeny=any
-LockPersonality=yes
-MemoryDenyWriteExecute=yes
-NoNewPrivileges=yes
-PrivateDevices=yes
-PrivateNetwork=yes
-PrivateTmp=yes
-PrivateUsers=yes
-ProtectClock=yes
-ProtectControlGroups=yes
-ProtectHome=yes
-ProtectHostname=yes
-ProtectKernelLogs=yes
-ProtectKernelModules=yes
-ProtectKernelTunables=yes
-ProtectProc=invisible
-ProtectSystem=strict
-RestrictAddressFamilies=AF_UNIX
-RestrictNamespaces=yes
-RestrictRealtime=yes
-RestrictSUIDSGID=yes
-SystemCallArchitectures=native
-SystemCallFilter=@system-service
-SystemCallFilter=~@resources @privileged
-UMask=0077
+	CapabilityBoundingSet=CAP_SYSLOG
+	DeviceAllow=
+	IPAddressDeny=any
+	LockPersonality=yes
+	MemoryDenyWriteExecute=yes
+	NoNewPrivileges=yes
+	PrivateDevices=yes
+	PrivateNetwork=yes
+	PrivateTmp=yes
+	PrivateUsers=yes
+	ProtectClock=yes
+	ProtectControlGroups=yes
+	ProtectHome=yes
+	ProtectHostname=yes
+	ProtectKernelLogs=yes
+	ProtectKernelModules=yes
+	ProtectKernelTunables=yes
+	ProtectProc=invisible
+	ProtectSystem=strict
+	RestrictAddressFamilies=AF_UNIX
+	RestrictNamespaces=yes
+	RestrictRealtime=yes
+	RestrictSUIDSGID=yes
+	SystemCallArchitectures=native
+	SystemCallFilter=@system-service
+	SystemCallFilter=~@resources @privileged
+	UMask=0077
 
-[Install]
-WantedBy=multi-user.target
+	[Install]
+	WantedBy=multi-user.target
 EOF
 
 systemctl daemon-reload
 systemctl enable coredump-journal-watch.service
+
+
+systemctl enable linux-modules-cleanup.service
 
 
 # Configure journald
@@ -375,16 +394,6 @@ cat <<-EOF >/etc/iwd/main.conf
 EOF
 
 
-# Configure smartd
-systemctl enable --now smartd.service
-cat <<-EOF >/usr/share/smartmontools/smartd_warning.d/smartdnotify
-	#!/bin/sh
-	/usr/local/bin/notify-user.sh logged-in "S.M.A.R.T Error (\$SMARTD_FAILTYPE)" "\$SMARTD_MESSAGE" dialog-warning
-EOF
-chmod a+x /usr/share/smartmontools/smartd_warning.d/smartdnotify
-sed -i 's/^DEVICESCAN$/DEVICESCAN -a -m @smartdnotify -n standby,15,q/' /etc/smartd.conf
-
-
 # Wayland env vars
 grep -q SDL_VIDEODRIVER /etc/environment || cat <<-EOF >>/etc/environment
 	ELECTRON_OZONE_PLATFORM_HINT=auto
@@ -398,12 +407,7 @@ grep -q SDL_VIDEODRIVER /etc/environment || cat <<-EOF >>/etc/environment
 
 	WINEDEBUG=-all
 
-	TORCH_BLAS_PREFER_HIPBLASLT=0
-	HSA_OVERRIDE_GFX_VERSION=9.0.0
-	PYTORCH_NO_HIP_MEMORY_CACHING=1
-	HSA_DISABLE_FRAGMENT_ALLOCATOR=1
-
-	ANV_VIDEO_DECODE=1
+	ANV_DEBUG=video-decode,video-encode
 	RADV_EXPERIMENTAL=video_decode,video_encode
 EOF
 
@@ -481,10 +485,9 @@ systemctl enable --now cups.service
 # Quiet boot
 CMDLINE_OPTIONS="quiet splash loglevel=3 rd.systemd.show_status=auto rd.udev.log_level=3 vt.global_cursor_default=0 nmi_watchdog=0 snd_hda_intel.power_save=1 pcie_aspm.policy=powersupersave"
 # S540-13ARE: echo 'amdgpu.gpu_recovery=1 pcie_aspm=force' >/etc/cmdline.d/20-s540.conf
+# Consider mitigations=off
 # https://www.kernel.org/doc/html/latest/gpu/amdgpu/module-parameters.html
 echo "$CMDLINE_OPTIONS" >/etc/cmdline.d/default.conf
-
-sudo systemctl enable linux-modules-cleanup.service
 
 fc-cache -f &
 
@@ -499,10 +502,12 @@ cat <<-EOF >/etc/mkinitcpio.conf.d/10-hooks.conf
 EOF
 sed -i '/^[^#].*--splash/s/^/#/' /etc/mkinitcpio.d/*.preset
 
+plymouth-set-default-theme -R spinner
+
 wait
 
-plymouth-set-default-theme -R spinner
 
 # Notes:
 # https://bbs.archlinux.org/viewtopic.php?id=257315
 # https://www.kernel.org/doc/Documentation/cpu-freq/boost.txt
+# https://wiki.archlinux.org/title/Ext4#Improving_performance

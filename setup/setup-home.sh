@@ -1,16 +1,16 @@
 #!/bin/bash
 set -Eeuo pipefail
+if [ "$EUID" -eq 0 ]; then
+	echo "Script must be run as user"
+	exit 1
+fi
+cd "$(dirname -- "$0")"
 trap 'kill 0' ERR
 
 if [ -z "$WAYLAND_DISPLAY" ]; then
 	echo '$WAYLAND_DISPLAY not initialized'
+	exit 1
 fi
-
-if [ "$EUID" -eq 0 ]; then
-	echo "Script must be run as user"
-	exit
-fi
-cd "$(dirname -- "$0")"
 
 VSCODE_CONFIG_DIR="$HOME/.config/Code - OSS/User"
 VSCODE_EXTENSIONS=(

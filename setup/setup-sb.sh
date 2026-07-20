@@ -1,9 +1,8 @@
 #!/bin/bash
 set -Eeuo pipefail
-
 if [ "$EUID" -ne 0 ]; then
 	echo "Script must be run as root"
-	exit
+	exit 1
 fi
 
 pacman -S --noconfirm --needed sbctl

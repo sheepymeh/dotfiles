@@ -1,9 +1,8 @@
 #!/bin/bash
 set -Eeuo pipefail
-
 if [ "$EUID" -eq 0 ]; then
 	echo "Script must be run as user"
-	exit
+	exit 1
 fi
 
 sudo pacman -S ocaml opam dune

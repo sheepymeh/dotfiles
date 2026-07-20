@@ -241,6 +241,8 @@
       "browser.fixup.alternate.enabled": { "Value": false },
       "browser.helperApps.deleteTempFileOnExit": { "Value": true },
       "browser.messaging-system.whatsNewPanel.enabled": { "Value": false },
+      "browser.newtabpage.activity-stream.showSponsoredCheckboxes": { "Value": false },
+      "browser.newtabpage.activity-stream.widgets.enabled": { "Value": false },
       "browser.pagethumbnails.capturing_disabled": { "Value": true },
       "browser.privatebrowsing.forceMediaMemoryCache": { "Value": true },
       "browser.selfsupport.url": { "Value": "" },
