@@ -24,11 +24,11 @@ sqlite3 "$FF_PROFILE/permissions.sqlite" <<-EOF
 	('https://login.microsoftonline.com', 'cookie', '1', '0', '0', '1600000000000'),
 	('https://login.nvgs.nvidia.com', 'cookie', '1', '0', '0', '1600000000000'),
 	('https://music.youtube.com', 'cookie', '1', '0', '0', '1600000000000'),
-	('https://notion.so', 'cookie', '1', '0', '0', '1600000000000');
-	('https://play.geforcenow.com', 'cookie', '1', '0', '0', '1600000000000');
+	('https://notion.so', 'cookie', '1', '0', '0', '1600000000000'),
+	('https://play.geforcenow.com', 'cookie', '1', '0', '0', '1600000000000'),
 	('https://sheepymeh.net', 'cookie', '1', '0', '0', '1600000000000'),
 	('https://tripos.pro', 'cookie', '1', '0', '0', '1600000000000'),
 	('https://web.telegram.org', 'cookie', '1', '0', '0', '1600000000000'),
 	('https://web.whatsapp.com', 'cookie', '1', '0', '0', '1600000000000'),
-	('https://wikipedia.org', 'cookie', '1', '0', '0', '1600000000000'),
+	('https://wikipedia.org', 'cookie', '1', '0', '0', '1600000000000');
 EOF

@@ -16,7 +16,7 @@ trap cleanup EXIT INT TERM ERR
 HAS_BATTERY=false
 compgen -G '/sys/class/power_supply/BAT*' > /dev/null && HAS_BATTERY=true
 
-alias pi=pacman -Sq --noconfirm --needed
+pi () { pacman -Sq --noconfirm --needed "$@"; }
 
 
 # shellcheck disable=SC2120
@@ -30,7 +30,7 @@ setup_packages() {
 		playerctl pipewire pipewire-pulse pavucontrol \
 		inter-font noto-fonts-cjk ttf-jetbrains-mono-nerd otf-crimson-pro \
 		exfat-utils engrampa ffmpegthumbnailer gvfs gvfs-mtp owncloud-client tumbler thunar thunar-archive-plugin thunar-media-tags-plugin thunar-volman trash-cli unzip xdg-user-dirs 7zip \
-		libreoffice-fresh hunspell hunspell-en_us hunspell-de \
+		hunspell hunspell-en_us hunspell-de \
 		python-pip python-virtualenv jupyter-notebook jupyterlab-widgets python-ipykernel python-ipywidgets python-tqdm \
 		fcitx5 fcitx5-rime rime-pinyin-simp fcitx5-mozc \
 		android-tools foot impala iwd sqlite shellcheck \
@@ -41,6 +41,7 @@ setup_packages() {
 			--torch) pi python-numpy python-pytorch-opt python-torchvision python-pillow python-opencv python-scikit-learn ;;
 			--tesseract) pi tesseract tesseract-data-eng ;;
 			--tex) pi texlive-basic texlive-binextra texlive-latex texlive-latexrecommended texlive-latexextra texlive-fontsrecommended texlive-mathscience perl-file-homedir perl-yaml-tiny ;;
+			--office) pi libreoffice-fresh ;;
 			--cloudflare) pi wrangler ;;
 			--web) pi eslint eslint-language-server nodejs npm pnpm prettier typescript ;;
 			--wine) pi wine wine-gecko mangohud ;;  # dxvk-bin vkd3d-proton-bin
@@ -356,7 +357,7 @@ systemctl daemon-reload
 systemctl enable coredump-journal-watch.service
 
 
-systemctl enable linux-modules-cleanup.service
+# systemctl enable linux-modules-cleanup.service
 
 
 # Configure journald
