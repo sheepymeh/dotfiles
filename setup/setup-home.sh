@@ -80,7 +80,7 @@ git config --global init.defaultBranch main
 
 # Prepare /home/user
 xdg-user-dirs-update
-rm -rf ~/Desktop ~/Templates ~/Public ~/Documents ~/Music
+rm -r ~/Desktop ~/Templates ~/Projects ~/Public ~/Documents ~/Music
 xdg-user-dirs-update
 touch ~/.hushlogin
 
