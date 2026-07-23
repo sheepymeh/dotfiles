@@ -1,0 +1,16 @@
+[Unit]
+Description=Sway Audio Idle Inhibit
+Documentation=https://github.com/ErikReider/SwayAudioIdleInhibit
+BindsTo=graphical-session.target
+After=graphical-session.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/sway-audio-idle-inhibit
+Restart=on-failure
+RestartSec=2
+StandardOutput=null
+StandardError=journal
+
+[Install]
+WantedBy=graphical-session.target

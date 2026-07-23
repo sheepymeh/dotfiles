@@ -18,11 +18,6 @@ full_text= CPU
 command=awk 'FNR == 2 {printf " %.1fGB / %d%\n", $3 / 1000, $3 / $2 * 100}' <(free -m --si)
 interval=2
 
-[performance]
-align=right
-full_text=󰾅
-command=/usr/local/bin/perf
-
 [battery]
 full_text=Battery
 command=[[ -z $button ]] && /usr/local/bin/battery || /usr/local/bin/battery update

@@ -6,6 +6,8 @@ if [ "$EUID" -eq 0 ]; then
 fi
 cd "$(dirname -- "$0")"
 
+firefox --window-size=1,1 --screenshot /dev/null about:blank
+
 FF_PROFILE="$(compgen -G "$HOME/.config/mozilla/firefox/*.default-release")"
 
 cp ../firefox/user.js "$FF_PROFILE/user.js"
@@ -21,6 +23,7 @@ sqlite3 "$FF_PROFILE/permissions.sqlite" <<-EOF
 	('https://chatgpt.com', 'cookie', '1', '0', '0', '1600000000000'),
 	('https://discord.com', 'cookie', '1', '0', '0', '1600000000000'),
 	('https://github.com', 'cookie', '1', '0', '0', '1600000000000'),
+	('https://leetcode.com', 'cookie', '1', '0', '0', '1600000000000'),
 	('https://login.microsoftonline.com', 'cookie', '1', '0', '0', '1600000000000'),
 	('https://login.nvgs.nvidia.com', 'cookie', '1', '0', '0', '1600000000000'),
 	('https://music.youtube.com', 'cookie', '1', '0', '0', '1600000000000'),

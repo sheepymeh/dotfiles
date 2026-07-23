@@ -10,6 +10,7 @@ pacman -S --noconfirm --needed sbctl
 sbctl status
 
 sbctl create-keys
+chattr -i /sys/firmware/efi/efivars/*
 sbctl enroll-keys --yes-this-might-brick-my-machine
 sbctl verify
 

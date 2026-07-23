@@ -13,8 +13,13 @@ cleanup() {
 }
 trap cleanup EXIT INT TERM ERR
 
-HAS_BATTERY=false
-compgen -G '/sys/class/power_supply/BAT*' > /dev/null && HAS_BATTERY=true
+BATTERY_PATH=
+for supply in /sys/class/power_supply/*; do
+	if [ -f "$supply/type" ] && [ "$(cat "$supply/type")" = "Battery" ]; then
+		BATTERY_PATH="$supply"
+		break
+	fi
+done
 
 pi () { pacman -Sq --noconfirm --needed "$@"; }
 
@@ -99,7 +104,7 @@ setup_packages() {
 		EOF
 
 		# Nvidia Optimus for battery operated devices
-		if $HAS_BATTERY; then
+		if [ -n "$BATTERY_PATH" ]; then
 			usermod -aG bumblebee "$SUDO_USER"
 			systemctl enable --now bumblebeed.service
 			echo 'options bbswitch load_state=0 unload_state=1' >/etc/modprobe.d/bbswitch.conf
@@ -124,16 +129,18 @@ setup_packages() {
 
 
 setup_scripts() {
-	if $HAS_BATTERY; then
-		go build scripts/battery.go
-		chmod u+s battery
-		mv battery /usr/local/bin
+	if [ -n "$BATTERY_PATH" ]; then
+		BATTERY_PATH="$BATTERY_PATH" envsubst '${BATTERY_PATH}' < ../scripts/battery.sh > /usr/local/bin/battery
+		chmod 755 /usr/local/bin/battery
+		# go build scripts/battery.go
+		# chmod u+s battery
+		# mv battery /usr/local/bin
 	fi
-	if [ -d /sys/bus/platform/drivers/ideapad_acpi/VPC2004:00 ]; then
-		go build scripts/perf.go
-		chmod u+s perf
-		mv perf /usr/local/bin
-	fi
+	# if [ -d /sys/bus/platform/drivers/ideapad_acpi/VPC2004:00 ]; then
+	# 	go build scripts/perf.go
+	# 	chmod u+s perf
+	# 	mv perf /usr/local/bin
+	# fi
 	for script in record.sh mic.sh date.sh blink-leds.sh notify-user.sh coredump-journal-watch.sh dynamic-workspaces.py; do
 		install -m 755 "scripts/$script" /usr/local/bin
 	done
@@ -214,10 +221,10 @@ fi
 
 # Install AUR packages
 runuser -u "$SUDO_USER" -- yay -Sq --noconfirm --needed --sudoloop \
-	chayang papirus-folders-catppuccin-git # python-catppuccin wayland-pipewire-idle-inhibit
+	chayang papirus-folders-catppuccin-git sway-audio-idle-inhibit-git # python-catppuccin
 
 # Packages that are used in the setup process
-pi acpi acpi_call acpid cups git go papirus-icon-theme plymouth python-build ufw wget
+pi acpi acpi_call acpid cups git papirus-icon-theme plymouth python-build ufw wget
 
 
 # Start slow-running jobs
@@ -360,7 +367,7 @@ systemctl enable coredump-journal-watch.service
 # systemctl enable linux-modules-cleanup.service
 
 
-# Configure journald
+# Configure journald - consider [Journal] Storage=volatile RuntimeMaxUse=1M
 mkdir -p /etc/systemd/journald.conf.d
 cat <<-EOF >/etc/systemd/journald.conf.d/10-retention.conf
 	[Journal]
