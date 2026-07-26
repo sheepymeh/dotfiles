@@ -15,7 +15,7 @@ interval=persist
 full_text= CPU
 
 [memory]
-command=awk 'FNR == 2 {printf " %.1fGB / %d%\n", $3 / 1000, $3 / $2 * 100}' <(free -m --si)
+command=/usr/local/bin/memory.sh
 interval=2
 
 [battery]

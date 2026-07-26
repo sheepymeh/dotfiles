@@ -17,12 +17,12 @@ journalctl -f -n 0 MESSAGE_ID="$MESSAGE_ID" -o json 2>/dev/null | while read -r 
 	seconds=$((ts / 1000000))
 	human_time="$(date -d "@$seconds" '+%F %T')"
 
-	title="Process ${exe} (${pid}) crashed"
-	body="At ${human_time} with signal ${sig}"
+	title="Process $exe ($pid) crashed"
+	body="At $human_time with signal $sig"
 
 	target="logged-in"  # notify all logged-in users if crash was from system or UID not known
 	if [ "$uid" -ge 1000 ]; then
-		target="${uid}"
+		target="$uid"
 	fi
 
 	/usr/local/bin/notify-user.sh "$target" "$title" "$body" dialog-error critical || true

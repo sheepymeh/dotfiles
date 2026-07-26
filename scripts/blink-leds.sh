@@ -1,20 +1,20 @@
 #!/bin/bash
 
+set -Eeuo pipefail
 enable sleep
 
-LEDS=$(find /sys/class/leds/ -name '*::capslock')
-declare -A START_STATES
+shopt -s failglob
+LEDS=(/sys/class/leds/*::capslock/brightness)
+shopt -u failglob
 
-for led in $LEDS; do
-	brightness_file="$led/brightness"
-	if [ -f "$brightness_file" ]; then
-		read -r START_STATES["$brightness_file"] < "$brightness_file"
-	fi
+declare -A INITIAL_STATES
+for led in "${LEDS[@]}"; do
+	read -r INITIAL_STATES["$led"] < "$led"
 done
 
 set_leds() {
-	for led in $LEDS; do
-		echo "$1" > "$led/brightness"
+	for led in "${LEDS[@]}"; do
+		echo "$1" > "$led"
 	done
 }
 
@@ -25,6 +25,6 @@ sleep 0.1
 set_leds 1
 sleep 0.1
 
-for brightness_file in "${!START_STATES[@]}"; do
-	echo "${START_STATES[$brightness_file]}" > "$brightness_file"
+for led in "${!INITIAL_STATES[@]}"; do
+	echo "${INITIAL_STATES[$led]}" > "$led"
 done

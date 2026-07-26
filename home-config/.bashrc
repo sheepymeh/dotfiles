@@ -41,7 +41,7 @@ venv() {
 	fi
 
 	if [ -z "$venv_to_activate" ]; then
-		venv_path=${1:-venv}
+		venv_path="${1:-venv}"
 		echo "Creating venv in $venv_path"
 		uv venv -q --seed --system-site-packages --prompt "$(basename "$(dirname "$PWD/$venv_path")")/$(basename "$venv_path")" "$venv_path"
 		venv_to_activate=$venv_path

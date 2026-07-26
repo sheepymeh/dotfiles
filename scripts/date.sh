@@ -1,5 +1,8 @@
 #!/bin/bash
+
+set -Eeuo pipefail
 enable sleep
+
 print_datetime() {
 	echo " $(date '+%A %d.%m %H:%M')"
 }

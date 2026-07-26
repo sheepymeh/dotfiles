@@ -14,12 +14,18 @@ cleanup() {
 trap cleanup EXIT INT TERM ERR
 
 BATTERY_PATH=
+AC_PATH=
 for supply in /sys/class/power_supply/*; do
-	if [ -f "$supply/type" ] && [ "$(cat "$supply/type")" = "Battery" ]; then
-		BATTERY_PATH="$supply"
-		break
+	if [ -f "$supply/type" ]; then
+		if [ -f "$supply/capacity" ] && [ "$(cat "$supply/type")" = "Battery" ]; then
+			BATTERY_PATH="$supply"
+		elif [ -f "$supply/online" ] && [ "$(cat "$supply/type")" = "Mains" ]; then
+			AC_PATH="$supply"
+		fi
 	fi
 done
+if [ -z "$BATTERY_PATH" ]; then echo "Battery not found"; fi
+if [ -z "$AC_PATH" ]; then echo "AC adapter not found"; fi
 
 pi () { pacman -Sq --noconfirm --needed "$@"; }
 
@@ -39,7 +45,7 @@ setup_packages() {
 		python-pip python-virtualenv jupyter-notebook jupyterlab-widgets python-ipykernel python-ipywidgets python-tqdm \
 		fcitx5 fcitx5-rime rime-pinyin-simp fcitx5-mozc \
 		android-tools foot impala iwd sqlite shellcheck \
-		code verilator
+		code verilator  # note that `code` now requires onnxruntime, which should be adjusted based on GPU
 
 	while [[ $# -gt 0 ]]; do
 		case "$1" in
@@ -116,6 +122,9 @@ setup_packages() {
 		cat <<-EOF >/etc/mkinitcpio.conf.d/20-intel.conf
 			MODULES+=(i915)
 		EOF
+		cat <<-EOF >/etc/modprobe.d/i915.conf  # https://wiki.archlinux.org/title/Intel_graphics#Enable_GuC_/_HuC_firmware_loading
+			options i915 enable_guc=3
+		EOF
 	fi
 	if lspci -k | grep -A 2 -E '(VGA|3D|Graphics)' | grep -qi amd; then
 		pi libva-mesa-driver mesa vulkan-radeon
@@ -130,7 +139,8 @@ setup_packages() {
 
 setup_scripts() {
 	if [ -n "$BATTERY_PATH" ]; then
-		BATTERY_PATH="$BATTERY_PATH" envsubst '${BATTERY_PATH}' < ../scripts/battery.sh > /usr/local/bin/battery
+		# shellcheck disable=SC2016
+		BATTERY_PATH="$BATTERY_PATH" AC_PATH="$AC_PATH" envsubst '${BATTERY_PATH} ${AC_PATH}' < ../scripts/battery.sh > /usr/local/bin/battery
 		chmod 755 /usr/local/bin/battery
 		# go build scripts/battery.go
 		# chmod u+s battery
@@ -141,7 +151,7 @@ setup_scripts() {
 	# 	chmod u+s perf
 	# 	mv perf /usr/local/bin
 	# fi
-	for script in record.sh mic.sh date.sh blink-leds.sh notify-user.sh coredump-journal-watch.sh dynamic-workspaces.py; do
+	for script in record.sh mic.sh date.sh blink-leds.sh notify-user.sh coredump-journal-watch.sh dynamic-workspaces.py memory.sh; do
 		install -m 755 "scripts/$script" /usr/local/bin
 	done
 }
