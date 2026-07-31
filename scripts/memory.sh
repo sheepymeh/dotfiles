@@ -36,7 +36,7 @@ printf ' %d.%dGB / %d%%\n%s' "$used_gib_major" "$used_gib_minor" "$usage" "$c
 
 if [ "$usage" -ge "$threshold" ]; then
 	if [ ! -f "$state_file" ]; then
-		/usr/local/bin/notify-user.sh 1000 "High memory usage" "Memory usage is at $usage%" dialog-error critical
+		notify-send "High memory usage" "Memory usage is at $usage%" --icon="dialog-error" -u "critical" -t 0
 		: > "$state_file"
 	fi
 elif [ -f "$state_file" ]; then
