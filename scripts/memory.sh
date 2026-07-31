@@ -32,7 +32,7 @@ if [ "$usage" -ge "$threshold" ]; then
 	color="#f38ba8"
 fi
 
-printf ' %d.%dGB / %d%%\n%s' "$used_gib_major" "$used_gib_minor" "$usage" "$color"
+printf ' %d.%dGB / %d%%\n%d%%\n%s\n' "$used_gib_major" "$used_gib_minor" "$usage" "$usage" "$color"
 
 if [ "$usage" -ge "$threshold" ]; then
 	if [ ! -f "$state_file" ]; then
