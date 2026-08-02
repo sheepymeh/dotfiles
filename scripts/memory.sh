@@ -29,10 +29,10 @@ used_gib_minor=$((used_gib_tenths % 10))
 
 color=
 if [ "$usage" -ge "$threshold" ]; then
-	color="#f38ba8"
+	color="#f38ba8\n"
 fi
 
-printf ' %d.%dGB / %d%%\n%d%%\n%s\n' "$used_gib_major" "$used_gib_minor" "$usage" "$usage" "$color"
+printf ' %d.%dGB / %d%%\n%d%%\n%s' "$used_gib_major" "$used_gib_minor" "$usage" "$usage" "$color"
 
 if [ "$usage" -ge "$threshold" ]; then
 	if [ ! -f "$state_file" ]; then
