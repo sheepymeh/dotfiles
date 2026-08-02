@@ -51,7 +51,7 @@ setup_packages() {
 		case "$1" in
 			--torch) pi python-numpy python-pytorch-opt python-torchvision python-pillow python-opencv python-scikit-learn ;;
 			--tesseract) pi tesseract tesseract-data-eng ;;
-			--tex) pi texlive-basic texlive-binextra texlive-latex texlive-latexrecommended texlive-latexextra texlive-fontsrecommended texlive-mathscience perl-file-homedir perl-yaml-tiny ;;
+			--tex) pi texlive-basic texlive-binextra texlive-fontsrecommended texlive-latex texlive-latexextra texlive-latexrecommended texlive-mathscience texlive-plaingeneric perl-file-homedir perl-yaml-tiny ;;
 			--office) pi libreoffice-fresh ;;
 			--cloudflare) pi wrangler ;;
 			--web) pi eslint eslint-language-server nodejs npm pnpm prettier typescript ;;
