@@ -24,6 +24,7 @@ VSCODE_EXTENSIONS=(
 	github.vscode-pull-request-github
 
 	# Utilities
+	bazelbuild.vscode-bazel
 	ms-azuretools.vscode-docker
 
 	# Text
