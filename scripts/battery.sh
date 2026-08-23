@@ -2,8 +2,8 @@
 
 set -eu
 
-_BAT_PATH="${BATTERY_PATH:-}"
-_AC_PATH="${AC_PATH:-}"
+_BAT_PATH="${BATTERY_PATH}"
+_AC_PATH="${AC_PATH}"
 
 percentage_icon() {
 	if [ "$1" -le 10 ]; then

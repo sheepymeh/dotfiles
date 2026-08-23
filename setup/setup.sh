@@ -11,7 +11,6 @@ cleanup() {
 	rm -f "/etc/sudoers.d/temp-setup"
 	kill 0
 }
-trap cleanup EXIT INT TERM ERR
 
 BATTERY_PATH=
 AC_PATH=
@@ -140,7 +139,7 @@ setup_packages() {
 setup_scripts() {
 	if [ -n "$BATTERY_PATH" ]; then
 		# shellcheck disable=SC2016
-		BATTERY_PATH="$BATTERY_PATH" AC_PATH="$AC_PATH" envsubst '${BATTERY_PATH} ${AC_PATH}' < ../scripts/battery.sh > /usr/local/bin/battery
+		BATTERY_PATH="$BATTERY_PATH" AC_PATH="$AC_PATH" envsubst '${BATTERY_PATH} ${AC_PATH}' < scripts/battery.sh > /usr/local/bin/battery
 		chmod 755 /usr/local/bin/battery
 		# go build scripts/battery.go
 		# chmod u+s battery
@@ -236,6 +235,7 @@ runuser -u "$SUDO_USER" -- yay -Sq --noconfirm --needed --sudoloop \
 # Packages that are used in the setup process
 pi acpi acpi_call acpid cups git papirus-icon-theme plymouth python-build ufw wget
 
+trap cleanup EXIT INT TERM ERR
 
 # Start slow-running jobs
 setup_packages "$@" &
@@ -523,7 +523,7 @@ sed -i '/^[^#].*--splash/s/^/#/' /etc/mkinitcpio.d/*.preset
 plymouth-set-default-theme -R spinner
 
 wait
-
+trap - EXIT INT TERM ERR
 
 # Notes:
 # https://bbs.archlinux.org/viewtopic.php?id=257315
