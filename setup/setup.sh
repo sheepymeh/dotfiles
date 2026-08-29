@@ -46,15 +46,15 @@ setup_packages() {
 		android-tools foot impala iwd sqlite shellcheck \
 		code verilator  # note that `code` now requires onnxruntime, which should be adjusted based on GPU
 
-	while [[ $# -gt 0 ]]; do
-		case "$1" in
+	for arg in "$@"; do
+		case "$arg" in
 			--torch) pi python-numpy python-pytorch-opt python-torchvision python-pillow python-opencv python-scikit-learn ;;
 			--tesseract) pi tesseract tesseract-data-eng ;;
 			--tex) pi texlive-basic texlive-binextra texlive-fontsrecommended texlive-latex texlive-latexextra texlive-latexrecommended texlive-mathscience texlive-plaingeneric perl-file-homedir perl-yaml-tiny ;;
 			--office) pi libreoffice-fresh ;;
 			--cloudflare) pi wrangler ;;
 			--web) pi eslint eslint-language-server nodejs npm pnpm prettier typescript ;;
-			--wine) pi wine wine-gecko mangohud ;;  # dxvk-bin vkd3d-proton-bin
+			--wine) pi wine wine-gecko mangohud ;;
 			--python) pi mypy python-pytest python-pytest-aiohttp python-pytest-asyncio python-beautifulsoup4 python-flask python-aiohttp python-pycryptodome python-pymupdf python-pytest-cov python-pydantic python-pylint python-tqdm python-uv pyright ruff ty uv ;;
 			--smart)
 				pi smartmontools
@@ -75,7 +75,6 @@ setup_packages() {
 				echo 'unqualified-search-registries = ["docker.io"]' >/etc/containers/registries.conf.d/10-docker-hub.conf
 			;;
 		esac
-		shift
 	done
 
 	BT_SYS_PATH="/sys/class/bluetooth"
@@ -229,8 +228,15 @@ if ! command -v yay &> /dev/null; then
 fi
 
 # Install AUR packages
-runuser -u "$SUDO_USER" -- yay -Sq --noconfirm --needed --sudoloop \
-	chayang papirus-folders-catppuccin-git sway-audio-idle-inhibit-git # python-catppuccin
+AUR_PACKAGES=(
+	chayang papirus-folders-catppuccin-git sway-audio-idle-inhibit-git  # python-catppuccin
+)
+for arg in "$@"; do
+	case "$arg" in
+		--wine) AUR_PACKAGES+=(dxvk-bin vkd3d-proton-bin) ;;
+	esac
+done
+runuser -u "$SUDO_USER" -- yay -Sq --noconfirm --needed --sudoloop "${AUR_PACKAGES[@]}"
 
 # Packages that are used in the setup process
 pi acpi acpi_call acpid cups git papirus-icon-theme plymouth python-build ufw wget

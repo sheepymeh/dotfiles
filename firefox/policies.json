@@ -73,7 +73,29 @@
     },
 
     "Cookies": {
-      "Behavior": "reject-foreign"
+      "Behavior": "reject-foreign",
+      "Allow": [
+        "https://accounts.google.com",
+        "https://amazon.co.uk",
+        "https://amazon.com",
+        "https://amazon.sg",
+        "https://app.tuta.com",
+        "https://cam.ac.uk",
+        "https://chatgpt.com",
+        "https://discord.com",
+        "https://github.com",
+        "https://leetcode.com",
+        "https://login.microsoftonline.com",
+        "https://login.nvgs.nvidia.com",
+        "https://music.youtube.com",
+        "https://notion.so",
+        "https://play.geforcenow.com",
+        "https://sheepymeh.net",
+        "https://tripos.pro",
+        "https://web.telegram.org",
+        "https://web.whatsapp.com",
+        "https://wikipedia.org"
+      ]
     },
 
     "EnableTrackingProtection": {
