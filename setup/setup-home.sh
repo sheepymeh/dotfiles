@@ -131,10 +131,4 @@ rm -rf fcitx5
 
 systemctl --user enable ssh-agent sway-inhibit-idle clear-trash.timer
 
-if [ ! -d ~/.ssh ]; then
-	mkdir ~/.ssh
-	echo AddKeysToAgent yes >~/.ssh/config
-	chmod 600 ~/.ssh/config
-fi
-
 wait
