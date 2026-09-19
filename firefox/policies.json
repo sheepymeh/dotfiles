@@ -311,6 +311,9 @@
       "network.http.speculative-parallel-limit": { "Value": 0 },
       "network.IDN_show_punycode": { "Value": true },
       "network.prefetch-next": { "Value": false },
+      "network.proxy.failover_direct": { "Value": false },
+      "network.proxy.failover_timeout": { "Value": 5 },
+      "network.proxy.socks_remote_dns": { "Value": true },
       "security.OCSP.enabled": { "Value": 0 },
       "security.ssl.errorReporting.enabled": { "Value": false },
       "security.insecure_connection_text.enabled": { "Value": true }
