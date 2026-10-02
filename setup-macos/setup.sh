@@ -164,3 +164,11 @@ vscode_install_ext code
 cp ../config/ownCloud/sync-exclude.lst ~/Library/Preferences/ownCloud
 
 cp zprofile.sh "$HOME/.zprofile"
+
+TERMINAL_THEME=catppuccin-mocha
+curl -fsSL "https://raw.githubusercontent.com/catppuccin/Terminal.app/main/themes/$TERMINAL_THEME.terminal" -o /tmp/$TERMINAL_THEME.terminal
+open /tmp/$TERMINAL_THEME.terminal
+sleep 1
+defaults write com.apple.Terminal "Default Window Settings" -string "$TERMINAL_THEME"
+defaults write com.apple.Terminal "Startup Window Settings" -string "$TERMINAL_THEME"
+
