@@ -93,9 +93,6 @@ defaults write com.apple.dock wvous-bl-modifier -int 0
 defaults write com.apple.dock wvous-br-corner -int 4
 defaults write com.apple.dock wvous-br-modifier -int 0
 
-defaults write com.apple.chronod RemoteWidgetsEnabled -bool false
-defaults write com.apple.WindowManager StandardHideWidgets -bool true
-
 osascript -e 'tell app "System Events" to tell appearance preferences to set dark mode to true'
 defaults write -g AppleAccentColor -int 5  # purple
 defaults write -g AppleHighlightColor -string "0.968627 0.831373 1.000000 Purple"
