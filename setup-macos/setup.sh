@@ -21,17 +21,12 @@ declare -a DOCK_APPS=(
 	'/Applications/Visual Studio Code.app'
 	'/System/Applications/Utilities/Terminal.app'
 );
-declare -a DOCK_FOLDERS=(
-	~/Downloads
-);
 clear_dock
 disable_recent_apps_from_dock
 for app in "${DOCK_APPS[@]}"; do
 	add_app_to_dock "$app"
 done
-for folder in "${DOCK_FOLDERS[@]}"; do
-	add_folder_to_dock "$folder"
-done
+add_folder_to_dock "$HOME/Downloads" -a 2 -d 1 -v 2
 
 
 NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
@@ -129,6 +124,19 @@ defaults write -g NSAutomaticInlinePredictionEnabled -bool false
 defaults write -g NSAutomaticPeriodSubstitutionEnabled -bool false
 defaults write -g NSAutomaticQuoteSubstitutionEnabled -bool false
 defaults write -g NSAutomaticSpellingCorrectionEnabled -bool false
+
+defaults write com.apple.iCal "display birthdays calendar" -bool true
+defaults write com.apple.iCal "number of hours displayed" -int 16
+defaults write com.apple.iCal "Show Week Numbers" -bool true
+defaults write com.apple.iCal "TimeZone support enabled" -bool true
+defaults write com.apple.iCal CALPrefOverlayCalendarIdentifier -string chinese
+defaults write com.apple.iCal DefaultAllDayAlarmOffset -int 32400
+defaults write com.apple.iCal DefaultTimedAlarmOffset -int 0
+defaults write com.apple.iCal enableTravelAdvisoriesForAutomaticBehavior -bool false
+
+defaults write -g AppleICUForce24HourTime -bool true
+sudo defaults write /Library/Preferences/.GlobalPreferences AppleICUForce24HourTime -bool true
+sudo sysadminctl -use12HourClockForLoginWindow off
 
 killall Dock Finder ControlCenter SystemUIServer cfprefsd
 
