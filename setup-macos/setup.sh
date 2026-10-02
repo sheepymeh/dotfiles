@@ -35,7 +35,7 @@ brew update
 
 
 eval "$(/opt/homebrew/bin/brew shellenv)"
-brew install --yes basictex bazelisk bitwarden middleclick music-decoy owncloud pygments python@3 ruff shellcheck uv verilator visual-studio-code zed firefox
+brew install --yes basictex bazelisk bitwarden middleclick music-decoy owncloud pygments python@3 ruff shellcheck signal uv verilator visual-studio-code zed firefox
 
 
 add_login_item () {
@@ -73,6 +73,12 @@ sudo scutil --set HostName "$NEW_HOSTNAME"
 dscacheutil -flushcache
 
 
+osascript -e 'tell application "System Events" to tell appearance preferences' \
+	-e 'set recent documents limit to 15' \
+	-e 'set recent applications limit to 15' \
+	-e 'set recent servers limit to 15' \
+	-e 'end tell'
+
 defaults write com.apple.dock autohide -bool true
 defaults write com.apple.dock autohide-delay -float 0
 defaults write com.apple.dock autohide-time-modifier -float 0.3
@@ -95,14 +101,19 @@ defaults write -g AppleAccentColor -int 5  # purple
 defaults write -g AppleHighlightColor -string "0.968627 0.831373 1.000000 Purple"
 
 defaults write com.apple.finder FXRemoveOldTrashItems -bool true
-# defaults write -g NSRecentDocumentsLimit -int 0
+defaults write com.apple.finder NewWindowTarget -string "PfHm"
+defaults write NSGlobalDomain NSRecentDocumentsLimit 0
+defaults write com.apple.finder ShowRecentTags -bool false
+defaults write NSGlobalDomain AppleShowAllExtensions -bool true
+defaults write com.apple.finder FXEnableExtensionChangeWarning -bool false
+defaults write com.apple.finder FXDefaultSearchScope -string "SCcf"
 
 defaults write com.apple.AdLib allowApplePersonalizedAdvertising -bool false
 defaults write com.apple.AdLib allowIdentifierForAdvertising -bool false
 
 defaults write com.apple.assistant.support "Search Queries Data Sharing Status" -int 2
 
-defaults write com.apple.HIToolbox AppleFnUsageType -int 0
+defaults write com.apple.HIToolbox AppleFnUsageType -int 1
 defaults write -g AppleKeyboardUIMode -int 2
 sudo defaults write /Library/Preferences/com.apple.loginwindow LoginwindowText "If found, please email me at jiayang@tuta.io"
 
