@@ -5,60 +5,13 @@ if [ "$EUID" -eq 0 ]; then
 	exit 1
 fi
 cd "$(dirname -- "$0")"
+. ../posix-common/config.sh
 trap 'kill 0' ERR
 
 if [ -z "$WAYLAND_DISPLAY" ]; then
 	echo '$WAYLAND_DISPLAY not initialized'
 	exit 1
 fi
-
-VSCODE_CONFIG_DIR="$HOME/.config/Code - OSS/User"
-VSCODE_EXTENSIONS=(
-	# Themes
-	Catppuccin.catppuccin-vsc
-	Catppuccin.catppuccin-vsc-icons
-
-	# Git
-	eamodio.gitlens
-	github.vscode-github-actions
-	github.vscode-pull-request-github
-
-	# Utilities
-	bazelbuild.vscode-bazel
-	ms-azuretools.vscode-docker
-
-	# Text
-	davidanson.vscode-markdownlint
-	james-yu.latex-workshop
-
-	# Python
-	astral-sh.ty
-	charliermarsh.ruff
-	detachhead.basedpyright
-	meta.pyrefly
-	ms-python.mypy-type-checker
-	ms-python.python
-	ms-toolsai.jupyter
-	zuban.zubanls
-
-	# Web
-	dbaeumer.vscode-eslint
-	esbenp.prettier-vscode
-	Vue.volar
-
-	# Shell
-	timonwong.shellcheck
-
-	# Verilog
-	hudson-river-trading.vscode-slang
-	mshr-h.veriloghdl
-)
-
-install_vscode_ext() {
-	for ext in "${VSCODE_EXTENSIONS[@]}"; do
-		code --install-extension "$ext"
-	done
-}
 
 install_wine() {
 	if command -v wine &>/dev/null; then
@@ -69,15 +22,10 @@ install_wine() {
 }
 
 # Start slow-running jobs
-install_vscode_ext &
+vscode_install_ext code &
 install_wine &
 
-# Configure git
-git config --global user.name 'sheepymeh'
-git config --global user.email 'sheepymeh@users.noreply.github.com'
-git config --global credential.helper store
-git config --global pull.rebase false
-git config --global init.defaultBranch main
+git_config
 
 # Prepare /home/user
 xdg-user-dirs-update
@@ -104,8 +52,7 @@ if ! swaymsg -t get_outputs | jq -e 'any(.name == "eDP-1")' >/dev/null; then
 	rm ~/.config/sway/config.d/laptop.conf
 fi
 
-mkdir -p "$VSCODE_CONFIG_DIR"
-cp code/* "$VSCODE_CONFIG_DIR"
+vscode_config ".config/Code - OSS/User"
 
 cd -
 

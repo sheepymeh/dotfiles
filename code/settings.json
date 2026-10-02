@@ -1,7 +1,8 @@
 {
   "window.titleBarStyle": "native",
-  "editor.fontFamily": "'JetBrainsMono Nerd Font Mono', 'Roboto Mono', monospace",
   "update.mode": "none",
+
+  "editor.fontFamily": "'JetBrainsMono Nerd Font Mono', 'JetBrains Mono', 'Roboto Mono', monospace",
 
   "chat.tips.enabled": false,
   "debug.onTaskErrors": "debugAnyway",
@@ -44,7 +45,7 @@
   "verilog.linting.linter": "verilator",
 
   "workbench.editorAssociations": {
-    "*.pdf": "latex-workshop-pdf-hook",
+    "*.pdf": "latex-workshop-pdf-hook"
   },
   "latex-workshop.formatting.latex": "latexindent",
   "latex-workshop.latex.tools": [
@@ -58,17 +59,17 @@
         "-file-line-error",
         "-pdf",
         "-outdir=%OUTDIR%",
-        "%DOC%",
+        "%DOC%"
       ],
       "env": {
-        "TEXINPUTS": "$HOME/Cambridge/Supervision Templates:",
-      },
-    },
+        "TEXINPUTS": "$HOME/Cambridge/Supervision Templates:"
+      }
+    }
   ],
   "[python]": {
     "editor.codeActionsOnSave": {
       "source.fixAll.ruff": "explicit",
       "source.organizeImports.ruff": "explicit"
     }
-  },
+  }
 }

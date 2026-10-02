@@ -5,6 +5,7 @@ if [ -z "$SUDO_USER" ]; then
 	exit 1
 fi
 cd "$(dirname -- "$0")/.."
+. ../posix-common/config.sh
 
 cleanup() {
 	trap - EXIT INT TERM ERR

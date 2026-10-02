@@ -12,7 +12,7 @@
     "enabled": true,
     "sections": [
       {
-        "code": "@font-face {\n    font-family: Inter;\n    src: local('Inter Display');\n}\n@font-face {\n    font-family: Inter;\n    font-weight: 700;\n    src: local('Inter Display Semibold');\n}\n\n:is(html, body, main, article, section, caption, nav, blockquote, p, table, tr, td, button, input, h1, h2, h3, h4, h5, h6, a):not([class*=logo]):not([class*=symbol]):not([class*=icon]):not([class*=toggle]) {\n    font-family: Inter, sans-serif !important;\n}\n\ncode, pre, code *, pre * {\n    font-family: \"JetBrainsMono Nerd Font Mono\", sans-serif !important;\n}\n\n::selection {\n    background-color: #cba6f7;\n    color: #1e1e2e;\n}"
+        "code": "@font-face {\n    font-family: Inter;\n    src: local('Inter Display');\n}\n@font-face {\n    font-family: Inter;\n    font-weight: 700;\n    src: local('Inter Display Semibold');\n}\n\n:is(html, body, main, article, section, caption, nav, blockquote, p, table, tr, td, button, input, h1, h2, h3, h4, h5, h6, a):not([class*=logo]):not([class*=symbol]):not([class*=icon]):not([class*=toggle]) {\n    font-family: Inter, system-ui, sans-serif !important;\n}\n\ncode, pre, code *, pre * {\n    font-family: 'JetBrainsMono Nerd Font Mono', 'JetBrains Mono', monospace !important;\n}\n\n::selection {\n    background-color: #cba6f7;\n    color: #1e1e2e;\n}"
       }
     ],
     "exclusions": [
@@ -25,7 +25,7 @@
     "enabled": true,
     "sections": [
       {
-        "code": "* {\n    font-family: Inter, sans-serif !important;\n}\n:root:fullscreen #player-container #ytd-player #container,\n:root:fullscreen #player-container #ytd-player #container #movie_player,\n.ytmusic-av-toggle {\n    background-color: transparent !important;\n}",
+        "code": "* {\n    font-family: Inter, system-ui, sans-serif !important;\n}\n:root:fullscreen #player-container #ytd-player #container,\n:root:fullscreen #player-container #ytd-player #container #movie_player,\n.ytmusic-av-toggle {\n    background-color: transparent !important;\n}",
         "domains": [
           "youtube.com"
         ]

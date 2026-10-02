@@ -5,6 +5,7 @@ if [ "$EUID" -eq 0 ]; then
 	exit 1
 fi
 cd "$(dirname -- "$0")"
+. ../posix-common/config.sh
 
 firefox --window-size=1,1 --screenshot /dev/null about:blank
 
