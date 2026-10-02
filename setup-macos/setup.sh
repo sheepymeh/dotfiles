@@ -152,6 +152,10 @@ sudo sysadminctl -use12HourClockForLoginWindow off
 killall Dock Finder ControlCenter SystemUIServer cfprefsd
 
 
+sudo launchctl disable "system/com.apple.ReportCrash"
+sudo launchctl disable "system/com.apple.DiagnosticsReporter"
+
+
 git_config
 
 firefox_config /Applications/Firefox.app/Contents/Resources/distribution Library/Application\ Support/Firefox/Profiles
