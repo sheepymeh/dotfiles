@@ -94,8 +94,11 @@ defaults write com.apple.dock wvous-br-corner -int 4
 defaults write com.apple.dock wvous-br-modifier -int 0
 
 osascript -e 'tell app "System Events" to tell appearance preferences to set dark mode to true'
-defaults write -g AppleAccentColor -int 5  # purple
-defaults write -g AppleHighlightColor -string "0.968627 0.831373 1.000000 Purple"
+defaults write -g AppleAccentColor -int 5
+defaults write -g AppleHighlightColor -string "0.796078 0.650980 0.968627 Other"
+defaults write -g AppleHighlightedTextColor -string "0.117647 0.117647 0.180392 Other"
+defaults write -g AppleIconAppearanceTintColor -string "Other"
+defaults write -g AppleIconAppearanceCustomTintColor -string "0.796078 0.650980 0.968627 1.0"
 
 defaults write com.apple.finder FXRemoveOldTrashItems -bool true
 defaults write com.apple.finder NewWindowTarget -string "PfHm"
