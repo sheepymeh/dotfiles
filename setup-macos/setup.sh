@@ -158,6 +158,18 @@ sudo launchctl disable "system/com.apple.DiagnosticsReporter"
 
 
 git_config
+cat >> ~/.gitignore_global <<-'EOF'
+	.DS_Store
+	._*
+	.Spotlight-V100
+	.Trashes
+	.fseventsd
+	.TemporaryItems
+	.apdisk
+	Icon?
+	.AppleDouble
+EOF
+git config --global core.excludesfile ~/.gitignore_global
 
 firefox_config /Applications/Firefox.app/Contents/Resources/distribution Library/Application\ Support/Firefox/Profiles
 jq 'del(.policies.Preferences."browser.tabs.inTitlebar")' "/Applications/Firefox.app/Contents/Resources/distribution/policies.json" > /tmp/ff-settings.json
