@@ -35,7 +35,7 @@ brew update
 
 
 eval "$(/opt/homebrew/bin/brew shellenv)"
-brew install --yes basictex bazelisk bitwarden middleclick music-decoy owncloud pygments python@3 ruff shellcheck signal uv verilator visual-studio-code zed firefox
+brew install --yes basictex bazelisk bitwarden firefox middleclick music-decoy openlogi owncloud pygments python@3 ruff shellcheck signal uv verilator visual-studio-code zed
 
 
 add_login_item () {
