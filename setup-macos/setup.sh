@@ -112,6 +112,7 @@ defaults write com.apple.AdLib allowApplePersonalizedAdvertising -bool false
 defaults write com.apple.AdLib allowIdentifierForAdvertising -bool false
 
 defaults write com.apple.assistant.support "Search Queries Data Sharing Status" -int 2
+defaults -currentHost write com.apple.controlcenter BatteryShowPercentage -bool true
 
 defaults write com.apple.HIToolbox AppleFnUsageType -int 1
 defaults write -g AppleKeyboardUIMode -int 2
