@@ -8,7 +8,8 @@ cd "$(dirname -- "$0")"
 sed 's/^#auth/auth/' /etc/pam.d/sudo_local.template | sudo tee /etc/pam.d/sudo_local > /dev/null
 
 
-open sheepymeh.mobileconfig
+open restrictions.mobileconfig
+open notifications.mobileconfig
 curl -o /tmp/adguard_dns.mobileconfig "https://adguard-dns.io$(curl 'https://adguard-dns.io/public_api/v1/dns/mobile_config' \
   --json '{"dns_proto_type":"DOT","filtering_type":"DEFAULT","exclude_wifi_networks":[""],"exclude_domain":[""]}' | jq -r '.download_link')"
 open /tmp/adguard_dns.mobileconfig
