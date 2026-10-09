@@ -195,4 +195,3 @@ defaults write com.apple.Terminal "Startup Window Settings" -string "$TERMINAL_T
 
 defaults write com.apple.tipsd TPSWaitingToShowWelcomeNotification -int 0
 defaults write com.apple.tipsd TPSWelcomeNotificationReminderState -int 1
-launchctl disable "gui/$(id -u)/com.apple.tipsd"
