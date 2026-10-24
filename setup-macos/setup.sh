@@ -177,6 +177,9 @@ jq 'del(.policies.Preferences."browser.tabs.inTitlebar")' "/Applications/Firefox
 mv /tmp/ff-settings.json "/Applications/Firefox.app/Contents/Resources/distribution/policies.json"
 sed -i '' '/font\.name/d' ~/Library/Application\ Support/Firefox/Profiles/*.default-release/user.js
 
+mkdir -p ~/.config
+cp -r ../config/zed ~/.config
+
 vscode_config "Library/Application Support/Code/User"
 jq 'del(."window.titleBarStyle", ."update.mode")' "$HOME/Library/Application Support/Code/User/settings.json" > /tmp/vsc-settings.json
 mv /tmp/vsc-settings.json "$HOME/Library/Application Support/Code/User/settings.json"
