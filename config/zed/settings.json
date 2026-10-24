@@ -1,72 +1,82 @@
 {
   // UI
   "buffer_font_family": "JetBrainsMono Nerd Font",
+  "buffer_font_fallbacks": ["JetBrains Mono", "Roboto Mono", "monospace"],
   "ui_font_family": "Inter Display",
+  "ui_font_fallbacks": ["system-ui", ".SystemUIFont", "sans-serif"],
   "ui_font_weight": 500,
   "ui_font_size": 16,
   "buffer_font_size": 13,
   "icon_theme": {
     "mode": "system",
     "light": "Catppuccin Latte",
-    "dark": "Catppuccin Mocha"
+    "dark": "Catppuccin Mocha",
   },
   "theme": {
     "mode": "system",
     "light": "Catppuccin Latte",
-    "dark": "Catppuccin Mocha"
+    "dark": "Catppuccin Mocha",
   },
   "buffer_line_height": {
-    "custom": 1.45
+    "custom": 1.45,
   },
   "minimap": {
-    "show": "never"
+    "show": "never",
   },
   "base_keymap": "VSCode",
+  "terminal": {
+    "max_scroll_history_lines": 20000,
+  },
+  "auto_indent_on_paste": true,
+  "line_ending": "prefer_lf",
+  "ensure_final_newline_on_save": true,
+  "remove_trailing_whitespace_on_save": false,
   // Editor behavior
   "autosave": "on_window_change",
-  "format_on_save": "on",
+  "format_on_save": "modifications_if_available",
   "show_whitespaces": "boundary",
   "hard_tabs": true,
   "auto_signature_help": true,
   "inlay_hints": {
-    "enabled": true
+    "enabled": true,
   },
   "git": {
     "inline_blame": {
       "delay_ms": 500,
-      "show_commit_summary": true
-    }
+      "show_commit_summary": true,
+    },
   },
   "session": {
-    "trust_all_worktrees": true
+    "trust_all_worktrees": true,
   },
   // AI
   "agent": {
     "default_model": {
-      "provider": "copilot_chat",
-      "model": "gpt-5.1-codex"
+      "effort": "medium",
+      "enable_thinking": true,
+      "provider": "zed.dev",
+      "model": "gpt-6-luna",
     },
-    "model_parameters": []
+    "model_parameters": [],
   },
   // Telemetry
   "auto_update": false,
   "telemetry": {
     "diagnostics": false,
     "metrics": false,
-    "anthropic_retention": false
+    "anthropic_retention": false,
   },
   // Setup
   "auto_install_extensions": {
     "html": true,
     "toml": true,
-    "java": true,
     "dockerfile": true,
     "sql": true,
     "vue": true,
     "latex": true,
     "csv": true,
     "catppuccin": true,
-    "catppuccin-icons": true
+    "catppuccin-icons": true,
   },
   // LaTeX
   "lsp": {
@@ -74,10 +84,10 @@
       "settings": {
         "texlab": {
           "build": {
-            "onSave": true
-          }
-        }
-      }
-    }
-  }
+            "onSave": true,
+          },
+        },
+      },
+    },
+  },
 }
