@@ -48,9 +48,6 @@
     },
     "model_parameters": []
   },
-  "features": {
-    "edit_prediction_provider": "copilot"
-  },
   // Telemetry
   "auto_update": false,
   "telemetry": {
