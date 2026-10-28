@@ -201,3 +201,10 @@ defaults write com.apple.tipsd TPSWelcomeNotificationReminderState -int 1
 
 defaults write com.apple.TextEdit RichText -bool false
 defaults write com.apple.TextEdit ShowPageBreaks -bool false
+
+defaults write -g NSUserKeyEquivalents -dict-add \
+  '\033Window\033Fill' '~^\UF700'
+defaults write -g NSUserKeyEquivalents -dict-add \
+  '\033Window\033Move & Resize\033Left' '~^\UF702'
+defaults write -g NSUserKeyEquivalents -dict-add \
+  '\033Window\033Move & Resize\033Right' '~^\UF703'
