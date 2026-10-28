@@ -85,26 +85,7 @@
   },
   // Setup
   "auto_install_extensions": {
-    "html": true,
-    "toml": true,
-    "dockerfile": true,
-    "sql": true,
-    "vue": true,
-    "latex": true,
-    "csv": true,
     "catppuccin": true,
     "catppuccin-icons": true,
-  },
-  // LaTeX
-  "lsp": {
-    "texlab": {
-      "settings": {
-        "texlab": {
-          "build": {
-            "onSave": true,
-          },
-        },
-      },
-    },
   },
 }

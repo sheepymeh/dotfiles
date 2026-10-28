@@ -37,6 +37,18 @@ brew update
 
 eval "$(/opt/homebrew/bin/brew shellenv)"
 brew install --yes basictex bazelisk betterdisplay bitwarden firefox keepingyouawake latexindent middleclick music-decoy openlogi owncloud pygments python@3 ruff shellcheck signal uv verilator visual-studio-code zed brew
+for app_path in \
+	"/Applications/BetterDisplay.app" \
+	"/Applications/Bitwarden.app" \
+	"/Applications/Firefox.app" \
+	"/Applications/KeepingYouAwake.app" \
+	"/Applications/MiddleClick.app" \
+	"/Applications/Music Decoy.app" \
+	"/System/Applications/Calendar.app" \
+	"/System/Applications/Mail.app"; do
+	osascript -e "tell application \"System Events\" to make login item at end with properties {path:\"$app_path\", hidden:false}"
+done
+open "x-apple.systempreferences:com.apple.settings.PrivacySecurity.extension?Privacy_AllFiles"
 
 
 add_login_item () {

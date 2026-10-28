@@ -2,11 +2,7 @@ VSCODE_EXTENSIONS=(
 	Catppuccin.catppuccin-vsc
 	Catppuccin.catppuccin-vsc-icons
 
-	eamodio.gitlens
 	github.vscode-github-actions
-
-	bazelbuild.vscode-bazel
-	ms-azuretools.vscode-docker
 
 	davidanson.vscode-markdownlint
 	james-yu.latex-workshop
@@ -15,9 +11,6 @@ VSCODE_EXTENSIONS=(
 	ms-python.python
 
 	timonwong.shellcheck
-
-	hudson-river-trading.vscode-slang
-	mshr-h.veriloghdl
 )
 # consider also
 # github.vscode-pull-request-github

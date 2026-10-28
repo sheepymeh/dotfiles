@@ -1,8 +1,8 @@
 {
   "policies": {
     "CaptivePortal": false,
+    "DisableAccounts": true,
     "DisableFeedbackCommands": true,
-    "DisableFirefoxAccounts": true,
     "DisableFirefoxStudies": true,
     "DisableFormHistory": true,
     "DisablePocket": true,
@@ -13,7 +13,7 @@
     "NetworkPrediction": false,
     "NewTabPage": true,
     "NoDefaultBookmarks": true,
-    "OfferToSaveLogins": false,
+    "OfferToSaveLoginsDefault": false,
     "OverridePostUpdatePage": "",
     "PasswordManagerEnabled": false,
     "SearchSuggestEnabled": false,
@@ -83,8 +83,8 @@
         "https://cam.ac.uk",
         "https://chatgpt.com",
         "https://discord.com",
+        "https://duckduckgo.com",
         "https://github.com",
-        "https://leetcode.com",
         "https://login.microsoftonline.com",
         "https://login.nvgs.nvidia.com",
         "https://music.youtube.com",
@@ -151,10 +151,6 @@
       "{7a7a4a92-a2a0-41d1-9fd7-1e92480d612d}": {
         "install_url": "https://addons.mozilla.org/firefox/downloads/latest/styl-us/latest.xpi",
         "installation_mode": "normal_installed"
-      },
-      "{c84d89d9-a826-4015-957b-affebd9eb603}": {
-        "install_url": "https://addons.mozilla.org/firefox/downloads/latest/mal-sync/latest.xpi",
-        "installation_mode": "normal_installed"
       }
     },
 
@@ -167,7 +163,8 @@
       "Stories": false,
       "SponsoredPocket": false,
       "SponsoredStories": false,
-      "Snippets": false
+      "Snippets": false,
+      "Widgets": { "Enabled": false }
     },
 
     "FirefoxSuggest": {
@@ -199,8 +196,9 @@
       "ExtensionRecommendations": false,
       "FeatureRecommendations": false,
       "MoreFromMozilla": false,
+      "UrlbarInterventions": false,
       "SkipOnboarding": true,
-      "WhatsNew": false
+      "FirefoxLabs": false
     },
 
     "Permissions": {
