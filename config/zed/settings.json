@@ -61,6 +61,16 @@
   },
   // AI
   "agent": {
+    "tool_permissions": {
+      "tools": {
+        "fetch": { "default": "allow" },
+        "search_web": { "default": "allow" },
+      }
+    },
+    "enable_feedback": false,
+    "sandbox_permissions": {
+     "allow_all_hosts": true
+    },
     "threads_sidebar": {
       "position": "right",
     },
