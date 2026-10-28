@@ -69,7 +69,7 @@
     },
     "enable_feedback": false,
     "sandbox_permissions": {
-     "allow_all_hosts": true
+      "allow_all_hosts": true
     },
     "threads_sidebar": {
       "position": "right",
