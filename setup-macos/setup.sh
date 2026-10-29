@@ -5,34 +5,12 @@ set -xeuo pipefail
 cd "$(dirname -- "$0")"
 . ../posix-common/config.sh
 
+
 open "x-apple.systempreferences:com.apple.settings.PrivacySecurity.extension?Privacy_AllFiles"
 sed 's/^#auth/auth/' /etc/pam.d/sudo_local.template | sudo tee /etc/pam.d/sudo_local > /dev/null
 
 
 open ./restrictions.mobileconfig
-curl -o /tmp/adguard_dns.mobileconfig "https://adguard-dns.io$(curl 'https://adguard-dns.io/public_api/v1/dns/mobile_config' \
-  --json '{"dns_proto_type":"DOT","filtering_type":"DEFAULT","exclude_wifi_networks":[""],"exclude_domain":[""]}' | jq -r '.download_link')"
-open /tmp/adguard_dns.mobileconfig
-
-
-NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-eval "$(/opt/homebrew/bin/brew shellenv)"
-brew analytics off
-brew update
-brew install --yes anki basictex bazelisk betterdisplay bitwarden firefox keepingyouawake latexindent middleclick music-decoy openlogi owncloud pygments python@3 ruff shellcheck signal uv verilator visual-studio-code zed
-eval "$(/usr/libexec/path_helper)"
-
-for app_path in \
-	"/Applications/BetterDisplay.app" \
-	"/Applications/Bitwarden.app" \
-	"/Applications/Firefox.app" \
-	"/Applications/KeepingYouAwake.app" \
-	"/Applications/MiddleClick.app" \
-	"/Applications/Music Decoy.app" \
-	"/System/Applications/Calendar.app" \
-	"/System/Applications/Mail.app"; do
-	osascript -e "tell application \"System Events\" to make login item at end with properties {path:\"$app_path\", hidden:false}"
-done
 
 
 sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setglobalstate on
@@ -54,8 +32,10 @@ dscacheutil -flushcache
 
 sudo pmset -a womp 0
 
+
 sudo defaults write /Library/Preferences/.GlobalPreferences AppleICUForce24HourTime -bool true
 sudo sysadminctl -use12HourClockForLoginWindow off
+
 
 sudo launchctl disable "system/com.apple.ReportCrash"
 sudo launchctl disable "system/com.apple.DiagnosticsReporter"
@@ -135,6 +115,7 @@ defaults write -g AppleICUForce24HourTime -bool true
 defaults write com.apple.tipsd TPSWaitingToShowWelcomeNotification -int 0
 defaults write com.apple.tipsd TPSWelcomeNotificationReminderState -int 1
 
+open -a TextEdit
 defaults write com.apple.TextEdit RichText -bool false
 defaults write com.apple.TextEdit ShowPageBreaks -bool false
 
@@ -144,6 +125,46 @@ defaults write com.apple.AppleIntelligenceReport reportDuration -int 0
 defaults write -g NSUserKeyEquivalents -dict-add '\033Window\033Fill' '~^\UF700'
 defaults write -g NSUserKeyEquivalents -dict-add '\033Window\033Move & Resize\033Left' '~^\UF702'
 defaults write -g NSUserKeyEquivalents -dict-add '\033Window\033Move & Resize\033Right' '~^\UF703'
+
+
+TERMINAL_THEME=catppuccin-mocha
+curl -fsSL "https://raw.githubusercontent.com/catppuccin/Terminal.app/main/themes/$TERMINAL_THEME.terminal" -o /tmp/$TERMINAL_THEME.terminal
+open /tmp/$TERMINAL_THEME.terminal
+sleep 1
+defaults write com.apple.Terminal "Default Window Settings" -string "$TERMINAL_THEME"
+defaults write com.apple.Terminal "Startup Window Settings" -string "$TERMINAL_THEME"
+
+
+NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+eval "$(/opt/homebrew/bin/brew shellenv)"
+brew analytics off
+brew update
+brew install --yes anki basictex bazelisk betterdisplay bitwarden firefox keepingyouawake latexindent middleclick music-decoy openlogi owncloud pygments python@3 ruff shellcheck signal uv verilator visual-studio-code zed
+eval "$(/usr/libexec/path_helper)"
+
+for app_path in \
+	"/Applications/BetterDisplay.app" \
+	"/Applications/Bitwarden.app" \
+	"/Applications/Firefox.app" \
+	"/Applications/KeepingYouAwake.app" \
+	"/Applications/MiddleClick.app" \
+	"/Applications/Music Decoy.app" \
+	"/System/Applications/Calendar.app" \
+	"/System/Applications/Mail.app" \
+	"/System/Applications/TextEdit.app"
+do
+	osascript -e "tell application \"System Events\" to make login item at end with properties {path:\"$app_path\", hidden:false}"
+done
+
+
+mkdir -p ~/Library/Preferences/ownCloud
+cp ../config/ownCloud/sync-exclude.lst ~/Library/Preferences/ownCloud
+
+cp zprofile.sh ~/.zprofile
+
+mkdir -p ~/.config
+
+cp -r ../config/zed ~/.config
 
 
 git_config
@@ -179,28 +200,14 @@ add_folder_to_dock "$HOME/Downloads" -a 2 -d 1 -v 2
 killall Dock Finder ControlCenter SystemUIServer cfprefsd
 
 
-TERMINAL_THEME=catppuccin-mocha
-curl -fsSL "https://raw.githubusercontent.com/catppuccin/Terminal.app/main/themes/$TERMINAL_THEME.terminal" -o /tmp/$TERMINAL_THEME.terminal
-open /tmp/$TERMINAL_THEME.terminal
-sleep 1
-defaults write com.apple.Terminal "Default Window Settings" -string "$TERMINAL_THEME"
-defaults write com.apple.Terminal "Startup Window Settings" -string "$TERMINAL_THEME"
-
-
-cp ../config/ownCloud/sync-exclude.lst ~/Library/Preferences/ownCloud
-
-cp zprofile.sh ~/.zprofile
-
-mkdir -p ~/.config
-
-cp -r ../config/zed ~/.config
-
 vscode_config "Library/Application Support/Code/User"
 jq 'del(."window.titleBarStyle", ."update.mode")' "$HOME/Library/Application Support/Code/User/settings.json" > /tmp/vsc-settings.json
 mv /tmp/vsc-settings.json "$HOME/Library/Application Support/Code/User/settings.json"
 vscode_install_ext code
 
 
+mkdir -p "$HOME/Library/Application Support/Mozilla/NativeMessagingHosts"
+open -a Firefox
 firefox_config /Applications/Firefox.app/Contents/Resources/distribution Library/Application\ Support/Firefox/Profiles
 jq 'del(.policies.Preferences."browser.tabs.inTitlebar")' "/Applications/Firefox.app/Contents/Resources/distribution/policies.json" > /tmp/ff-settings.json
 mv /tmp/ff-settings.json "/Applications/Firefox.app/Contents/Resources/distribution/policies.json"
@@ -224,8 +231,15 @@ sudo tlmgr install \
 	biber
 
 
+curl -o /tmp/adguard_dns.mobileconfig "https://adguard-dns.io$(curl 'https://adguard-dns.io/public_api/v1/dns/mobile_config' \
+  --json '{"dns_proto_type":"DOT","filtering_type":"DEFAULT","exclude_wifi_networks":[""],"exclude_domain":[""]}' | jq -r '.download_link')"
+open /tmp/adguard_dns.mobileconfig
+
+
 # Battery > Charging > Charge Limit
 # General > AirDrop & Continuity > iPhone Widgets/AirPlay Receiver
 # General > AutoFill & Passwords
 # Menu Bar
 # Privacy & Security > Location Services > System Services
+# Displays > Advanced...
+# Keyboard > Turn keyboard backlight off after inactivity
