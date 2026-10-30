@@ -214,6 +214,11 @@
           "https://zoom.us"
         ]
       },
+      "Location": {
+        "Block": [
+          "https://google.com"
+        ]
+      },
       "Microphone": {
         "Allow": [
           "https://discord.com",
@@ -229,8 +234,11 @@
         "Allow": [
           "https://app.tuta.com",
           "https://web.telegram.org",
-          "https://web.whatsapp.com",
           "https://web.whatsapp.com"
+        ],
+        "Block": [
+          "https://google.com",
+          "https://youtube.com"
         ]
       },
       "ScreenShare": {
