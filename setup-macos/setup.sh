@@ -85,7 +85,9 @@ defaults -currentHost write com.apple.controlcenter Spotlight -int 8
 defaults -currentHost write com.apple.controlcenter ShowSuggestions -bool false
 defaults -currentHost write com.apple.Spotlight MenuItemHidden -int 1
 defaults write com.apple.assistant.support "Search Queries Data Sharing Status" -int 2
-defaults write com.apple.Spotlight EnabledPreferenceRules -array "Custom.relatedContents"
+defaults write com.apple.Spotlight EnabledPreferenceRules -array \
+  "Custom.relatedContents" \
+  "System.menuItems"
 
 defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad Clicking -bool true
 defaults write com.apple.AppleMultitouchTrackpad Clicking -bool true
