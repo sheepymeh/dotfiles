@@ -31,5 +31,9 @@
 	{
 		"key": "ctrl+tab",
 		"command": "-workbench.action.openNextRecentlyUsedEditorInGroup"
+	},
+	{
+		"key": "alt+cmd+b",
+		"command": "-latex-workshop.build"
 	}
 ]
