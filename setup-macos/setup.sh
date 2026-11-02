@@ -141,7 +141,7 @@ NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Ho
 eval "$(/opt/homebrew/bin/brew shellenv)"
 brew analytics off
 brew update
-brew install --yes anki basictex bazelisk betterdisplay bitwarden firefox keepingyouawake latexindent middleclick music-decoy openlogi owncloud pygments python@3 ruff shellcheck signal uv verilator visual-studio-code zed
+brew install --yes anki basictex bazelisk betterdisplay bitwarden firefox font-jetbrains-mono keepingyouawake latexindent middleclick music-decoy openlogi owncloud pygments python@3 ruff shellcheck signal uv verilator visual-studio-code zed
 eval "$(/usr/libexec/path_helper)"
 
 for app_path in \
