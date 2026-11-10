@@ -3,6 +3,7 @@ user_pref("app.normandy.api_url", "");
 user_pref("app.normandy.enabled", false);
 user_pref("beacon.enabled", false);
 user_pref("breakpad.reportURL", "");
+user_pref("browser.newtabpage.activity-stream.widgets.enabled", false);
 user_pref("datareporting.healthreport.service.enabled", false);
 user_pref("datareporting.healthreport.uploadEnabled", false);
 user_pref("device.sensors.enabled", false);
