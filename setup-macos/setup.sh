@@ -142,6 +142,7 @@ eval "$(/opt/homebrew/bin/brew shellenv)"
 brew analytics off
 brew update
 brew install --yes anki basictex bazelisk betterdisplay bitwarden firefox font-jetbrains-mono keepingyouawake latexindent middleclick music-decoy openlogi owncloud pygments python@3 ruff shellcheck signal uv verilator visual-studio-code zed
+brew pin --cask firefox
 eval "$(/usr/libexec/path_helper)"
 
 for app_path in \
