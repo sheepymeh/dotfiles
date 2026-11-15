@@ -128,6 +128,12 @@ defaults write -g NSUserKeyEquivalents -dict-add '\033Window\033Fill' '~^\UF700'
 defaults write -g NSUserKeyEquivalents -dict-add '\033Window\033Move & Resize\033Left' '~^\UF702'
 defaults write -g NSUserKeyEquivalents -dict-add '\033Window\033Move & Resize\033Right' '~^\UF703'
 
+# Safari developer tools
+defaults write com.apple.Safari IncludeDevelopMenu -bool true
+defaults write com.apple.Safari DeveloperMenuVisibility -bool true
+defaults write com.apple.Safari WebKitDeveloperExtrasEnabledPreferenceKey -bool true
+defaults write com.apple.Safari WebKitPreferences.developerExtrasEnabled -bool true
+
 
 TERMINAL_THEME=catppuccin-mocha
 curl -fsSL "https://raw.githubusercontent.com/catppuccin/Terminal.app/main/themes/$TERMINAL_THEME.terminal" -o /tmp/$TERMINAL_THEME.terminal
