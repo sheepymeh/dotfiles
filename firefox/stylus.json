@@ -217,6 +217,22 @@
     "sections": [{ "code": "" }]
   },
   {
+    "name": "Claude Catppuccin",
+    "enabled": true,
+    "updateUrl": "https://github.com/catppuccin/userstyles/raw/main/styles/claude/catppuccin.user.less",
+    "sourceCode": "#temp {  }",
+    "usercssData": { "version": "0" },
+    "sections": [{ "code": "" }]
+  },
+  {
+    "name": "Codeberg Catppuccin",
+    "enabled": true,
+    "updateUrl": "https://github.com/catppuccin/userstyles/raw/main/styles/codeberg/catppuccin.user.less",
+    "sourceCode": "#temp {  }",
+    "usercssData": { "version": "0" },
+    "sections": [{ "code": "" }]
+  },
+  {
     "name": "Startpage Catppuccin",
     "enabled": true,
     "updateUrl": "https://github.com/catppuccin/userstyles/raw/main/styles/startpage/catppuccin.user.less",
