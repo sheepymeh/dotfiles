@@ -1,10 +1,15 @@
 {
+  "editor.mouseWheelScrollSensitivity": 0.3,
   "window.titleBarStyle": "native",
   "update.mode": "none",
 
   "editor.fontFamily": "'JetBrainsMono Nerd Font Mono', 'JetBrains Mono', 'Roboto Mono', monospace",
 
   "chat.tips.enabled": false,
+  "claudeCode.preferredLocation": "panel",
+  "claudeCode.contextUsageThreshold": 0,
+  "claudeCode.hideOnboarding": true,
+  "claudeCode.escapeStopsClaude": false
   "debug.onTaskErrors": "debugAnyway",
   "editor.fontLigatures": true,
   "editor.fontSize": 13,
@@ -32,6 +37,7 @@
   "security.workspace.trust.enabled": false,
   "security.workspace.trust.startupPrompt": "never",
   "telemetry.telemetryLevel": "off",
+  "terminal.integrated.enableMultiLinePasteWarning": "never",
   "terminal.integrated.scrollback": 10000,
   "update.showReleaseNotes": false,
   "window.customTitleBarVisibility": "never",
